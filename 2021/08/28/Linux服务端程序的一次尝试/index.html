@@ -12,7 +12,7 @@
 
 <link rel="stylesheet" href="/css/main.css">
 
-<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Garamond:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
+<link rel="stylesheet" href="//fonts.googleapis.com/css?family=Noto Serif SC:300,300italic,400,400italic,700,700italic&display=swap&subset=latin,latin-ext">
 <link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
 <script id="hexo-configurations">
@@ -20,16 +20,17 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="服务器端程序设计文档系统概述为了实现广域网五子棋连接对战，即在不同局域网下的机器互相连接，且在不考虑内网穿透等实现手段的情况下，我们需要一个服务器端，用于对战双方数据的转发，服务器端程序部署于云服务器，用于示例的服务器IP地址为101.34.252.176，服务提供商为腾讯云。 运行环境用于示例的云服务器系统环境为CentOS 7.6 64bit 功能设计在服务器端程序开启的情况下，会监听三个端口">
+  <meta name="description" content="关于联机对战五子棋游戏服务器端程序的一次尝试">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Linux服务端程序的一次尝试">
 <meta property="og:url" content="http://example.com/2021/08/28/Linux%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95/index.html">
 <meta property="og:site_name" content="Blog of Ethan@USTC">
-<meta property="og:description" content="服务器端程序设计文档系统概述为了实现广域网五子棋连接对战，即在不同局域网下的机器互相连接，且在不考虑内网穿透等实现手段的情况下，我们需要一个服务器端，用于对战双方数据的转发，服务器端程序部署于云服务器，用于示例的服务器IP地址为101.34.252.176，服务提供商为腾讯云。 运行环境用于示例的云服务器系统环境为CentOS 7.6 64bit 功能设计在服务器端程序开启的情况下，会监听三个端口">
+<meta property="og:description" content="关于联机对战五子棋游戏服务器端程序的一次尝试">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2021-08-28T11:46:37.000Z">
-<meta property="article:modified_time" content="2021-08-28T11:47:05.388Z">
+<meta property="article:modified_time" content="2021-08-28T12:27:33.886Z">
 <meta property="article:author" content="Ethan Deng">
+<meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
 
 <link rel="canonical" href="http://example.com/2021/08/28/Linux%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95/">
@@ -188,6 +189,7 @@
     <i class="fa fa-arrow-up"></i>
     <span>0%</span>
   </div>
+  <div class="reading-progress-bar"></div>
 
 
     <main class="main">
@@ -226,7 +228,7 @@
               <span class="post-meta-item-text">Posted on</span>
               
 
-              <time title="Created: 2021-08-28 19:46:37 / Modified: 19:47:05" itemprop="dateCreated datePublished" datetime="2021-08-28T19:46:37+08:00">2021-08-28</time>
+              <time title="Created: 2021-08-28 19:46:37 / Modified: 20:27:33" itemprop="dateCreated datePublished" datetime="2021-08-28T19:46:37+08:00">2021-08-28</time>
             </span>
 
           
@@ -237,6 +239,7 @@
               <span class="post-meta-item-text">Views: </span>
               <span class="leancloud-visitors-count"></span>
             </span>
+            <div class="post-description">关于联机对战五子棋游戏服务器端程序的一次尝试</div>
 
         </div>
       </header>
@@ -303,36 +306,36 @@
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">define</span> VACANT 0</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> WAITING 1</span></span><br><span class="line"><span class="meta">#<span class="meta-keyword">define</span> ONGOING 2</span></span><br></pre></td></tr></table></figure>
 
 <p>当<code>HOST</code>玩家建立连接时，将会对<code>Game_Status</code>文件进行修改，修改过程如代码所示：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Game_Status = WAITING;Game_Status_fd = open(<span class="string">&quot;Game_Status&quot;</span>, O_WRONLY);write(Game_Status_fd, &amp;Game_Status, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));close(Game_Status_fd);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Game_Status = WAITING;</span><br><span class="line">Game_Status_fd = open(<span class="string">&quot;Game_Status&quot;</span>, O_WRONLY);</span><br><span class="line">write(Game_Status_fd, &amp;Game_Status, <span class="keyword">sizeof</span>(<span class="keyword">int</span>));</span><br><span class="line">close(Game_Status_fd);</span><br></pre></td></tr></table></figure>
 
 <p>由此，可以实现对游戏状态的共享访存。</p>
 <h4 id="管道通信"><a href="#管道通信" class="headerlink" title="管道通信"></a>管道通信</h4><p>在双方都建立连接时，总共有四个进程，分别实现双方消息的接收和发送，这就需要在不同进程之间互相传递信息，才能实现消息的实时转发，这里选择使用匿名管道<code>pipe()</code>来实现此项功能。</p>
 <ol>
 <li><p>主进程中初始化两个管道：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(pipe(fd_1) == <span class="number">-1</span>)&#123;    perror(<span class="string">&quot;pipe&quot;</span>);    <span class="keyword">return</span> <span class="number">-1</span>;&#125;<span class="keyword">int</span> *write_H2G = &amp;fd_1[<span class="number">1</span>];<span class="keyword">int</span> *read_H2G = &amp;fd_1[<span class="number">0</span>];<span class="comment">//H2G:Host to Guestif(pipe(fd_2) == -1)&#123;    perror(&quot;pipe&quot;);    return -1;&#125;int *write_G2H = &amp;fd_2[1];int *read_G2H = &amp;fd_2[0];//G2H:Guest to Host</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span>(pipe(fd_1) == <span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    perror(<span class="string">&quot;pipe&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> *write_H2G = &amp;fd_1[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> *read_H2G = &amp;fd_1[<span class="number">0</span>];<span class="comment">//H2G:Host to Guest</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span>(pipe(fd_2) == <span class="number">-1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    perror(<span class="string">&quot;pipe&quot;</span>);</span><br><span class="line">    <span class="keyword">return</span> <span class="number">-1</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">int</span> *write_G2H = &amp;fd_2[<span class="number">1</span>];</span><br><span class="line"><span class="keyword">int</span> *read_G2H = &amp;fd_2[<span class="number">0</span>];<span class="comment">//G2H:Guest to Host</span></span><br></pre></td></tr></table></figure>
 
 <p>其中<code>fd_1</code>和<code>fd_2</code>均为<code>int[2]</code>数组，而<code>write_H2G</code>，<code>read_H2G</code>，<code>write_G2H</code>，<code>read_G2H</code>是为了后面调用方便而初始化的别名。</p>
 </li>
 <li><p>初始化管道之后，主进程分别<code>fork()</code>两个子进程用于实现信息交流，并在<code>fork()</code>结束之后关闭自己的四个读写端口：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close(*write_H2G);close(*read_G2H);close(*write_G2H);close(*read_H2G);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">close(*write_H2G);</span><br><span class="line">close(*read_G2H);</span><br><span class="line">close(*write_G2H);</span><br><span class="line">close(*read_H2G);</span><br></pre></td></tr></table></figure>
 
 <p>两个子进程分别关闭与对方对应的读写端口：</p>
 <ul>
 <li><p><code>Host</code>进程：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close(*write_G2H);close(*read_H2G);</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">close(*write_G2H);</span><br><span class="line">close(*read_H2G);</span><br></pre></td></tr></table></figure></li>
 <li><p><code>Client</code>进程：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">close(*write_H2G);close(*read_G2H);</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">close(*write_H2G);</span><br><span class="line">close(*read_G2H);</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 <li><p>这样实现消息的实时转发（以<code>Host</code>进程为例）：</p>
 <ul>
 <li><p>每当Socket传来消息的时候，都将消息不作改动地传递至管道的写端：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;    n = recv(connect_fd_Host, buff_H, <span class="number">4096</span>, <span class="number">0</span>);    <span class="keyword">if</span> (n == <span class="number">-1</span> || n == <span class="number">0</span>)    &#123;<span class="comment">//when connexion shut down        kill(My_Child, SIGKILL);        close(connect_fd_Host);        exit(0);    &#125;    write(*write_H2G, buff_H, n);&#125;</span></span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    n = recv(connect_fd_Host, buff_H, <span class="number">4096</span>, <span class="number">0</span>);</span><br><span class="line">    <span class="keyword">if</span> (n == <span class="number">-1</span> || n == <span class="number">0</span>)</span><br><span class="line">    &#123;<span class="comment">//when connexion shut down</span></span><br><span class="line">        kill(My_Child, SIGKILL);</span><br><span class="line">        close(connect_fd_Host);</span><br><span class="line">        <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">    &#125;</span><br><span class="line">    write(*write_H2G, buff_H, n);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>每当没有新消息时，便阻塞于<code>recv()</code>函数处。</p>
 </li>
 <li><p>新开一个子进程，实现：每当管道另一端有新消息传递来，将消息不做改动地经有Socket发送出去：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)&#123;    length = read(*read_G2H, buff_G, <span class="number">4096</span>);    send(connect_fd_Host, buff_G, length, <span class="number">0</span>);&#125;</span><br></pre></td></tr></table></figure></li>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">while</span>(<span class="number">1</span>)</span><br><span class="line">&#123;</span><br><span class="line">    length = read(*read_G2H, buff_G, <span class="number">4096</span>);</span><br><span class="line">    send(connect_fd_Host, buff_G, length, <span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
 </ul>
 </li>
 </ol>
@@ -341,16 +344,16 @@
 <p>这里选择使用Linux系统的信号（<code>SIGNAL</code>）机制来解决这些问题。</p>
 <ul>
 <li><p>在主进程中，为了在接收外界信号的同时能够杀死所有的子进程，定义了这样的处理函数：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;    <span class="keyword">int</span> i;    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)        kill(pid[i], SIGUSR1);    <span class="built_in">exit</span>(<span class="number">0</span>);&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="keyword">int</span> i;</span><br><span class="line">    <span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">        kill(pid[i], SIGUSR1);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>其中<code>pid[3]</code>为<code>pid_t</code>型数组，存储了三个子进程的<code>pid</code>。</p>
 <p>同时在主进程中将信号<code>SIGINT</code>和<code>SIGTERM</code>与之连接：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">signal(SIGINT, handler);signal(SIGTERM, handler);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">signal(SIGINT, handler);</span><br><span class="line">signal(SIGTERM, handler);</span><br></pre></td></tr></table></figure>
 
 <p>由此可以实现，主进程在收到<code>ctrl+C</code>的信号以及系统<code>kill</code>指令时，可以向所有的子进程发送一个自定义信号<code>SIGUSR1</code>。</p>
 </li>
 <li><p>在子进程中，为了在接收主进程信号的同时能够杀死对应的子进程，定义了这样的处理函数：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Be_Killed_Handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;    kill(My_Child, SIGKILL);    <span class="built_in">exit</span>(<span class="number">0</span>);&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Be_Killed_Handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    kill(My_Child, SIGKILL);</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>其中<code>My_Child</code>为<code>pid_t</code>型变量，存储了各自对应的子进程<code>pid</code>。</p>
 <p>并在子进程中将信号<code>SIGUSR1</code>与之相连：</p>
@@ -359,7 +362,7 @@
 <p>由此可以实现，当子进程收到来自主进程的<code>SIGUSR1</code>时，可以杀死孙进程，然后自我结束。</p>
 </li>
 <li><p>在孙进程中，为了防止变成孤儿进程，定义了这样的处理函数：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Pipe_Handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span>&#123;    <span class="built_in">exit</span>(<span class="number">0</span>);&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="function"><span class="keyword">void</span> <span class="title">Pipe_Handler</span><span class="params">(<span class="keyword">int</span> signum)</span></span></span><br><span class="line"><span class="function"></span>&#123;</span><br><span class="line">    <span class="built_in">exit</span>(<span class="number">0</span>);</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
 
 <p>并在子进程中将信号<code>SIGPIPE</code>与之相连：</p>
 <figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">signal(SIGPIPE, Pipe_Handler);</span><br></pre></td></tr></table></figure>
@@ -368,11 +371,11 @@
 </li>
 </ul>
 <h4 id="其他"><a href="#其他" class="headerlink" title="其他"></a>其他</h4><p>除了以上三种方式之外，还在主进程循环的末尾有这样的语句：</p>
-<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> Exit_Pid = wait(<span class="literal">NULL</span>);<span class="keyword">int</span> i;<span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)	kill(pid[i], SIGUSR1);</span><br></pre></td></tr></table></figure>
+<figure class="highlight c"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">int</span> Exit_Pid = wait(<span class="literal">NULL</span>);</span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> i;</span><br><span class="line"><span class="keyword">for</span> (i = <span class="number">0</span>; i &lt; <span class="number">3</span>; i++)</span><br><span class="line">	kill(pid[i], SIGUSR1);</span><br></pre></td></tr></table></figure>
 
 <p>主进程会阻塞在这里，等待着第一个子进程的结束，一旦有一个子进程结束，主进程将会结束所有的子进程，然后回到循环的开头，回到等待连接的状态。</p>
 <h2 id="部署与运行"><a href="#部署与运行" class="headerlink" title="部署与运行"></a>部署与运行</h2><p>服务器端代码命名为<code>Server.c</code>，在<code>Linux</code>服务器上编译运行的指令如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ gcc Server.c -o Server$ nohup ./Server &amp;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ gcc Server.c -o Server</span><br><span class="line">$ nohup ./Server &amp;</span><br></pre></td></tr></table></figure>
 
 <p>这里使用<code>nohup</code>以及<code>&amp;</code>是为了让程序能够在后台运行，并且关闭终端也能持续运行。</p>
 <h2 id="心得与展望"><a href="#心得与展望" class="headerlink" title="心得与展望"></a>心得与展望</h2><p>服务端程序的编写涉及到了很多Linux操作系统以及计算机网络的的内容，涉及范围较广，对于个人能力提升较大。后期考虑添加账户系统，以及排名系统，使之作为联网游戏更加完整。</p>
@@ -384,6 +387,9 @@
     
 
       <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Linux/" rel="tag"># Linux</a>
+          </div>
 
         
 
@@ -469,14 +475,36 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">2</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
+      <div class="site-state-item site-state-tags">
+        <span class="site-state-item-count">1</span>
+        <span class="site-state-item-name">tags</span>
+      </div>
   </nav>
 </div>
+  <div class="links-of-author motion-element">
+      <span class="links-of-author-item">
+        <a href="https://github.com/SGEthan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SGEthan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:admindeng@mail.ustc.edu.cn" title="E-Mail → mailto:admindeng@mail.ustc.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
+  <div class="links-of-blogroll motion-element">
+    <div class="links-of-blogroll-title"><i class="fa fa-link fa-fw"></i>
+      Links
+    </div>
+    <ul class="links-of-blogroll-list">
+        <li class="links-of-blogroll-item">
+          <a href="http://www.stargazerd.tk/" title="http:&#x2F;&#x2F;www.stargazerd.tk" rel="noopener" target="_blank">My Site</a>
+        </li>
+    </ul>
+  </div>
 
       </div>
 
