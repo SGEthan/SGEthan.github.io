@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
+    <title>test_my_site</title>
+    <url>/2021/08/28/test-my-site/</url>
+    <content><![CDATA[]]></content>
+  </entry>
+  <entry>
     <title>Linux服务端程序的一次尝试</title>
     <url>/2021/08/28/Linux%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95/</url>
     <content><![CDATA[<h1 id="服务器端程序设计文档"><a href="#服务器端程序设计文档" class="headerlink" title="服务器端程序设计文档"></a>服务器端程序设计文档</h1><h2 id="系统概述"><a href="#系统概述" class="headerlink" title="系统概述"></a>系统概述</h2><p>为了实现广域网五子棋连接对战，即在不同局域网下的机器互相连接，且在不考虑内网穿透等实现手段的情况下，我们需要一个服务器端，用于对战双方数据的转发，服务器端程序部署于云服务器，用于示例的服务器IP地址为<code>101.34.252.176</code>，服务提供商为<a href="https://cloud.tencent.com/">腾讯云</a>。</p>
@@ -136,10 +141,5 @@
       <tags>
         <tag>Linux</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test_my_site</title>
-    <url>/2021/08/28/test-my-site/</url>
-    <content><![CDATA[]]></content>
   </entry>
 </search>
