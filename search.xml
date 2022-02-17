@@ -155,7 +155,7 @@
 <li>决策树 Decision Tree</li>
 <li>朴素贝叶斯分类器 Naive Bayes Classifier</li>
 <li>逻辑回归 Logistic Regression</li>
-<li>支持向量机（以及拉格朗日对偶方法） Support Vector, with Lagrange Duality</li>
+<li>支持向量机（以及拉格朗日对偶方法） Support Vector Machine, with Lagrange Duality</li>
 <li>神经网络与卷积神经网络 Neural Networks &amp; Convolutional Neural Networks</li>
 <li>主成分分析 Principal Component Analysis</li>
 <li>强化学习 Reinforcement Learning, with Multi-armed Bandits Problem</li>
