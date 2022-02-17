@@ -182,7 +182,7 @@
 <ul>
 <li><p>一开始是想弄<a href="https://github.com/ageitgey/face_recognition">face_recognition</a>，一番折腾之后，为了使用CUDA，弄了WSL，为了使用WSL的GUI，弄了Windows 11。然而从安装好Windows 11之后到现在几个月，也没重新弄起来face_recognition。这里有一些记录：</p>
 <ul>
-<li><p>CUDA的安装过程痛苦不堪，以国内的网络环境，各种源站崩的崩，慢的慢，整个安装过程属实折磨，配置环境整个过程花费了近一周时间，一直在跟魔幻的网络battle，也因此折腾了各种奇奇怪怪的代理方法，以与GFW斗智斗勇。</p></li>
+<li><p>CUDA的安装过程痛苦不堪，以国内的网络环境，各种源站崩的崩，慢的慢，整个安装过程属实折磨，配置环境整个过程花费了近一周时间，一直在跟魔幻的网络battle，也因此折腾了各种奇奇怪怪的代理方法，以与GFW斗智斗勇。如果有机会回顾一遍的话，我会将整个折腾过程记录下来。（希望没有机会回顾了🙏）</p></li>
 <li><p>不同Ubuntu版本的apt源是有区别的，如果不一致，就会导致报错：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
 <p>不同的源名称对应如下：</p>
@@ -234,6 +234,9 @@
 <p>“这算是成年仪式吗”</p>
 <p>“如果是，那它的效果可真好”</p>
 <p>时光荏苒，如今的我，已不再会如两年前一样，写下具体而细致的期望和愿景。唯愿，平安喜乐，万事胜意。</p>
+<h3 id="愿景">愿景</h3>
+<p>倒没什么特别的期望，就希望一切顺利吧，科研，学业，身体，情绪。</p>
+<p>麻了，开头还说想让自己的博客是纯技术向来着，结果最后还是写了这些酸酸的文字。就写到这里罢。</p>
 ]]></content>
       <tags>
         <tag>Thoughts</tag>
