@@ -224,10 +224,16 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-16 21:05:32 / Modified: 22:36:24" itemprop="dateCreated datePublished" datetime="2022-02-16T21:05:32+08:00">2022-02-16</time>
+              <time title="Created: 2022-02-16 21:05:32" itemprop="dateCreated datePublished" datetime="2022-02-16T21:05:32+08:00">2022-02-16</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2022-02-17 16:24:17" itemprop="dateModified" datetime="2022-02-17T16:24:17+08:00">2022-02-17</time>
+              </span>
 
           
             <span id="/2022/02/16/%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/" class="post-meta-item leancloud_visitors" data-flag-title="学期总结" title="Views">
@@ -491,7 +497,7 @@
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">3</span>
+        <span class="site-state-item-count">2</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -513,6 +519,15 @@
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
           <a href="http://www.stargazerd.tk/" title="http:&#x2F;&#x2F;www.stargazerd.tk" rel="noopener" target="_blank">My Site</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://sgy.ustc.edu.cn/" title="https:&#x2F;&#x2F;sgy.ustc.edu.cn&#x2F;" rel="noopener" target="_blank">SCGY</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="http://cs.ustc.edu.cn/" title="http:&#x2F;&#x2F;cs.ustc.edu.cn&#x2F;" rel="noopener" target="_blank">SCST</a>
+        </li>
+        <li class="links-of-blogroll-item">
+          <a href="https://ustc.edu.cn/" title="https:&#x2F;&#x2F;ustc.edu.cn&#x2F;" rel="noopener" target="_blank">USTC</a>
         </li>
     </ul>
   </div>
@@ -686,6 +701,61 @@
 
 
   
+
+  
+      
+
+<script>
+  if (typeof MathJax === 'undefined') {
+    window.MathJax = {
+      loader: {
+        source: {
+          '[tex]/amsCd': '[tex]/amscd',
+          '[tex]/AMScd': '[tex]/amscd'
+        }
+      },
+      tex: {
+        inlineMath: {'[+]': [['$', '$']]},
+        tags: 'ams'
+      },
+      options: {
+        renderActions: {
+          findScript: [10, doc => {
+            document.querySelectorAll('script[type^="math/tex"]').forEach(node => {
+              const display = !!node.type.match(/; *mode=display/);
+              const math = new doc.options.MathItem(node.textContent, doc.inputJax[0], display);
+              const text = document.createTextNode('');
+              node.parentNode.replaceChild(text, node);
+              math.start = {node: text, delim: '', n: 0};
+              math.end = {node: text, delim: '', n: 0};
+              doc.math.push(math);
+            });
+          }, '', false],
+          insertedScript: [200, () => {
+            document.querySelectorAll('mjx-container').forEach(node => {
+              let target = node.parentNode;
+              if (target.nodeName.toLowerCase() === 'li') {
+                target.parentNode.classList.add('has-jax');
+              }
+            });
+          }, '', false]
+        }
+      }
+    };
+    (function () {
+      var script = document.createElement('script');
+      script.src = '//cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js';
+      script.defer = true;
+      document.head.appendChild(script);
+    })();
+  } else {
+    MathJax.startup.document.state(0);
+    MathJax.texReset();
+    MathJax.typeset();
+  }
+</script>
+
+    
 
   
 
