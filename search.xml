@@ -119,13 +119,7 @@
       </tags>
   </entry>
   <entry>
-    <title>test_my_site</title>
-    <url>/2021/08/28/test-my-site/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
-    <title></title>
+    <title>骰子游戏‘吹牛’的分析</title>
     <url>/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/</url>
     <content><![CDATA[<h1 id="关于骰子游戏吹牛的分析">关于骰子游戏“吹牛”的分析</h1>
 <p>前段时间和朋友去KTV，了解到一种称为“吹牛”的酒桌游戏。由于是第一次接触，玩的不算好。感觉这个游戏背后有很多概率和博弈相关的知识和问题，于是考虑进行分析，并研究设计一个Agent以进行游戏的最佳策略的求解的可能。</p>
@@ -137,10 +131,19 @@
 <li><p>若另一方，称为<span class="math inline">\(player\;B\)</span>不质疑上述声明，那么其就应该给出自己的声明，要求为，其报出的声明“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”中，必须有：</p>
 <ul>
 <li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x\\or:x&#39;&gt;x\;and\;a&#39;&gt;a\\or:x&#39;\ge3\;and\;a&#39;=1
+x&#39;&gt;x
+\]</span></p>
+<p><span class="math display">\[
+or:x&#39;&gt;x\;and\;a&#39;&gt;a
+\]</span></p>
+<p><span class="math display">\[
+or:x&#39;\ge3\;and\;a&#39;=1
 \]</span></p></li>
 <li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x\\or:x&#39;&gt;x\;and\;a&#39;&gt;a
+x&#39;&gt;x
+\]</span></p>
+<p><span class="math display">\[
+or:x&#39;&gt;x\;and\;a&#39;&gt;a
 \]</span></p></li>
 </ul>
 <p>“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”的含义与前述相同。</p></li>
@@ -153,6 +156,17 @@ x&#39;&gt;x\\or:x&#39;&gt;x\;and\;a&#39;&gt;a
 </ul>
 <h3 id="静态分析">静态分析</h3>
 <p>tbd</p>
+]]></content>
+      <tags>
+        <tag>Math</tag>
+        <tag>ML</tag>
+        <tag>RL</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2021/08/28/test-my-site/</url>
+    <content><![CDATA[
 ]]></content>
   </entry>
   <entry>
