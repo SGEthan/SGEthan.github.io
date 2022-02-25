@@ -201,6 +201,97 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="name" content="Ethan Deng">
+      <meta itemprop="description" content="Oops!">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Blog of Ethan@USTC">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/" class="post-title-link" itemprop="url">Untitled</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">Posted on</span>
+              
+
+              <time title="Created: 2022-02-25 08:56:31 / Modified: 09:29:20" itemprop="dateCreated datePublished" datetime="2022-02-25T08:56:31+08:00">2022-02-25</time>
+            </span>
+
+          
+            <span id="/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/" class="post-meta-item leancloud_visitors" data-flag-title="" title="Views">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">Views: </span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="关于骰子游戏吹牛的分析">关于骰子游戏“吹牛”的分析</h1>
+<p>前段时间和朋友去KTV，了解到一种称为“吹牛”的酒桌游戏。由于是第一次接触，玩的不算好。感觉这个游戏背后有很多概率和博弈相关的知识和问题，于是考虑进行分析，并研究设计一个Agent以进行游戏的最佳策略的求解的可能。</p>
+<h3 id="游戏规则">游戏规则</h3>
+<p>可以进行多人游戏，为了简化，这里仅考虑双方对抗的问题。</p>
+<ul>
+<li><p>首先，双方分别有五个骰子，在骰盅摇匀之后，各自查看自己的结果</p></li>
+<li><p>由一方，称为<span class="math inline">\(player\;A\)</span>开始，先报出形如“<span class="math inline">\(x\)</span>个<span class="math inline">\(a\)</span>”的声明，表示其认为，在双方的骰盅中，结果为<span class="math inline">\(a\)</span>点数的骰子加一起的数目超过<span class="math inline">\(x\)</span>，这里有限制：<span class="math inline">\(x\ge 3\)</span>。</p></li>
+<li><p>若另一方，称为<span class="math inline">\(player\;B\)</span>不质疑上述声明，那么其就应该给出自己的声明，要求为，其报出的声明“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”中，必须有：</p>
+<ul>
+<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
+x&#39;&gt;x\\or:x&#39;&gt;x\;and\;a&#39;&gt;a\\or:x&#39;\ge3\;and\;a&#39;=1
+\]</span></p></li>
+<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
+x&#39;&gt;x\\or:x&#39;&gt;x\;and\;a&#39;&gt;a
+\]</span></p></li>
+</ul>
+<p>“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”的含义与前述相同。</p></li>
+<li><p>换<span class="math inline">\(player\;A\)</span>报出声明，由此反复。</p></li>
+</ul>
+<p>上述过程中还有以下规定：</p>
+<ul>
+<li>若游戏过程中，点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，那么在打开骰盅的时候，点数<span class="math inline">\(1\)</span>可以被看作任何数字；否则，在打开骰盅后，其不能被看做其他数字。</li>
+<li>游戏结束条件：<strong>质疑</strong>：即，某一方对于另一方的声明提出质疑，这个时候我们将双方的骰盅打开，查看结果，若被质疑的结果成立，则被质疑者获胜，否则，质疑者获胜。</li>
+</ul>
+<h3 id="静态分析">静态分析</h3>
+<p>tbd</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
     <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/16/%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -490,7 +581,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">3</span>
+          <span class="site-state-item-count">4</span>
           <span class="site-state-item-name">posts</span>
         </a>
       </div>
