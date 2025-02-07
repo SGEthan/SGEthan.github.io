@@ -120,12 +120,15 @@ href="https://cloud.tencent.com/">腾讯云</a>。</p>
       </tags>
   </entry>
   <entry>
-    <title>RL Algorithms in Language Model Reasoning</title>
+    <title>test_my_site</title>
+    <url>/2021/08/28/test-my-site/</url>
+    <content><![CDATA[
+]]></content>
+  </entry>
+  <entry>
+    <title>Review of Reinforcement Learning</title>
     <url>/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/</url>
-    <content><![CDATA[<h1
-id="reinforcement-learning-algorithms-in-llm-reasoning">Reinforcement
-Learning Algorithms in LLM Reasoning</h1>
-<h2 id="rl-basics">RL basics</h2>
+    <content><![CDATA[<h1 id="rl-basics">RL basics</h1>
 <p>In a RL problem, we have an agent and an environment that the agent
 can interact with. At each time step, the agent is given a state of the
 environment <span class="math inline">\(s\)</span>, and the agent is
@@ -165,7 +168,7 @@ Q^\pi(s,a) := \mathbb{E}_\pi[\mathbf{R}_t~|~s_t=s,a_t=a].
 class="math display">\[
 V^\pi(s) = \sum_{a \in A}\pi(a~|~s)Q^{\pi}(s,a).
 \]</span></p>
-<h2 id="markov-decision-process">Markov Decision Process</h2>
+<h1 id="markov-decision-process">Markov Decision Process</h1>
 <p>If the environment state is a Markov process and there is a model
 describing the environment that for each triplet of a starting state
 <span class="math inline">\(s\)</span>, an action <span
@@ -188,7 +191,7 @@ a].
 state dominated by current state and action. Here we get a recursive
 expression named <strong>Bellman's Equation</strong> or
 <strong>Bellman's Optimality Condition</strong>.</p>
-<h3 id="value-iteration">Value Iteration</h3>
+<h2 id="value-iteration">Value Iteration</h2>
 <p>The goal of value iteration is to find the optimal value function
 <span class="math inline">\(V^*\)</span>. Given Bellman's Equation, for
 each time step, we have <span class="math display">\[
@@ -219,7 +222,7 @@ a]\left(R(s&#39;,s, a) + \gamma V^*(s&#39;)\right) \\
         =&amp;~{\arg\max}_{a}Q^*(s,a)
 \end{align*}
 \]</span> It's a type of dynamic programming.</p>
-<h3 id="policy-iteration">Policy Iteration</h3>
+<h2 id="policy-iteration">Policy Iteration</h2>
 <p>Here we start by locking the policy <span
 class="math inline">\(\pi\)</span>, and instead of updating optimal
 values by taking the best action like we did in value iteration, we
@@ -241,7 +244,7 @@ V^\pi(s&#39;)] \\
 {\arg\max}_aQ(s,a)
 \]</span> Then we lock the policy and update the value functions. By
 iteratively doing this, we are able to get converged results.</p>
-<h3 id="use-of-q-function">Use of Q-function</h3>
+<h2 id="use-of-q-function">Use of Q-function</h2>
 <p>By using Q function, the value iteration and the policy iteration can
 be summarized by simply <span class="math display">\[
 \begin{align*}
@@ -251,10 +254,10 @@ be summarized by simply <span class="math display">\[
 \]</span> The good thing here is that Q function naturally encodes the
 information about the future so we can directly maintain its value
 instead of calculating value and pi each time.</p>
-<h2 id="q-learning">Q-Learning</h2>
+<h1 id="q-learning">Q-Learning</h1>
 <p>Q-learning is used when we don't have access of the model of the
 environment (model-free RL).</p>
-<h3 id="monte-carlo-learning">Monte Carlo Learning</h3>
+<h2 id="monte-carlo-learning">Monte Carlo Learning</h2>
 <p>We start from Monte Carlo Learning, which is the naive way (pure
 trial and error) of model-free RL. By the trials of the game, we have
 the cumulative reward over an episode <span class="math display">\[
@@ -271,7 +274,7 @@ Q^{\text{old}}(s_k,a_k)\right)~~\forall k \in [n]
 \end{align*}
 \]</span> Mathematically this is not biased. So this in theory will
 finally converges. But it is relatively inefficient.</p>
-<h3 id="temporal-difference-learning">Temporal Difference Learning</h3>
+<h2 id="temporal-difference-learning">Temporal Difference Learning</h2>
 <p>TD learning integrates the information of time intervals, which can
 be connected with biological learning or some topics in neuroscience. We
 start with TD(0) learning. Recall the Bellman's Equation <span
@@ -312,7 +315,7 @@ following way <span class="math display">\[
 \mathbf{R}^{\lambda} := (1-\lambda)\sum_{n=1}^\infty
 \lambda^{n-1}\mathbf{R}^{(n)}.
 \]</span></p>
-<h3 id="q-learning-1">Q-Learning</h3>
+<h2 id="q-learning-1">Q-Learning</h2>
 <p>Q-Learning is temporal learning on Q functions, where in its TD(0)
 version, the Q functions are updated by <span class="math display">\[
 Q^{\text{new}}(s_k,a_k) \gets Q^{\text{old}}(s_k,a_k) + \alpha \left(r_k
@@ -327,8 +330,8 @@ it has a probability <span
 class="math inline">\(1-\epsilon\in(0,1)\)</span> to take the best
 action, and <span class="math inline">\(\epsilon\)</span> to take a
 random action from all the action space.</p>
-<h3 id="sarsa-state-action-reward-state-action">SARSA:
-State-Action-Reward-State-Action</h3>
+<h2 id="sarsa-state-action-reward-state-action">SARSA:
+State-Action-Reward-State-Action</h2>
 <p>SARSA is a variant of Q learning which is an
 <strong>on-policy</strong> algorithm, by updating Q functions in the
 following way <span class="math display">\[
@@ -337,9 +340,9 @@ Q^{\text{new}}(s_k,a_k) \gets Q^{\text{old}}(s_k,a_k) + \alpha \left(r_k
 a_{k+1})}-Q^{\text{old}}(s_k,a_k) \right)
 \]</span> SARSA also works with TD(N) for any <span
 class="math inline">\(N &gt; 0\)</span>.</p>
-<h2 id="deep-rl">Deep RL</h2>
-<h3 id="deep-policy-network-policy-gradient">Deep Policy Network (Policy
-Gradient)</h3>
+<h1 id="deep-rl">Deep RL</h1>
+<h2 id="deep-policy-network-policy-gradient">Deep Policy Network (Policy
+Gradient)</h2>
 <p>By introducing the neural network into the policy function, we use a
 network to approximate the policy, so a policy function parameterized by
 <span class="math inline">\(\theta\)</span> can be written as <span
@@ -373,7 +376,7 @@ Q^{\pi_{\theta}}(s,a)\nabla_\theta \pi_{\theta}(a~|~s) \\
 \end{align*}
 \]</span> We can use it in the update of <span
 class="math inline">\(\theta\)</span>.</p>
-<h3 id="deep-q-learning-dqn">Deep Q-Learning (DQN)</h3>
+<h2 id="deep-q-learning-dqn">Deep Q-Learning (DQN)</h2>
 <p>Just like Q-Learning, instead, model the Q function using neural
 network parameterized by <span class="math inline">\(\theta\)</span>,
 i.e., <span class="math display">\[
@@ -418,7 +421,7 @@ Q_\theta(s,a) = V_{\theta_1}(s)+A_{\theta_2}(s,a).
 \]</span> By this, the value network learns the value function and the
 advantage network learns the advantage of an action could take to
 current state.</p>
-<h3 id="actor-critic-network">Actor-Critic Network</h3>
+<h2 id="actor-critic-network">Actor-Critic Network</h2>
 <p>Recall that in Policy Gradient method, we calculated the gradient as
 following <span class="math display">\[
 \nabla_{\theta}J_\theta
@@ -467,10 +470,10 @@ class="math display">\[
 \end{align*}
 \]</span> where <span class="math inline">\(\delta_t := r_t +\gamma
 V_{\theta_2}(s_{t+1}) - V_{\theta_2}(s_t)\)</span>.</p>
-<h2 id="rl-in-language-models">RL in Language Models</h2>
-<h2 id="appendix">Appendix</h2>
-<h3 id="proof-of-policy-gradient-theorem">Proof of Policy Gradient
-Theorem</h3>
+<h1 id="rl-in-language-models">RL in Language Models</h1>
+<h1 id="appendix">Appendix</h1>
+<h2 id="proof-of-policy-gradient-theorem">Proof of Policy Gradient
+Theorem</h2>
 <p>Here we give the proof for Eq.<span
 class="math inline">\(\eqref{pg_thm1}\)</span>.</p>
 <p>We have <span class="math display">\[
@@ -548,12 +551,6 @@ agent is at state <span class="math inline">\(s\)</span> in time step
       <tags>
         <tag>Research</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>test_my_site</title>
-    <url>/2021/08/28/test-my-site/</url>
-    <content><![CDATA[
-]]></content>
   </entry>
   <entry>
     <title>学期总结</title>
