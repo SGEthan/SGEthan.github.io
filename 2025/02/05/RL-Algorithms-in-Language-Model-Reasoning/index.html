@@ -20,22 +20,20 @@
     var CONFIG = {"hostname":"example.com","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"right","width":200,"display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},"path":"search.xml"};
   </script>
 
-  <meta name="description" content="下次喝酒带着电脑去">
+  <meta name="description" content="Summary of RL Algorithms">
 <meta property="og:type" content="article">
-<meta property="og:title" content="骰子游戏‘吹牛’的分析">
-<meta property="og:url" content="http://example.com/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/index.html">
-<meta property="og:site_name" content="Blog of Ethan@USTC">
-<meta property="og:description" content="下次喝酒带着电脑去">
+<meta property="og:title" content="RL Algorithms in Language Model Reasoning">
+<meta property="og:url" content="http://example.com/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/index.html">
+<meta property="og:site_name" content="Blog of Ethan@UW">
+<meta property="og:description" content="Summary of RL Algorithms">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2022-02-25T01:49:55.000Z">
-<meta property="article:modified_time" content="2022-02-25T01:59:29.891Z">
+<meta property="article:published_time" content="2025-02-05T09:59:57.000Z">
+<meta property="article:modified_time" content="2025-02-07T00:09:46.289Z">
 <meta property="article:author" content="Ethan Deng">
-<meta property="article:tag" content="Math">
-<meta property="article:tag" content="ML">
-<meta property="article:tag" content="RL">
+<meta property="article:tag" content="Research">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="http://example.com/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/">
+<link rel="canonical" href="http://example.com/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/">
 
 
 <script id="page-configurations">
@@ -48,7 +46,7 @@
   };
 </script>
 
-  <title>骰子游戏‘吹牛’的分析 | Blog of Ethan@USTC</title>
+  <title>RL Algorithms in Language Model Reasoning | Blog of Ethan@UW</title>
   
 
 
@@ -108,7 +106,7 @@
 
     <a href="/" class="brand" rel="start">
       <span class="logo-line-before"><i></i></span>
-      <h1 class="site-title">Blog of Ethan@USTC</h1>
+      <h1 class="site-title">Blog of Ethan@UW</h1>
       <span class="logo-line-after"><i></i></span>
     </a>
   </div>
@@ -206,20 +204,20 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="en">
-    <link itemprop="mainEntityOfPage" href="http://example.com/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/">
+    <link itemprop="mainEntityOfPage" href="http://example.com/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/uploads/avatar.png">
+      <meta itemprop="image" content="/uploads/avatar.jpg">
       <meta itemprop="name" content="Ethan Deng">
       <meta itemprop="description" content="Oops!">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Blog of Ethan@USTC">
+      <meta itemprop="name" content="Blog of Ethan@UW">
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          骰子游戏‘吹牛’的分析
+          RL Algorithms in Language Model Reasoning
         </h1>
 
         <div class="post-meta">
@@ -228,20 +226,26 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">Posted on</span>
-              
 
-              <time title="Created: 2022-02-25 09:49:55 / Modified: 09:59:29" itemprop="dateCreated datePublished" datetime="2022-02-25T09:49:55+08:00">2022-02-25</time>
+              <time title="Created: 2025-02-05 01:59:57" itemprop="dateCreated datePublished" datetime="2025-02-05T01:59:57-08:00">2025-02-05</time>
             </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">Edited on</span>
+                <time title="Modified: 2025-02-06 16:09:46" itemprop="dateModified" datetime="2025-02-06T16:09:46-08:00">2025-02-06</time>
+              </span>
 
           
-            <span id="/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/" class="post-meta-item leancloud_visitors" data-flag-title="骰子游戏‘吹牛’的分析" title="Views">
+            <span id="/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/" class="post-meta-item leancloud_visitors" data-flag-title="RL Algorithms in Language Model Reasoning" title="Views">
               <span class="post-meta-item-icon">
                 <i class="fa fa-eye"></i>
               </span>
               <span class="post-meta-item-text">Views: </span>
               <span class="leancloud-visitors-count"></span>
             </span>
-            <div class="post-description">下次喝酒带着电脑去</div>
+            <div class="post-description">Summary of RL Algorithms</div>
 
         </div>
       </header>
@@ -252,53 +256,174 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="关于骰子游戏吹牛的分析">关于骰子游戏“吹牛”的分析</h1>
-<p>前段时间和朋友去KTV，了解到一种称为“吹牛”的酒桌游戏。由于是第一次接触，玩的不算好。感觉这个游戏背后有很多概率和博弈相关的知识和问题，于是考虑进行分析，并研究设计一个Agent以进行游戏的最佳策略的求解的可能。</p>
-<h3 id="游戏规则">游戏规则</h3>
-<p>可以进行多人游戏，为了简化，这里仅考虑双方对抗的问题。</p>
-<ul>
-<li><p>首先，双方分别有五个骰子，在骰盅摇匀之后，各自查看自己的结果</p></li>
-<li><p>由一方，称为<span class="math inline">\(player\;A\)</span>开始，先报出形如“<span class="math inline">\(x\)</span>个<span class="math inline">\(a\)</span>”的声明，表示其认为，在双方的骰盅中，结果为<span class="math inline">\(a\)</span>点数的骰子加一起的数目超过<span class="math inline">\(x\)</span>，这里有限制：<span class="math inline">\(x\ge 3\)</span>。</p></li>
-<li><p>若另一方，称为<span class="math inline">\(player\;B\)</span>不质疑上述声明，那么其就应该给出自己的声明，要求为，其报出的声明“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”中，必须有：</p>
-<ul>
-<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x
+        <h1
+id="reinforcement-learning-algorithms-in-llm-reasoning">Reinforcement
+Learning Algorithms in LLM Reasoning</h1>
+<h2 id="rl-basics">RL basics</h2>
+<p>In a RL problem, we have an agent and an environment that the agent
+can interact with. At each time stamp, the agent is given a state of the
+environment <span class="math inline">\(s\)</span>, and the agent is
+supposed to take an action <span class="math inline">\(a\)</span> to
+interact with the environment. Eventually, the agent will get a reward
+<span class="math inline">\(r\)</span>. The goal of the agent is to
+learn a policy <span class="math inline">\(\pi\)</span>, defined as
+<span class="math display">\[
+\pi(s, a) = \Pr[a~|~s].
+\]</span> which gives the probability of an action <span
+class="math inline">\(a\)</span> being sampled at the given state <span
+class="math inline">\(s\)</span>.</p>
+<p>Given a policy <span class="math inline">\(\pi\)</span> and a
+starting state <span class="math inline">\(s\)</span>, we define the
+<strong>value</strong> of the state <span
+class="math inline">\(s\)</span> to be the expected reward of starting
+from <span class="math inline">\(s\)</span> with policy <span
+class="math inline">\(\pi\)</span>, hence the <strong>value
+function</strong> <span class="math inline">\(V^{\pi}(s)\)</span> is
+defined as <span class="math display">\[
+V^{\pi}(s) := \mathbb{E}_{\pi}[\mathbf{R}_t ~|~ s_t=s] =
+\mathbb{E}_{\pi}\left[\sum_{k=0}^\infty\gamma^tr_{t+k+1} ~|~ s_t =
+s\right],
+\]</span> where <span class="math inline">\(\gamma \in (0,1)\)</span> is
+a reward decaying parameter and <span
+class="math inline">\(\mathbf{R}_t\)</span> is defined to be the
+cumulative reward starting from time <span
+class="math inline">\(t\)</span>. Given a policy <span
+class="math inline">\(\pi\)</span>, a state <span
+class="math inline">\(s\)</span> and an action <span
+class="math inline">\(a\)</span>, we can define the action-value
+function Q to be the expected reward of the state-action pair <span
+class="math inline">\((s, a)\)</span>, defined as <span
+class="math display">\[
+Q^\pi(s,a) := \mathbb{E}_\pi[\mathbf{R}_t~|~s_t=s,a_t=a].
+\]</span> Given the definitions, we have the following relation <span
+class="math display">\[
+V^\pi(s) = \sum_{a \in A}\pi(a~|~s)Q^{\pi}(s,a).
 \]</span></p>
-<p><span class="math display">\[
-or:x&#39;&gt;x\;and\;a&#39;&gt;a
-\]</span></p>
-<p><span class="math display">\[
-or:x&#39;\ge3\;and\;a&#39;=1
-\]</span></p></li>
-<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x
-\]</span></p>
-<p><span class="math display">\[
-or:x&#39;&gt;x\;and\;a&#39;&gt;a
-\]</span></p></li>
-</ul>
-<p>“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”的含义与前述相同。</p></li>
-<li><p>换<span class="math inline">\(player\;A\)</span>报出声明，由此反复。</p></li>
-</ul>
-<p>上述过程中还有以下规定：</p>
-<ul>
-<li>若游戏过程中，点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，那么在打开骰盅的时候，点数<span class="math inline">\(1\)</span>可以被看作任何数字；否则，在打开骰盅后，其不能被看做其他数字。</li>
-<li>游戏结束条件：<strong>质疑</strong>：即，某一方对于另一方的声明提出质疑，这个时候我们将双方的骰盅打开，查看结果，若被质疑的结果成立，则被质疑者获胜，否则，质疑者获胜。</li>
-</ul>
-<h3 id="静态分析">静态分析</h3>
-<p>tbd</p>
+<h2 id="markov-decision-process">Markov Decision Process</h2>
+<p>If the environment state is a Markov process and there is a model
+describing the environment that for each triplet of a starting state
+<span class="math inline">\(s\)</span>, an action <span
+class="math inline">\(a\)</span> taken and a ending state <span
+class="math inline">\(s&#39;\)</span>, it gives the probability in the
+form of <span class="math display">\[
+\Pr(s&#39;, s, a) = \Pr[s_{k+1} = s&#39;~|~ s_k = s, a_k= a].
+\]</span> then it is a <strong>Markov Decision Process</strong>, or MDP.
+It is a Model-based type RL problem.</p>
+<p>Assume the reward is defined as <span class="math display">\[
+R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
+a].
+\]</span> Define the optimal value function as <span
+class="math display">\[
+\begin{align*}
+    V^*(s)=&amp; \max_{\pi}V^\pi(s) \\
+        =&amp;
+\max_{\pi}\mathbb{E}_{\pi}\left[\sum_{k=0}^\infty\gamma^tr_{t+k+1} ~|~
+s_t = s\right] \\
+        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t +
+\sum_{k=1}^\infty\gamma^tr_{t+k+1} ~|~ s_{t+1} = s&#39;\right] \\
+        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t + \gamma
+V^*(s&#39;)\right],
+\end{align*}
+\]</span> where <span class="math inline">\(s&#39;\)</span> is a random
+state dominated by current state and action. Here we get a recursive
+expression named <strong>Bellman's Equation</strong> or
+<strong>Bellman's Optimality Condition</strong>.</p>
+<h3 id="value-iteration">Value Iteration</h3>
+<p>The goal of value iteration is to find the optimal value function
+<span class="math inline">\(V^*\)</span>. Given Bellman's Equation, for
+each time step, we have <span class="math display">\[
+\begin{align*}
+    \hat{V}(s) =&amp;~ \max_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
+a]\left(R(s&#39;,s, a) + \gamma \hat{V}(s&#39;)\right) \\
+        =&amp;~\max_{a}\hat{Q}(s,a)
+\end{align*}
+\]</span> where <span class="math inline">\(\Pr(s&#39;, s, a)\)</span>
+and <span class="math inline">\(R(s&#39;,s,a)\)</span> are assumed
+known, and we use <span class="math inline">\(\hat{V}\)</span> and <span
+class="math inline">\(\hat{Q}\)</span> to represent the intermediate
+<span class="math inline">\(V\)</span> and <span
+class="math inline">\(Q\)</span> for approximating during the algorithm.
+We start by initiating <span class="math inline">\(\hat{V}\)</span>'s
+for every <span class="math inline">\(s\)</span> to be <span
+class="math inline">\(0\)</span> or random. Then starting from a random
+state <span class="math inline">\(s_0\)</span> and update the value by
+picking the action <span class="math inline">\(a\)</span> that maximizes
+the value. Then we get to the next state. By iteratively doing this, we
+are able to finally construct good estimate to <span
+class="math inline">\(\hat{V}\)</span>'s. When the values converges, we
+get the optimal policy <span class="math inline">\(\pi^*\)</span> by
+<span class="math display">\[
+\begin{align*}
+    \pi^*(s) =&amp;~ {\arg\max}_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
+a]\left(R(s&#39;,s, a) + \gamma V^*(s&#39;)\right) \\
+        =&amp;~{\arg\max}_{a}Q^*(s,a)
+\end{align*}
+\]</span> It's a type of dynamic programming.</p>
+<h3 id="policy-iteration">Policy Iteration</h3>
+<p>Here we start by locking the policy <span
+class="math inline">\(\pi\)</span>, and instead of updating optimal
+values by taking the best action like we did in value iteration, we
+update the value function with policy <span
+class="math inline">\(\pi\)</span> by picking actions using <span
+class="math inline">\(\pi\)</span>. Like we did in the Bellman's
+Equation for optimal value functions <span
+class="math inline">\(V^*\)</span>'s, we can get the same for <span
+class="math inline">\(V^\pi\)</span>: <span class="math display">\[
+\begin{align*}
+    V^\pi(s)=&amp;~ \mathbb{E}_\pi[R(s&#39;,s,\pi(s)) + \gamma
+V^\pi(s&#39;)] \\
+        =&amp;~\sum_{s&#39;}\Pr[s&#39;~|~s, \pi(s)]
+\left(R(s&#39;,s,\pi(s)) + \gamma V^\pi(s&#39;)\right)\\
+        =&amp;~ Q(s,\pi(s))
+\end{align*}
+\]</span> And we update policy by <span class="math display">\[
+\pi(s) = {\arg\max}_a \mathbb{E}[R(s&#39;,s,a) + \gamma V^\pi(s&#39;)] =
+{\arg\max}_aQ(s,a)
+\]</span> Then we lock the policy and update the value functions. By
+iteratively doing this, we are able to get converged results.</p>
+<h3 id="use-of-q-function">Use of Q-function</h3>
+<p>By using Q function, the value iteration and the policy iteration can
+be summarized by simply <span class="math display">\[
+\begin{align*}
+    V(s) =&amp;~ \max_aQ(s,a) \\
+    \text{and}~~\pi(s) =&amp;~ {\arg\max}_aQ(s,a).
+\end{align*}
+\]</span> The good thing here is that Q function naturally encodes the
+information about the future so we can directly maintain its value
+instead of doing the calculation of value and pi each time.</p>
+<h2 id="q-learning">Q-Learning</h2>
+<p>One of our way to learn a good policy <span
+class="math inline">\(\pi\)</span> is by learning the value of Q
+function, this is called Q-learning.</p>
 
     </div>
 
     
     
     
+        
+
+  <div class="followme">
+    <p>Welcome to my other publishing channels</p>
+
+    <div class="social-list">
+
+        <div class="social-item">
+          <a target="_blank" class="social-link" href="https://twitter.com/SGEthan">
+            <span class="icon">
+              <i class="fab fa-twitter"></i>
+            </span>
+
+            <span class="label">Twitter</span>
+          </a>
+        </div>
+    </div>
+  </div>
+
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Math/" rel="tag"><i class="fa fa-tag"></i>Math</a>
-              <a href="/tags/ML/" rel="tag"><i class="fa fa-tag"></i>ML</a>
-              <a href="/tags/RL/" rel="tag"><i class="fa fa-tag"></i>RL</a>
+              <a href="/tags/Research/" rel="tag"><i class="fa fa-tag"></i>Research</a>
           </div>
 
         
@@ -369,14 +494,15 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%85%B3%E4%BA%8E%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E5%90%B9%E7%89%9B%E7%9A%84%E5%88%86%E6%9E%90"><span class="nav-number">1.</span> <span class="nav-text">关于骰子游戏“吹牛”的分析</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%B8%B8%E6%88%8F%E8%A7%84%E5%88%99"><span class="nav-number">1.0.1.</span> <span class="nav-text">游戏规则</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E9%9D%99%E6%80%81%E5%88%86%E6%9E%90"><span class="nav-number">1.0.2.</span> <span class="nav-text">静态分析</span></a></li></ol></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#reinforcement-learning-algorithms-in-llm-reasoning"><span class="nav-number">1.</span> <span class="nav-text">Reinforcement
+Learning Algorithms in LLM Reasoning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">1.2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#value-iteration"><span class="nav-number">1.2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-iteration"><span class="nav-number">1.2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">1.2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning"><span class="nav-number">1.3.</span> <span class="nav-text">Q-Learning</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
       <div class="site-overview-wrap sidebar-panel">
         <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
     <img class="site-author-image" itemprop="image" alt="Ethan Deng"
-      src="/uploads/avatar.png">
+      src="/uploads/avatar.jpg">
   <p class="site-author-name" itemprop="name">Ethan Deng</p>
   <div class="site-description" itemprop="description">Oops!</div>
 </div>
@@ -392,7 +518,7 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
           
-        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-count">3</span>
         <span class="site-state-item-name">tags</span></a>
       </div>
   </nav>
@@ -402,7 +528,7 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
         <a href="https://github.com/SGEthan" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;SGEthan" rel="noopener" target="_blank"><i class="fab fa-github fa-fw"></i>GitHub</a>
       </span>
       <span class="links-of-author-item">
-        <a href="mailto:admindeng@mail.ustc.edu.cn" title="E-Mail → mailto:admindeng@mail.ustc.edu.cn" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+        <a href="mailto:ycdeng@cs.washington.edu" title="E-Mail → mailto:ycdeng@cs.washington.edu" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
       </span>
   </div>
 
@@ -413,16 +539,7 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
     </div>
     <ul class="links-of-blogroll-list">
         <li class="links-of-blogroll-item">
-          <a href="http://www.stargazerd.tk/" title="http:&#x2F;&#x2F;www.stargazerd.tk" rel="noopener" target="_blank">My Site</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://sgy.ustc.edu.cn/" title="https:&#x2F;&#x2F;sgy.ustc.edu.cn&#x2F;" rel="noopener" target="_blank">SCGY</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="http://cs.ustc.edu.cn/" title="http:&#x2F;&#x2F;cs.ustc.edu.cn&#x2F;" rel="noopener" target="_blank">SCST</a>
-        </li>
-        <li class="links-of-blogroll-item">
-          <a href="https://ustc.edu.cn/" title="https:&#x2F;&#x2F;ustc.edu.cn&#x2F;" rel="noopener" target="_blank">USTC</a>
+          <a href="https://www.cs.washington.edu/" title="https:&#x2F;&#x2F;www.cs.washington.edu&#x2F;" rel="noopener" target="_blank">UW CSE</a>
         </li>
     </ul>
   </div>
@@ -446,7 +563,7 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 <div class="copyright">
   
   &copy; 
-  <span itemprop="copyrightYear">2022</span>
+  <span itemprop="copyrightYear">2025</span>
   <span class="with-love">
     <i class="fa fa-heart"></i>
   </span>

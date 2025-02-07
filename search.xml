@@ -5,7 +5,8 @@
     <url>/2021/08/28/Linux%E6%9C%8D%E5%8A%A1%E7%AB%AF%E7%A8%8B%E5%BA%8F%E7%9A%84%E4%B8%80%E6%AC%A1%E5%B0%9D%E8%AF%95/</url>
     <content><![CDATA[<h1 id="服务器端程序设计文档">服务器端程序设计文档</h1>
 <h2 id="系统概述">系统概述</h2>
-<p>为了实现广域网五子棋连接对战，即在不同局域网下的机器互相连接，且在不考虑内网穿透等实现手段的情况下，我们需要一个服务器端，用于对战双方数据的转发，服务器端程序部署于云服务器，用于示例的服务器IP地址为<code>101.34.252.176</code>，服务提供商为<a href="https://cloud.tencent.com/">腾讯云</a>。</p>
+<p>为了实现广域网五子棋连接对战，即在不同局域网下的机器互相连接，且在不考虑内网穿透等实现手段的情况下，我们需要一个服务器端，用于对战双方数据的转发，服务器端程序部署于云服务器，用于示例的服务器IP地址为<code>101.34.252.176</code>，服务提供商为<a
+href="https://cloud.tencent.com/">腾讯云</a>。</p>
 <h2 id="运行环境">运行环境</h2>
 <p>用于示例的云服务器系统环境为<code>CentOS 7.6 64bit</code></p>
 <h2 id="功能设计">功能设计</h2>
@@ -119,51 +120,6 @@
       </tags>
   </entry>
   <entry>
-    <title>骰子游戏‘吹牛’的分析</title>
-    <url>/2022/02/25/%E9%AA%B0%E5%AD%90%E6%B8%B8%E6%88%8F%E2%80%98%E5%90%B9%E7%89%9B%E2%80%99%E7%9A%84%E5%88%86%E6%9E%90/</url>
-    <content><![CDATA[<h1 id="关于骰子游戏吹牛的分析">关于骰子游戏“吹牛”的分析</h1>
-<p>前段时间和朋友去KTV，了解到一种称为“吹牛”的酒桌游戏。由于是第一次接触，玩的不算好。感觉这个游戏背后有很多概率和博弈相关的知识和问题，于是考虑进行分析，并研究设计一个Agent以进行游戏的最佳策略的求解的可能。</p>
-<h3 id="游戏规则">游戏规则</h3>
-<p>可以进行多人游戏，为了简化，这里仅考虑双方对抗的问题。</p>
-<ul>
-<li><p>首先，双方分别有五个骰子，在骰盅摇匀之后，各自查看自己的结果</p></li>
-<li><p>由一方，称为<span class="math inline">\(player\;A\)</span>开始，先报出形如“<span class="math inline">\(x\)</span>个<span class="math inline">\(a\)</span>”的声明，表示其认为，在双方的骰盅中，结果为<span class="math inline">\(a\)</span>点数的骰子加一起的数目超过<span class="math inline">\(x\)</span>，这里有限制：<span class="math inline">\(x\ge 3\)</span>。</p></li>
-<li><p>若另一方，称为<span class="math inline">\(player\;B\)</span>不质疑上述声明，那么其就应该给出自己的声明，要求为，其报出的声明“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”中，必须有：</p>
-<ul>
-<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x
-\]</span></p>
-<p><span class="math display">\[
-or:x&#39;&gt;x\;and\;a&#39;&gt;a
-\]</span></p>
-<p><span class="math display">\[
-or:x&#39;\ge3\;and\;a&#39;=1
-\]</span></p></li>
-<li><p>若点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，则 <span class="math display">\[
-x&#39;&gt;x
-\]</span></p>
-<p><span class="math display">\[
-or:x&#39;&gt;x\;and\;a&#39;&gt;a
-\]</span></p></li>
-</ul>
-<p>“<span class="math inline">\(x&#39;\)</span>个<span class="math inline">\(a&#39;\)</span>”的含义与前述相同。</p></li>
-<li><p>换<span class="math inline">\(player\;A\)</span>报出声明，由此反复。</p></li>
-</ul>
-<p>上述过程中还有以下规定：</p>
-<ul>
-<li>若游戏过程中，点数<span class="math inline">\(1\)</span>没有被作为<span class="math inline">\(a\)</span>报出过，那么在打开骰盅的时候，点数<span class="math inline">\(1\)</span>可以被看作任何数字；否则，在打开骰盅后，其不能被看做其他数字。</li>
-<li>游戏结束条件：<strong>质疑</strong>：即，某一方对于另一方的声明提出质疑，这个时候我们将双方的骰盅打开，查看结果，若被质疑的结果成立，则被质疑者获胜，否则，质疑者获胜。</li>
-</ul>
-<h3 id="静态分析">静态分析</h3>
-<p>tbd</p>
-]]></content>
-      <tags>
-        <tag>Math</tag>
-        <tag>ML</tag>
-        <tag>RL</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>test_my_site</title>
     <url>/2021/08/28/test-my-site/</url>
     <content><![CDATA[
@@ -180,59 +136,88 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 <h3 id="学校课程">学校课程</h3>
 <p>在课程方面，这一学期是从学校课程学到了一些有用的知识的，列举如下：</p>
 <ul>
-<li><p>Web信息处理与应用（<a href="http://staff.ustc.edu.cn/~tongxu/webinfo/">课程主页</a>）</p>
-<p>非常有意思的一门课程，徐童老师（<a href="http://staff.ustc.edu.cn/~tongxu/">老师的主页</a>）也是非常风趣幽默的一个人，课程涉及知识非常之广范繁杂，但老师的PPT制作良好，适合异步学习。大致涉及了web信息的搜集（爬虫），处理（分类，聚类等大数据知识），检索（网页索引，搜索引擎，多模态检索等）。毕竟是选修课，大多数知识一笔带过，但作为web信息，大数据知识的入门课程还是非常不错的。该学期总共三次实验，大致内容和总结如下：</p>
+<li><p>Web信息处理与应用（<a
+href="http://staff.ustc.edu.cn/~tongxu/webinfo/">课程主页</a>）</p>
+<p>非常有意思的一门课程，徐童老师（<a
+href="http://staff.ustc.edu.cn/~tongxu/">老师的主页</a>）也是非常风趣幽默的一个人，课程涉及知识非常之广范繁杂，但老师的PPT制作良好，适合异步学习。大致涉及了web信息的搜集（爬虫），处理（分类，聚类等大数据知识），检索（网页索引，搜索引擎，多模态检索等）。毕竟是选修课，大多数知识一笔带过，但作为web信息，大数据知识的入门课程还是非常不错的。该学期总共三次实验，大致内容和总结如下：</p>
 <ul>
-<li>实验一：首先对所给的数据集（美国经济相关新闻数据集）进行预处理（这里涉及到<span class="math inline">\(NLP\)</span>的工具和知识），然后在数据集上构建一个简单的搜索引擎，要求实现布尔检索和语义检索。项目地址：<a href="https://github.com/SGEthan/Info_Retrieving">SGEthan/Info_Retrieving</a></li>
-<li>实验二：知识表示学习相关，要求进行关系预测，即，在所给数据集上，给出实体 <span class="math inline">\(entity:\mathbf{e}_1\)</span> 和关系 <span class="math inline">\(relation:\mathbf{r}\)</span> ，要求计算给出与 <span class="math inline">\(\mathbf{e_1}\)</span> 有着关系 <span class="math inline">\(\mathbf{r}\)</span> 的实体 <span class="math inline">\(entity:\mathbf{e_1}\)</span> 的预测。项目地址：<a href="https://github.com/SGEthan/Relation_Prediction">SGEthan/Relation_Prediction</a></li>
-<li>实验三：推荐系统的构建，要求在所给数据集的基础上对每个用户进行音乐的推荐。我们采用了<strong>基于物品的协同过滤推荐</strong>。项目地址：<a href="https://github.com/SGEthan/Recommend">SGEthan/Recommend</a></li>
+<li>实验一：首先对所给的数据集（美国经济相关新闻数据集）进行预处理（这里涉及到<span
+class="math inline">\(NLP\)</span>的工具和知识），然后在数据集上构建一个简单的搜索引擎，要求实现布尔检索和语义检索。项目地址：<a
+href="https://github.com/SGEthan/Info_Retrieving">SGEthan/Info_Retrieving</a></li>
+<li>实验二：知识表示学习相关，要求进行关系预测，即，在所给数据集上，给出实体
+<span class="math inline">\(entity:\mathbf{e}_1\)</span> 和关系 <span
+class="math inline">\(relation:\mathbf{r}\)</span> ，要求计算给出与
+<span class="math inline">\(\mathbf{e_1}\)</span> 有着关系 <span
+class="math inline">\(\mathbf{r}\)</span> 的实体 <span
+class="math inline">\(entity:\mathbf{e_1}\)</span> 的预测。项目地址：<a
+href="https://github.com/SGEthan/Relation_Prediction">SGEthan/Relation_Prediction</a></li>
+<li>实验三：推荐系统的构建，要求在所给数据集的基础上对每个用户进行音乐的推荐。我们采用了<strong>基于物品的协同过滤推荐</strong>。项目地址：<a
+href="https://github.com/SGEthan/Recommend">SGEthan/Recommend</a></li>
 </ul></li>
-<li><p>机器学习 （<a href="https://miralab.ai/course/ml_2021fall/">课程主页</a>）</p>
-<p>是我在USTC两年半以来上过的最硬核的一门课程，没有之一，被称为<strong>西区数学之巅</strong>。这门课程的数学涉及范围之广泛，难度之大，是计科和信院大多数课程所不及的，这或许是王杰老师（<a href="https://miralab.ai/people/jie-wang/">老师的主页</a>）的个人特点，但也确实契合科大扎实的数理基础风气；课程还有一个特色，使用全英文的参考资料，作业和考试也全部要求英语作答，也是大学以来的第一次。</p>
+<li><p>机器学习 （<a
+href="https://miralab.ai/course/ml_2021fall/">课程主页</a>）</p>
+<p>是我在USTC两年半以来上过的最硬核的一门课程，没有之一，被称为<strong>西区数学之巅</strong>。这门课程的数学涉及范围之广泛，难度之大，是计科和信院大多数课程所不及的，这或许是王杰老师（<a
+href="https://miralab.ai/people/jie-wang/">老师的主页</a>）的个人特点，但也确实契合科大扎实的数理基础风气；课程还有一个特色，使用全英文的参考资料，作业和考试也全部要求英语作答，也是大学以来的第一次。</p>
 <p>从最基础的数学部分讲起，老师用一个学期从最底层的数学向上构建了学习理论的框架，并且介绍了一些应用的理论和算法。课程涉及知识内容列举如下：</p>
 <ul>
 <li>线性回归 Linear Regression</li>
 <li>偏差-方差分解 Bias Variance Decomposition</li>
 <li>贝叶斯线性回归 Bayesian Linear Regression</li>
 <li>分析基础 Basics of Analysis</li>
-<li>凸优化相关 Convex Sets, Convex Functions, Convex Optimization Problems &amp; Separation Theorems</li>
+<li>凸优化相关 Convex Sets, Convex Functions, Convex Optimization
+Problems &amp; Separation Theorems</li>
 <li>次梯度方法 Subdifferentials</li>
 <li>决策树 Decision Tree</li>
 <li>朴素贝叶斯分类器 Naive Bayes Classifier</li>
 <li>逻辑回归 Logistic Regression</li>
-<li>支持向量机（以及拉格朗日对偶方法） Support Vector Machine, with Lagrange Duality</li>
-<li>神经网络与卷积神经网络 Neural Networks &amp; Convolutional Neural Networks</li>
+<li>支持向量机（以及拉格朗日对偶方法） Support Vector Machine, with
+Lagrange Duality</li>
+<li>神经网络与卷积神经网络 Neural Networks &amp; Convolutional Neural
+Networks</li>
 <li>主成分分析 Principal Component Analysis</li>
-<li>强化学习 Reinforcement Learning, with Multi-armed Bandits Problem</li>
+<li>强化学习 Reinforcement Learning, with Multi-armed Bandits
+Problem</li>
 </ul>
 <p>王杰老师对于学生的要求非常高，作业题目的难度非常之大，每次作业大约需要至少20个小时来完成，考试难度比作业略小，但期中期末的全班均分都没有及格。虽然很痛苦，但不可否认，这一门课程让我在一个学期学到了非常多的知识，也锻炼了应对英文资料的能力。</p>
-<p>课程的final project是一个强化学习任务，要求我们训练一个Agent，在Atari Pong游戏中取得一定的成果，而且为了锻炼我们的能力，不允许使用任何自动求导的工具包。我们组最终选择使用Policy Gradient方法去完成（事实上是因为一开始采用的DQN方法没有work），项目地址：<a href="https://github.com/SGEthan/RL_PG_Atari_Pong">SGEthan/RL_PG_Atari_Pong</a> 。</p></li>
+<p>课程的final project是一个强化学习任务，要求我们训练一个Agent，在Atari
+Pong游戏中取得一定的成果，而且为了锻炼我们的能力，不允许使用任何自动求导的工具包。我们组最终选择使用Policy
+Gradient方法去完成（事实上是因为一开始采用的DQN方法没有work），项目地址：<a
+href="https://github.com/SGEthan/RL_PG_Atari_Pong">SGEthan/RL_PG_Atari_Pong</a>
+。</p></li>
 <li><p>其他课程</p>
 <p>有一说一，除了以上两门课，这学期其他课程给我带来的收益可以直接忽略，这其中有：</p>
 <ul>
 <li>计算机网络：我校计网只能说是纯文科，靠着期中期末前的突击，学到了一些东西的，但东西属实不多，大概就是一些计网的理论知识和简单应用。个人认为计算机网络知识的学习还是得靠实践，而且确实有很多有趣的相关项目。寒假在家里折腾了：
 <ul>
-<li>找ISP要来了公网IP，在家里老电脑开了个服务，硬盘映射出去，当作一个NAS使用。因为电脑太老，也没有刷NAS的操作系统，仅仅是简单跑了个服务，用的是<a href="http://iscute.cn/chfs">chfs</a>，在这里特别感谢一下项目的开发者，我遇到的bug能够及时给予邮件回馈。</li>
+<li>找ISP要来了公网IP，在家里老电脑开了个服务，硬盘映射出去，当作一个NAS使用。因为电脑太老，也没有刷NAS的操作系统，仅仅是简单跑了个服务，用的是<a
+href="http://iscute.cn/chfs">chfs</a>，在这里特别感谢一下项目的开发者，我遇到的bug能够及时给予邮件回馈。</li>
 <li>摸了一下V2Ray，重新搭了自己的服务，虽然仍然用了别人的一把梭脚本。下学期选过信安课程之后可能会考虑自己实现一个协议试试看。</li>
 </ul></li>
 <li>人工智能导论：纯文科，期末考前一天学完900页的AIMA，提前交卷居然还考得不错，属实没啥用的一门课</li>
 <li>模式识别导论：了解了一些传统的统计学习方法，包括概率，几何，聚类方法。学到了一些东西，也写了一些没啥用的小项目，甚至都懒得传到Github的那种。最草的是，期末考试前，把每一种算法都复习的滚瓜烂熟，结果他娘的考了一张纯文科试卷，这道压轴题可能会让我记住很久：“模式识别的一般流程是什么样的？请按照上述流程设计一个过程来进行羽毛球的筛选”，整张卷子的数学不超过小学水平，一道算法都没考，全是概念，全靠硬糊，最后成绩自然也不甚理想，奶奶的。</li>
 <li>编译原理：个人对于底层技术没有丝毫兴趣，这门课全靠队友带飞，非常感谢我的队友包容我摸鱼一学期（当然也有可能是因为我ML大作业带他飞了）。</li>
-<li>随机过程：计科的最后一门数理基础课，还是比较有用的，Markov过程在AI方面的应用相当之广泛，现在接触的很多Learning Theory都不可避免的需要随机过程的知识和方法，挺后悔没有好好学，不过期末速成的结果也挺满意，这样的知识密度，感觉也不太需要一个学期的时间来学习。</li>
+<li>随机过程：计科的最后一门数理基础课，还是比较有用的，Markov过程在AI方面的应用相当之广泛，现在接触的很多Learning
+Theory都不可避免的需要随机过程的知识和方法，挺后悔没有好好学，不过期末速成的结果也挺满意，这样的知识密度，感觉也不太需要一个学期的时间来学习。</li>
 <li>热学：我的评价是：寄，装逼装了一个学期，期末考试提前交卷还调戏助教，结果卷面计算全崩，差点挂科。总结之：再在课程群装逼我就是啥b。</li>
 </ul></li>
 </ul>
 <h3 id="瞎折腾">瞎折腾</h3>
 <p>学期中还是折腾了一些有意思的东西的，也有一些东西记录下来：</p>
 <ul>
-<li><p>一开始是想弄<a href="https://github.com/ageitgey/face_recognition">face_recognition</a>，一番折腾之后，为了使用CUDA，弄了WSL，为了使用WSL的GUI，弄了Windows 11。然而从安装好Windows 11之后到现在几个月，也没重新弄起来face_recognition。这里有一些记录：</p>
+<li><p>一开始是想弄<a
+href="https://github.com/ageitgey/face_recognition">face_recognition</a>，一番折腾之后，为了使用CUDA，弄了WSL，为了使用WSL的GUI，弄了Windows
+11。然而从安装好Windows
+11之后到现在几个月，也没重新弄起来face_recognition。这里有一些记录：</p>
 <ul>
 <li><p>CUDA的安装过程痛苦不堪，以国内的网络环境，各种源站崩的崩，慢的慢，整个安装过程属实折磨，配置环境整个过程花费了近一周时间，一直在跟魔幻的网络battle，也因此折腾了各种奇奇怪怪的代理方法，以与GFW斗智斗勇。如果有机会回顾一遍的话，我会将整个折腾过程记录下来。（希望没有机会回顾了🙏）</p></li>
 <li><p>不同Ubuntu版本的apt源是有区别的，如果不一致，就会导致报错：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
 <p>不同的源名称对应如下：</p>
 <figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Ubuntu 12.04 (LTS)代号为precise。</span><br><span class="line">Ubuntu 14.04 (LTS)代号为trusty。</span><br><span class="line">Ubuntu 15.04 代号为vivid。</span><br><span class="line">Ubuntu 15.10 代号为wily。</span><br><span class="line">Ubuntu 16.04 (LTS)代号为xenial。</span><br><span class="line">Ubuntu 18.04 (LTS)代号为bionic。</span><br><span class="line">Ubuntu 20.04 (LTS)代号为focal。</span><br></pre></td></tr></table></figure>
-<p>参考资料：<a href="https://blog.csdn.net/woshiheweigui/article/details/115557020">ubuntu20.04 apt 安装报 E: Unable to correct problems, you have held broken packages._woshiheweigui的博客-CSDN博客</a></p></li>
+<p>参考资料：<a
+href="https://blog.csdn.net/woshiheweigui/article/details/115557020">ubuntu20.04
+apt 安装报 E: Unable to correct problems, you have held broken
+packages._woshiheweigui的博客-CSDN博客</a></p></li>
 </ul></li>
 <li><p>折腾模式识别大作业的时候记录了这些东西：</p>
 <ul>
@@ -240,23 +225,34 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 <figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = x_pca[label == <span class="number">1</span>, <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
 <p>这里的<code>label</code>是一个一维数组，仅含<code>0</code>和<code>1</code>两种元素。故<code>label == 1</code>在这里会返回一个相同大小的布尔数组，<code>1</code>元素对应索引位置的元素为<code>True</code>，反之为<code>False</code>。</p>
 <p><code>x_pca</code>是一个数据集，<code>768*8</code>的<code>ndarray</code>，如此截取，可以得到<code>x_pca</code>中所有输出为<code>1</code>的所对应的样本。</p></li>
-<li><p>在 <span class="math inline">\(k-Fold\)</span> 交叉验证时，我们所用到的数据是<strong>训练集中的全部数据</strong>，<strong>不包含测试集</strong></p></li>
+<li><p>在 <span class="math inline">\(k-Fold\)</span>
+交叉验证时，我们所用到的数据是<strong>训练集中的全部数据</strong>，<strong>不包含测试集</strong></p></li>
 <li><p><code>numpy.ravel()</code>和<code>numpy.flatten()</code>的区别：<code>ravel()</code>返回的是一个<strong>视图</strong>，也就意味着，对其的修改，是会影响到原矩阵的；但<code>flatten()</code>返回的是一个<strong>拷贝</strong>，也就意味着，对其的修改，不会影响到原矩阵</p></li>
 </ul></li>
 </ul>
 <h3 id="科研相关">科研相关</h3>
-<p>这部分主要是寒假的工作了，整个寒假基本都交给了读论文。上学期虽然（名义上）加入了老师的实验室，做数据隐私和安全相关工作，但是由于自己课程太多，时间太紧张（大多交给了王者荣耀），并没有花费什么精力去做这个事情。期末和国外的教授联系对接之后，一整个寒假都在读论文，主要集中在Learning Theory，略微看起来像applied tech一些的，也都是很理论的Graph Learning问题。刚开始读论文的时候有一些记录，后来逐渐魔幻，就摆烂了，没有再将新的概念以笔记的形式记录下来。读第一篇论文的时候记录了这样几个Notation/Theorem：</p>
+<p>这部分主要是寒假的工作了，整个寒假基本都交给了读论文。上学期虽然（名义上）加入了老师的实验室，做数据隐私和安全相关工作，但是由于自己课程太多，时间太紧张（大多交给了王者荣耀），并没有花费什么精力去做这个事情。期末和国外的教授联系对接之后，一整个寒假都在读论文，主要集中在Learning
+Theory，略微看起来像applied tech一些的，也都是很理论的Graph
+Learning问题。刚开始读论文的时候有一些记录，后来逐渐魔幻，就摆烂了，没有再将新的概念以笔记的形式记录下来。读第一篇论文的时候记录了这样几个Notation/Theorem：</p>
 <ul>
 <li><p><span class="math inline">\(\tilde{O}(g(n))\)</span>：</p>
-<p>stands for <span class="math inline">\(O(g(n)\log{g(n)})\)</span>.</p></li>
+<p>stands for <span
+class="math inline">\(O(g(n)\log{g(n)})\)</span>.</p></li>
 <li><p>Union Bound: <span class="math display">\[
 \mathbb{P}[\mathop{\cup}\limits_{i}A_i]\leq \sum_i\mathbb{P}[A_i]
 \]</span></p></li>
 <li><p>Hoeffding's Inequality:</p>
-<p>Let <span class="math inline">\(Z_1,\dots,Z_n\)</span> be independent bounded random variables with <span class="math inline">\(Z_i\in[a,b]\)</span> for all <span class="math inline">\(i\)</span>, where <span class="math inline">\(-\infty&lt;a\le b&lt;\infty\)</span>. Then <span class="math display">\[
-\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\ge t\right)\le\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
+<p>Let <span class="math inline">\(Z_1,\dots,Z_n\)</span> be independent
+bounded random variables with <span
+class="math inline">\(Z_i\in[a,b]\)</span> for all <span
+class="math inline">\(i\)</span>, where <span
+class="math inline">\(-\infty&lt;a\le b&lt;\infty\)</span>. Then <span
+class="math display">\[
+\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\ge
+t\right)\le\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
 \]</span> and <span class="math display">\[
-\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\le -t\right)\ge\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
+\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\le
+-t\right)\ge\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
 \]</span> for all <span class="math inline">\(t\ge 0\)</span></p></li>
 </ul>
 <p>现在在等着选择一个确定的方向，来正式开始自己的本科科研。希望能在未来半年内做出一些成果吧，要不然属实没有大学读了……</p>
@@ -266,9 +262,11 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 <p>（写于2021年12月底，在空间跨年的时候发出）</p>
 <p>开始写的时候突然惊觉，上一次在空间写这种长篇的，回忆总结性的文字，竟是两年前的跨年夜。不知不觉，已经700多天了。</p>
 <p>曾于两年前定下的目标和计划，因为自己，因为其他的一些人和一些事，总与如今的事实有所偏差。好在，偏的并不算特别多。</p>
-<p>去年的跨年夜，我处在前所未有，如今也未再复现过的满足中，那是今天为止，最接近自己希冀的状态的时刻。彼时彼刻，幸福感压倒了一切，连思考都变得不再必要，也就并无自我的总结与记录。 如今如此，从那般梦境坠落之后，又经历了更多的情节故事，这中间的思考和自省，也值得被记录写下。</p>
+<p>去年的跨年夜，我处在前所未有，如今也未再复现过的满足中，那是今天为止，最接近自己希冀的状态的时刻。彼时彼刻，幸福感压倒了一切，连思考都变得不再必要，也就并无自我的总结与记录。
+如今如此，从那般梦境坠落之后，又经历了更多的情节故事，这中间的思考和自省，也值得被记录写下。</p>
 <p>两年，18岁，19岁。</p>
-<p>成年之后的一段时间，遇见的人，经历的事，所施于我的影响，犹如脱胎换骨一般。如今回望 ，自己已远不是曾经那样了。</p>
+<p>成年之后的一段时间，遇见的人，经历的事，所施于我的影响，犹如脱胎换骨一般。如今回望
+，自己已远不是曾经那样了。</p>
 <p>与一些人从远到近，与一些人从近到远，熙熙攘攘，擦肩而过。不幸地失去了一些人，也幸运地留下了，发现了一些人。相识，相熟，相爱，相别，丰富之故事，复杂之情感，交织组成了这相当魔幻的一年多。</p>
 <p>由于自己对事件时间精确的记忆，每一段独特的故事，都深刻于脑中，以看起来永不消逝的形式存在着，每沉于其中，总难以自拔。</p>
 <p>“溺于可忆而不可追的过去， 执于可知而不可求的梦境。”</p>
@@ -285,6 +283,153 @@ or:x&#39;&gt;x\;and\;a&#39;&gt;a
 ]]></content>
       <tags>
         <tag>Thoughts</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>RL Algorithms in Language Model Reasoning</title>
+    <url>/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/</url>
+    <content><![CDATA[<h1
+id="reinforcement-learning-algorithms-in-llm-reasoning">Reinforcement
+Learning Algorithms in LLM Reasoning</h1>
+<h2 id="rl-basics">RL basics</h2>
+<p>In a RL problem, we have an agent and an environment that the agent
+can interact with. At each time stamp, the agent is given a state of the
+environment <span class="math inline">\(s\)</span>, and the agent is
+supposed to take an action <span class="math inline">\(a\)</span> to
+interact with the environment. Eventually, the agent will get a reward
+<span class="math inline">\(r\)</span>. The goal of the agent is to
+learn a policy <span class="math inline">\(\pi\)</span>, defined as
+<span class="math display">\[
+\pi(s, a) = \Pr[a~|~s].
+\]</span> which gives the probability of an action <span
+class="math inline">\(a\)</span> being sampled at the given state <span
+class="math inline">\(s\)</span>.</p>
+<p>Given a policy <span class="math inline">\(\pi\)</span> and a
+starting state <span class="math inline">\(s\)</span>, we define the
+<strong>value</strong> of the state <span
+class="math inline">\(s\)</span> to be the expected reward of starting
+from <span class="math inline">\(s\)</span> with policy <span
+class="math inline">\(\pi\)</span>, hence the <strong>value
+function</strong> <span class="math inline">\(V^{\pi}(s)\)</span> is
+defined as <span class="math display">\[
+V^{\pi}(s) := \mathbb{E}_{\pi}[\mathbf{R}_t ~|~ s_t=s] =
+\mathbb{E}_{\pi}\left[\sum_{k=0}^\infty\gamma^tr_{t+k+1} ~|~ s_t =
+s\right],
+\]</span> where <span class="math inline">\(\gamma \in (0,1)\)</span> is
+a reward decaying parameter and <span
+class="math inline">\(\mathbf{R}_t\)</span> is defined to be the
+cumulative reward starting from time <span
+class="math inline">\(t\)</span>. Given a policy <span
+class="math inline">\(\pi\)</span>, a state <span
+class="math inline">\(s\)</span> and an action <span
+class="math inline">\(a\)</span>, we can define the action-value
+function Q to be the expected reward of the state-action pair <span
+class="math inline">\((s, a)\)</span>, defined as <span
+class="math display">\[
+Q^\pi(s,a) := \mathbb{E}_\pi[\mathbf{R}_t~|~s_t=s,a_t=a].
+\]</span> Given the definitions, we have the following relation <span
+class="math display">\[
+V^\pi(s) = \sum_{a \in A}\pi(a~|~s)Q^{\pi}(s,a).
+\]</span></p>
+<h2 id="markov-decision-process">Markov Decision Process</h2>
+<p>If the environment state is a Markov process and there is a model
+describing the environment that for each triplet of a starting state
+<span class="math inline">\(s\)</span>, an action <span
+class="math inline">\(a\)</span> taken and a ending state <span
+class="math inline">\(s&#39;\)</span>, it gives the probability in the
+form of <span class="math display">\[
+\Pr(s&#39;, s, a) = \Pr[s_{k+1} = s&#39;~|~ s_k = s, a_k= a].
+\]</span> then it is a <strong>Markov Decision Process</strong>, or MDP.
+It is a Model-based type RL problem.</p>
+<p>Assume the reward is defined as <span class="math display">\[
+R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
+a].
+\]</span> Define the optimal value function as <span
+class="math display">\[
+\begin{align*}
+    V^*(s)=&amp; \max_{\pi}V^\pi(s) \\
+        =&amp;
+\max_{\pi}\mathbb{E}_{\pi}\left[\sum_{k=0}^\infty\gamma^tr_{t+k+1} ~|~
+s_t = s\right] \\
+        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t +
+\sum_{k=1}^\infty\gamma^tr_{t+k+1} ~|~ s_{t+1} = s&#39;\right] \\
+        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t + \gamma
+V^*(s&#39;)\right],
+\end{align*}
+\]</span> where <span class="math inline">\(s&#39;\)</span> is a random
+state dominated by current state and action. Here we get a recursive
+expression named <strong>Bellman's Equation</strong> or
+<strong>Bellman's Optimality Condition</strong>.</p>
+<h3 id="value-iteration">Value Iteration</h3>
+<p>The goal of value iteration is to find the optimal value function
+<span class="math inline">\(V^*\)</span>. Given Bellman's Equation, for
+each time step, we have <span class="math display">\[
+\begin{align*}
+    \hat{V}(s) =&amp;~ \max_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
+a]\left(R(s&#39;,s, a) + \gamma \hat{V}(s&#39;)\right) \\
+        =&amp;~\max_{a}\hat{Q}(s,a)
+\end{align*}
+\]</span> where <span class="math inline">\(\Pr(s&#39;, s, a)\)</span>
+and <span class="math inline">\(R(s&#39;,s,a)\)</span> are assumed
+known, and we use <span class="math inline">\(\hat{V}\)</span> and <span
+class="math inline">\(\hat{Q}\)</span> to represent the intermediate
+<span class="math inline">\(V\)</span> and <span
+class="math inline">\(Q\)</span> for approximating during the algorithm.
+We start by initiating <span class="math inline">\(\hat{V}\)</span>'s
+for every <span class="math inline">\(s\)</span> to be <span
+class="math inline">\(0\)</span> or random. Then starting from a random
+state <span class="math inline">\(s_0\)</span> and update the value by
+picking the action <span class="math inline">\(a\)</span> that maximizes
+the value. Then we get to the next state. By iteratively doing this, we
+are able to finally construct good estimate to <span
+class="math inline">\(\hat{V}\)</span>'s. When the values converges, we
+get the optimal policy <span class="math inline">\(\pi^*\)</span> by
+<span class="math display">\[
+\begin{align*}
+    \pi^*(s) =&amp;~ {\arg\max}_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
+a]\left(R(s&#39;,s, a) + \gamma V^*(s&#39;)\right) \\
+        =&amp;~{\arg\max}_{a}Q^*(s,a)
+\end{align*}
+\]</span> It's a type of dynamic programming.</p>
+<h3 id="policy-iteration">Policy Iteration</h3>
+<p>Here we start by locking the policy <span
+class="math inline">\(\pi\)</span>, and instead of updating optimal
+values by taking the best action like we did in value iteration, we
+update the value function with policy <span
+class="math inline">\(\pi\)</span> by picking actions using <span
+class="math inline">\(\pi\)</span>. Like we did in the Bellman's
+Equation for optimal value functions <span
+class="math inline">\(V^*\)</span>'s, we can get the same for <span
+class="math inline">\(V^\pi\)</span>: <span class="math display">\[
+\begin{align*}
+    V^\pi(s)=&amp;~ \mathbb{E}_\pi[R(s&#39;,s,\pi(s)) + \gamma
+V^\pi(s&#39;)] \\
+        =&amp;~\sum_{s&#39;}\Pr[s&#39;~|~s, \pi(s)]
+\left(R(s&#39;,s,\pi(s)) + \gamma V^\pi(s&#39;)\right)\\
+        =&amp;~ Q(s,\pi(s))
+\end{align*}
+\]</span> And we update policy by <span class="math display">\[
+\pi(s) = {\arg\max}_a \mathbb{E}[R(s&#39;,s,a) + \gamma V^\pi(s&#39;)] =
+{\arg\max}_aQ(s,a)
+\]</span> Then we lock the policy and update the value functions. By
+iteratively doing this, we are able to get converged results.</p>
+<h3 id="use-of-q-function">Use of Q-function</h3>
+<p>By using Q function, the value iteration and the policy iteration can
+be summarized by simply <span class="math display">\[
+\begin{align*}
+    V(s) =&amp;~ \max_aQ(s,a) \\
+    \text{and}~~\pi(s) =&amp;~ {\arg\max}_aQ(s,a).
+\end{align*}
+\]</span> The good thing here is that Q function naturally encodes the
+information about the future so we can directly maintain its value
+instead of doing the calculation of value and pi each time.</p>
+<h2 id="q-learning">Q-Learning</h2>
+<p>One of our way to learn a good policy <span
+class="math inline">\(\pi\)</span> is by learning the value of Q
+function, this is called Q-learning.</p>
+]]></content>
+      <tags>
+        <tag>Research</tag>
       </tags>
   </entry>
 </search>
