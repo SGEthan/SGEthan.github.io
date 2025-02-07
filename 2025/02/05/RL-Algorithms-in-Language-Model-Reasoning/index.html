@@ -27,8 +27,8 @@
 <meta property="og:site_name" content="Blog of Ethan@UW">
 <meta property="og:description" content="Summary of RL Algorithms">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-02-05T09:59:57.000Z">
-<meta property="article:modified_time" content="2025-02-07T00:09:46.289Z">
+<meta property="article:published_time" content="2025-02-06T01:59:57.000Z">
+<meta property="article:modified_time" content="2025-02-07T02:16:55.232Z">
 <meta property="article:author" content="Ethan Deng">
 <meta property="article:tag" content="Research">
 <meta name="twitter:card" content="summary">
@@ -227,14 +227,14 @@
               </span>
               <span class="post-meta-item-text">Posted on</span>
 
-              <time title="Created: 2025-02-05 01:59:57" itemprop="dateCreated datePublished" datetime="2025-02-05T01:59:57-08:00">2025-02-05</time>
+              <time title="Created: 2025-02-05 17:59:57" itemprop="dateCreated datePublished" datetime="2025-02-05T17:59:57-08:00">2025-02-05</time>
             </span>
               <span class="post-meta-item">
                 <span class="post-meta-item-icon">
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-06 16:09:46" itemprop="dateModified" datetime="2025-02-06T16:09:46-08:00">2025-02-06</time>
+                <time title="Modified: 2025-02-06 18:16:55" itemprop="dateModified" datetime="2025-02-06T18:16:55-08:00">2025-02-06</time>
               </span>
 
           
@@ -312,17 +312,11 @@ It is a Model-based type RL problem.</p>
 <p>Assume the reward is defined as <span class="math display">\[
 R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
 a].
-\]</span> Define the optimal value function as <span
-class="math display">\[
+\]</span> For the value functions, we have <span class="math display">\[
 \begin{align*}
-    V^*(s)=&amp; \max_{\pi}V^\pi(s) \\
-        =&amp;
-\max_{\pi}\mathbb{E}_{\pi}\left[\sum_{k=0}^\infty\gamma^tr_{t+k+1} ~|~
-s_t = s\right] \\
-        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t +
+    V(s)=&amp;~ \mathbb{E} \left[r_t +
 \sum_{k=1}^\infty\gamma^tr_{t+k+1} ~|~ s_{t+1} = s&#39;\right] \\
-        =&amp; \max_{\pi}\mathbb{E}_{\pi}\left[r_t + \gamma
-V^*(s&#39;)\right],
+        =&amp;~ \mathbb{E} \left[r_t + \gamma V(s&#39;)\right],
 \end{align*}
 \]</span> where <span class="math inline">\(s&#39;\)</span> is a random
 state dominated by current state and action. Here we get a recursive
@@ -390,11 +384,59 @@ be summarized by simply <span class="math display">\[
 \end{align*}
 \]</span> The good thing here is that Q function naturally encodes the
 information about the future so we can directly maintain its value
-instead of doing the calculation of value and pi each time.</p>
+instead of calculating value and pi each time.</p>
 <h2 id="q-learning">Q-Learning</h2>
-<p>One of our way to learn a good policy <span
-class="math inline">\(\pi\)</span> is by learning the value of Q
-function, this is called Q-learning.</p>
+<p>Q-learning is used when we don't have access of the model of the
+environment (model-free RL).</p>
+<h3 id="monte-carlo-learning">Monte Carlo Learning</h3>
+<p>We start from Monte Carlo Learning, which is the naive way (pure
+trial and error) of model-free RL. By the trials of the game, we have
+the cumulative reward over an episode <span class="math display">\[
+\mathbf{R}_t := \sum_{k = 0}^{n}\gamma^{t}r_{t+k+1}.
+\]</span> Then update the value functions or Q functions by <span
+class="math display">\[
+\begin{align*}
+    V^{\text{new}}(s_k) &amp;~\gets
+V^{\text{old}}(s_k)+\frac{1}{n}\left(\mathbf{R}_k -
+V^{\text{old}}(s_k)\right)~~\forall k \in [n] \\
+    Q^{\text{new}}(s_k, a_k) &amp;~\gets
+Q^{\text{old}}(s_k,a_k)+\frac{1}{n}\left(\mathbf{R}_k -
+Q^{\text{old}}(s_k,a_k)\right)~~\forall k \in [n]
+\end{align*}
+\]</span> Mathematically this is not biased. So this in theory will
+finally converges. But it is relatively inefficient.</p>
+<h3 id="temporal-difference-learning">Temporal Difference Learning</h3>
+<p>TD learning integrates the information of time intervals, which can
+be connected with biological learning or some topics in neuroscience. We
+start with TD(0) learning. Recall the Bellman's Equation <span
+class="math display">\[
+V(s_k) = \mathbb{E}[r_k + \gamma V(s_{k+1})]
+\]</span> Then in TD(0), we update the value function by <span
+class="math display">\[
+\begin{align*}
+    V^{\text{new}}(s_k) &amp;~\gets
+V^{\text{old}}(s_k)+\alpha\left(\overbrace{\underbrace{r_k + \gamma
+V^{\text{old}}(s_{k+1})}_{\text{TD target estimate }\mathbf{R_k}} -
+V^{\text{old}}(s_k)}^{\text{TD Error}}\right) ~~\forall k \in [n]
+\end{align*}
+\]</span> For TD(N), we expand the value function as <span
+class="math display">\[
+\begin{align*}
+    V(s_k) =&amp;~ \mathbb{E}[r_k + \gamma V(s_{k+1})] \\
+        =&amp;~ \mathbb{E} [r_k + \gamma r_{k+1} + \gamma^2V(s_{k+2})]\\
+        =&amp;~ \mathbb{E} \left[\sum_{j=0}^N \gamma^j r_{k+j} +
+\gamma^{N+1}V(s_{k+N+1})\right]
+\end{align*}
+\]</span> And hence update the value function by <span
+class="math display">\[
+\begin{align*}    
+    V^{\text{new}}(s_k) &amp;~\gets
+V^{\text{old}}(s_k)+\alpha\left(\overbrace{\underbrace{\sum_{j=0}^N
+\gamma^j r_{k+j} + \gamma^{N+1}V^{\text{old}}(s_{k+N+1})}_{\text{TD
+target estimate }\mathbf{R_t}} - V^{\text{old}}(s_k)}^{\text{TD
+Error}}\right) ~~\forall k \in [n] \end{align*}
+\]</span> By taking <span class="math inline">\(N\)</span> to the
+episode size, this will converge to Monte Carlo learning.</p>
 
     </div>
 
@@ -495,7 +537,7 @@ function, this is called Q-learning.</p>
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#reinforcement-learning-algorithms-in-llm-reasoning"><span class="nav-number">1.</span> <span class="nav-text">Reinforcement
-Learning Algorithms in LLM Reasoning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">1.2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#value-iteration"><span class="nav-number">1.2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-iteration"><span class="nav-number">1.2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">1.2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning"><span class="nav-number">1.3.</span> <span class="nav-text">Q-Learning</span></a></li></ol></li></ol></div>
+Learning Algorithms in LLM Reasoning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">1.2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#value-iteration"><span class="nav-number">1.2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#policy-iteration"><span class="nav-number">1.2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">1.2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning"><span class="nav-number">1.3.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#monte-carlo-learning"><span class="nav-number">1.3.1.</span> <span class="nav-text">Monte Carlo Learning</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">1.3.2.</span> <span class="nav-text">Temporal Difference Learning</span></a></li></ol></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 
