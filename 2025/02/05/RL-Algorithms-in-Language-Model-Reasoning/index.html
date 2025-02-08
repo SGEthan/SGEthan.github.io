@@ -28,7 +28,7 @@
 <meta property="og:description" content="Summary of RL Algorithms">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-02-06T01:59:57.000Z">
-<meta property="article:modified_time" content="2025-02-07T08:00:05.706Z">
+<meta property="article:modified_time" content="2025-02-08T00:41:28.299Z">
 <meta property="article:author" content="Ethan Deng">
 <meta property="article:tag" content="Research">
 <meta name="twitter:card" content="summary">
@@ -234,7 +234,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-07 00:00:05" itemprop="dateModified" datetime="2025-02-07T00:00:05-08:00">2025-02-07</time>
+                <time title="Modified: 2025-02-07 16:41:28" itemprop="dateModified" datetime="2025-02-07T16:41:28-08:00">2025-02-07</time>
               </span>
 
           
@@ -598,7 +598,186 @@ class="math display">\[
 \end{align*}
 \]</span> where <span class="math inline">\(\delta_t := r_t +\gamma
 V_{\theta_2}(s_{t+1}) - V_{\theta_2}(s_t)\)</span>.</p>
+<h2 id="trpo-trust-region-policy-optimization-paper-link">TRPO: Trust
+Region Policy Optimization [<a
+target="_blank" rel="noopener" href="https://arxiv.org/pdf/1502.05477">paper link</a>]</h2>
+<p>All previous policy-based algorithms face a problem of instability
+during training. To avoid this, we consider a trust region when updating
+the parameters, with some security guarantee. Theoretically it can
+guarantee the monotonicity of performance during training.</p>
+<p>Given current policy <span class="math inline">\(\pi_\theta\)</span>,
+we consider looking for a better parameter <span
+class="math inline">\(\theta&#39;\)</span> such that <span
+class="math inline">\(J(\theta&#39;) \ge J(\theta)\)</span>. Since the
+distribution of starting state <span class="math inline">\(s_0\)</span>
+is independent of the policy. We can use expectation under new policy
+<span class="math inline">\(\pi_{\theta&#39;}\)</span> to describe
+current optimization target: <span class="math display">\[
+\begin{align*}
+    J(\theta)
+=&amp;~\mathbb{E}_{s_0}\left[V^{\pi_\theta}(s_0)\right] \\
+=&amp;~\mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t=0}^\infty\gamma^t
+V^{\pi_{\theta}}(s_t) -
+\sum_{t=1}^\infty\gamma^tV^{\pi_\theta}(s_t)\right] \\
+=&amp;~-\mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t=0}^\infty\gamma^t
+(\gamma V^{\pi_{\theta}}(s_{t+1}) - V^{\pi_\theta}(s_t))\right]
+\end{align*}
+\]</span> Given this, we can calculate the difference between the two
+target functions as <span class="math display">\[
+\begin{align*}
+    J(\theta&#39;) - J(\theta)
+=&amp;~ \mathbb{E}_{s_0}\left[V^{\pi_{\theta&#39;}}(s_0)\right] -
+\mathbb{E}_{s_0}\left[V^{\pi_\theta}(s_0)\right] \\
+=&amp;~ \mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t = 0}^\infty\gamma^t
+r(s_t,a_t)\right] +
+\mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t=0}^\infty\gamma^t (\gamma
+V^{\pi_{\theta}}(s_{t+1}) - V^{\pi_\theta}(s_t))\right] \\
+=&amp;~
+\mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t=0}^\infty\gamma^t(r(s_t,a_t)
++ \gamma V^{\pi_{\theta}}(s_{t+1}) - V^{\pi_\theta}(s_t))\right]
+\end{align*}
+\]</span> By defining temporal difference residual as the advantage
+<span class="math inline">\(A^{\pi_\theta}(s_t,a_t) := r(s_t,a_t) +
+\gamma V^{\pi_{\theta}}(s_{t+1}) - V^{\pi_\theta}(s_t)\)</span>, we have
+<span class="math display">\[
+\begin{align*}
+        J(\theta&#39;) - J(\theta)
+    =&amp;~
+\mathbb{E}_{\pi_{\theta&#39;}}\left[\sum_{t=0}^\infty\gamma^tA^{\pi_\theta}(s_t,a_t)\right]
+\\
+    =&amp;~ \sum_{t=1}^\infty \gamma^t\mathbb{E}_{s_t \sim
+P_t^{\pi_{\theta&#39;}},
+a_t\sim\pi_{\theta&#39;}(\cdot~|~s_t)}[A^{\pi_\theta}(s_t,a_t)] \\
+    =&amp;~\frac{1}{1-\gamma}\mathbb{E}_{s \sim \nu^{\pi_{\theta&#39;}},
+a\sim\pi_{\theta&#39;}(\cdot~|~s)}[A^{\pi_\theta}(s,a)]
+\end{align*}
+\]</span> where <span class="math inline">\(\nu^{\pi_\theta}(s)\)</span>
+is the state visitation distribution, defined as <span
+class="math display">\[
+\nu^\pi (s):=(1-\gamma) \sum_{t=0}^\infty \gamma^tP_t^\pi(s),
+\]</span> where <span class="math inline">\(P_t^\pi(s)\)</span> is the
+probability that by policy <span class="math inline">\(\pi\)</span>,
+agent is at state <span class="math inline">\(s\)</span> in time step
+<span class="math inline">\(t\)</span>. So we are now looking for a
+parameter <span class="math inline">\(\theta&#39;\)</span> with <span
+class="math inline">\(\mathbb{E}_{s \sim \nu^{\pi_{\theta&#39;}},
+a\sim\pi_{\theta&#39;}(\cdot~|~s)}[A^{\pi_\theta}(s,a)] \ge 0\)</span>,
+then it will guarantee <span class="math inline">\(J(\theta&#39;) \ge
+J(\theta)\)</span>. But it is hard or impossible to solve this directly.
+So we ignore the difference between the state visitation distribution of
+the two policies and use the distribution of the old policy <span
+class="math inline">\(\pi_\theta\)</span>, hence we define the following
+optimization target <span class="math display">\[
+L_{\theta}(\theta&#39;) = J(\theta) + \frac{1}{1-\gamma}\mathbb{E}_{s
+\sim \nu^{\pi_{\theta}},
+a\sim\pi_{\theta&#39;}(\cdot~|~s)}[A^{\pi_\theta}(s,a)].
+\]</span> For the actions, we can use importance sampling and hence we
+get <span class="math display">\[
+L_{\theta}(\theta&#39;) = J(\theta) + \frac{1}{1-\gamma}\mathbb{E}_{s
+\sim \nu^{\pi_{\theta}},
+a\sim\pi_{\theta}(\cdot~|~s)}\left[\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta}(a~|~s)}A^{\pi_\theta}(s,a)\right].
+\]</span> To make the policies are close enough, we use Kullback-Leibler
+Divergence constraint and hence we get the following optimization
+problem <span class="math display">\[
+\begin{align}
+    \max_{\theta&#39;}&amp;~~L_\theta(\theta&#39;)\notag\\
+     \text{s.t.}&amp;~~
+\mathbb{E}_{s\sim\nu^{\pi_{\theta}}}[D_{KL}(\pi_{\theta}(\cdot~|~s),
+\pi_{\theta&#39;}(\cdot~|~s))] \le \delta.\label{trpo}\tag{2}
+\end{align}
+\]</span> The constraint here actually defines a KL ball in the policy
+space, called <strong>trust region</strong>.</p>
+<h2 id="ppo-proximal-policy-optimization-paper-link">PPO: Proximal
+Policy Optimization [<a target="_blank" rel="noopener" href="https://arxiv.org/pdf/1707.06347">paper
+link</a>]</h2>
+<p>Consider the same optimization problem in TRPO <span
+class="math display">\[
+\begin{align*}    
+\max_{\theta&#39;}&amp;~~\mathbb{E}_{s \sim \nu^{\pi_{\theta_k}},
+a\sim\pi_{\theta_k}(\cdot~|~s)}[\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta}(a~|~s)}A^{\pi_{\theta_k}}(s,a)]\\     
+\text{s.t.}&amp;~~
+\mathbb{E}_{s\sim\nu^{\pi_{\theta_k}}}[D_{KL}(\pi_{\theta_k}(\cdot~|~s),
+\pi_{\theta&#39;}(\cdot~|~s))] \le \delta.
+\end{align*}
+\]</span> There are some methods to solve this optimization, including
+Taylor approximation, conjugate gradient method and linear search. But
+in general it is still hard to solve. So PPO was introduced. There are
+two types of PPO, PPO-Penalty and PPO-Clip.</p>
+<h3 id="ppo-penalty">PPO-Penalty</h3>
+<p>PPO-penalty use the method of Lagrange multipliers to put the
+constraint of KL divergence into the optimization function, hence we
+have the unconstrained optimization <span class="math display">\[
+\theta\gets {\arg\max}_{\theta&#39;}\mathbb{E}_{s \sim
+\nu^{\pi_{\theta_k}},
+a\sim\pi_{\theta_k}(\cdot~|~s)}\left[\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)}A^{\pi_{\theta_k}}(s,a)
+- \beta D_{KL}(\pi_{\theta_k}(\cdot~|~s),
+\pi_{\theta&#39;}(\cdot~|~s))\right].
+\]</span> Let <span class="math inline">\(d_k =
+D_{KL}^{\nu^{\pi_{\theta_k}}}(\pi_{\theta_k},
+\pi_{\theta&#39;})\)</span>, the rule of updating <span
+class="math inline">\(\beta\)</span> is</p>
+<ul>
+<li>If <span class="math inline">\(d_k &lt; \delta/1.5\)</span>, let
+<span class="math inline">\(\beta_{k+1} = \beta_k/2\)</span></li>
+<li>If <span class="math inline">\(d_k &gt;1.5 \cdot\delta\)</span>, let
+<span class="math inline">\(\beta_{k+1} = 2\beta_k\)</span></li>
+<li>else, let <span class="math inline">\(\beta_{k+1} =
+\beta_k\)</span>.</li>
+</ul>
+<p>where <span class="math inline">\(\delta\)</span> is a preset
+hyperparameter.</p>
+<h3 id="ppo-clip">PPO-Clip</h3>
+<p>PPO-Clip is more straightforward, by restricting the difference of
+the policies directly in the optimization function, i.e., <span
+class="math display">\[
+\theta\gets {\arg\max}_{\theta&#39;}\mathbb{E}_{s \sim
+\nu^{\pi_{\theta_k}},
+a\sim\pi_{\theta_k}(\cdot~|~s)}\left[\min\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)}A^{\pi_{\theta_k}}(s,a),
+\mathrm{clip}\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)},
+1-\epsilon, 1+\epsilon\right)\cdot
+A^{\pi_{\theta_k}}(s,a)\right)\right].
+\]</span></p>
+<h3 id="gae-generalized-advantage-estimation">GAE: Generalized Advantage
+Estimation</h3>
+<p>In order to apply TRPO or PPO, we still need to know the values of
+advantage function <span
+class="math inline">\(A^{\pi_{\theta_k}}(s,a)\)</span>. One way we can
+approximate know the advantage is by GAE. Let <span
+class="math inline">\(\delta_t = r_t + \gamma V(s_t+1) - V_t\)</span> be
+the temporal difference, where <span class="math inline">\(V\)</span> is
+a learned value function. Hence we can define for different steps: <span
+class="math display">\[
+\begin{align*}
+    A_t^{(1)} = &amp;~\delta_t &amp;= -V(s_t) + r_t + \gamma V(s_{t+1})
+\\
+    A_t^{(2)} = &amp;~ \delta_t + \gamma\delta_{t+1} &amp;= -V(s_t) +
+r_t + \gamma r_{t+1}+\gamma^2 V(s_{t+2})\\
+    \vdots &amp; &amp;\vdots\\
+    A_t^{(k)} = &amp;~\sum_{l=0}^{k-1}\gamma^l\delta_{t+1} &amp;=-V(s_t)
++ r_t + \gamma r_{t+1}+\gamma^2+\dots+ \gamma^kV(s_{t+k})
+\end{align*}
+\]</span> And we calculate the weighted average over them to get: <span
+class="math display">\[
+\begin{align*}
+    A_t^{\mathrm{GAE}}
+:=&amp;~(1-\lambda)(A_t^{(1)}+ A_t^{(2)}+A_t^{(3)}+\dots) \\
+=&amp;~ (1-\lambda)(\delta_t +
+\lambda(\delta_t+\lambda\delta_{t+1})+\lambda^2(\delta_t+\lambda\delta_{t+1}+\lambda^2\delta_{t+2})+\dots)
+\\
+=&amp;~(1-\lambda)(\delta_t(1+\lambda+\lambda^2+\dots)+\gamma\delta_{t+1}(\lambda+\lambda^2+\lambda^3+\dots)+\dots)\\
+=&amp;~(1-\lambda)(\delta_t\frac{1}{1-\lambda}+\gamma\delta_{t+1}\frac{\lambda}{1-\lambda}
++ \gamma^2\delta_{t+2}\frac{\lambda^2}{1-\lambda} + \dots) \\
+=&amp;~\sum_{l=0}^\infty(\gamma\lambda)^l\delta_{t+l},
+\end{align*}
+\]</span> where <span class="math inline">\(\lambda \in [0,1]\)</span>
+is a hyperparameter. For <span class="math inline">\(\lambda=0\)</span>,
+this becomes <span class="math inline">\(\delta_t\)</span>, and for
+<span class="math inline">\(\lambda=1\)</span>, this becomes average
+over <span class="math inline">\(A_t^{(k)}\)</span>'s.</p>
 <h1 id="rl-in-language-models">RL in Language Models</h1>
+<p>Some RL techniques are widely used in LLM alignment, though they are
+not intentionally designed for this.</p>
+<h2 id="ppo">PPO</h2>
 <h1 id="appendix">Appendix</h1>
 <h2 id="proof-of-policy-gradient-theorem">Proof of Policy Gradient
 Theorem</h2>
@@ -776,7 +955,11 @@ agent is at state <span class="math inline">\(s\)</span> in time step
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#value-iteration"><span class="nav-number">2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#q-learning"><span class="nav-number">3.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#monte-carlo-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Monte Carlo Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">3.2.</span> <span class="nav-text">Temporal Difference Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning-1"><span class="nav-number">3.3.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sarsa-state-action-reward-state-action"><span class="nav-number">3.4.</span> <span class="nav-text">SARSA:
 State-Action-Reward-State-Action</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#deep-rl"><span class="nav-number">4.</span> <span class="nav-text">Deep RL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-policy-network-policy-gradient"><span class="nav-number">4.1.</span> <span class="nav-text">Deep Policy Network (Policy
-Gradient)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning-dqn"><span class="nav-number">4.2.</span> <span class="nav-text">Deep Q-Learning (DQN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic-network"><span class="nav-number">4.3.</span> <span class="nav-text">Actor-Critic Network</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-in-language-models"><span class="nav-number">5.</span> <span class="nav-text">RL in Language Models</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appendix"><span class="nav-number">6.</span> <span class="nav-text">Appendix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-policy-gradient-theorem"><span class="nav-number">6.1.</span> <span class="nav-text">Proof of Policy Gradient
+Gradient)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning-dqn"><span class="nav-number">4.2.</span> <span class="nav-text">Deep Q-Learning (DQN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic-network"><span class="nav-number">4.3.</span> <span class="nav-text">Actor-Critic Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trpo-trust-region-policy-optimization-paper-link"><span class="nav-number">4.4.</span> <span class="nav-text">TRPO: Trust
+Region Policy Optimization [paper link]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo-proximal-policy-optimization-paper-link"><span class="nav-number">4.5.</span> <span class="nav-text">PPO: Proximal
+Policy Optimization [paper
+link]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-penalty"><span class="nav-number">4.5.1.</span> <span class="nav-text">PPO-Penalty</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-clip"><span class="nav-number">4.5.2.</span> <span class="nav-text">PPO-Clip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gae-generalized-advantage-estimation"><span class="nav-number">4.5.3.</span> <span class="nav-text">GAE: Generalized Advantage
+Estimation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-in-language-models"><span class="nav-number">5.</span> <span class="nav-text">RL in Language Models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo"><span class="nav-number">5.1.</span> <span class="nav-text">PPO</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appendix"><span class="nav-number">6.</span> <span class="nav-text">Appendix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-policy-gradient-theorem"><span class="nav-number">6.1.</span> <span class="nav-text">Proof of Policy Gradient
 Theorem</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
