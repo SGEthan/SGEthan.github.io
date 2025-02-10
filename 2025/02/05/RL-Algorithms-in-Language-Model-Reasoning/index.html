@@ -29,7 +29,7 @@
 <meta property="og:locale" content="en_US">
 <meta property="og:image" content="http://example.com/images/image-20250209201756802.png">
 <meta property="article:published_time" content="2025-02-06T01:59:57.000Z">
-<meta property="article:modified_time" content="2025-02-10T05:19:17.558Z">
+<meta property="article:modified_time" content="2025-02-10T08:26:12.547Z">
 <meta property="article:author" content="Ethan Deng">
 <meta property="article:tag" content="Research">
 <meta name="twitter:card" content="summary">
@@ -236,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-09 21:19:17" itemprop="dateModified" datetime="2025-02-09T21:19:17-08:00">2025-02-09</time>
+                <time title="Modified: 2025-02-10 00:26:12" itemprop="dateModified" datetime="2025-02-10T00:26:12-08:00">2025-02-10</time>
               </span>
 
           
@@ -311,7 +311,8 @@ It is a Model-based type RL problem.</p>
 <p>Assume the reward is defined as <span class="math display">\[
 R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
 a].
-\]</span> ## Bellman's Equations</p>
+\]</span></p>
+<h2 id="bellmans-equations">Bellman's Equations</h2>
 <p>For the value functions, we have <span class="math display">\[
 \begin{align*}
     V(s)=&amp;~ \mathbb{E}_\pi \left[r_{t+1} +
@@ -425,7 +426,7 @@ environment (model-free RL).</p>
 <p>We start from Monte Carlo Learning, which is the naive way (pure
 trial and error) of model-free RL. By the trials of the game, we have
 the cumulative reward over an episode <span class="math display">\[
-\mathbf{R}_t := \sum_{k = 0}^{n}\gamma^{t}r_{t+k+1}.
+\mathbf{R}_t := \sum_{k = 0}^{n}\gamma^{k}r_{t+k+1}.
 \]</span> Then update the value functions or Q functions by <span
 class="math display">\[
 \begin{align*}
@@ -1115,7 +1116,7 @@ agent is at state <span class="math inline">\(s\)</span> in time step
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#value-iteration"><span class="nav-number">2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#q-learning"><span class="nav-number">3.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#monte-carlo-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Monte Carlo Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">3.2.</span> <span class="nav-text">Temporal Difference Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning-1"><span class="nav-number">3.3.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sarsa-state-action-reward-state-action"><span class="nav-number">3.4.</span> <span class="nav-text">SARSA:
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#bellmans-equations"><span class="nav-number">2.1.</span> <span class="nav-text">Bellman&#39;s Equations</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#value-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-iteration"><span class="nav-number">2.3.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">2.4.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#q-learning"><span class="nav-number">3.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#monte-carlo-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Monte Carlo Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">3.2.</span> <span class="nav-text">Temporal Difference Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning-1"><span class="nav-number">3.3.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sarsa-state-action-reward-state-action"><span class="nav-number">3.4.</span> <span class="nav-text">SARSA:
 State-Action-Reward-State-Action</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#deep-rl"><span class="nav-number">4.</span> <span class="nav-text">Deep RL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-policy-network-policy-gradient"><span class="nav-number">4.1.</span> <span class="nav-text">Deep Policy Network (Policy
 Gradient)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reinforce"><span class="nav-number">4.2.</span> <span class="nav-text">REINFORCE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning-dqn"><span class="nav-number">4.3.</span> <span class="nav-text">Deep Q-Learning (DQN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic-network"><span class="nav-number">4.4.</span> <span class="nav-text">Actor-Critic Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trpo-trust-region-policy-optimization-paper-link"><span class="nav-number">4.5.</span> <span class="nav-text">TRPO: Trust
 Region Policy Optimization [paper link]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo-proximal-policy-optimization-paper-link"><span class="nav-number">4.6.</span> <span class="nav-text">PPO: Proximal

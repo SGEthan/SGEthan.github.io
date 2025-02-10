@@ -175,7 +175,8 @@ It is a Model-based type RL problem.</p>
 <p>Assume the reward is defined as <span class="math display">\[
 R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
 a].
-\]</span> ## Bellman's Equations</p>
+\]</span></p>
+<h2 id="bellmans-equations">Bellman's Equations</h2>
 <p>For the value functions, we have <span class="math display">\[
 \begin{align*}
     V(s)=&amp;~ \mathbb{E}_\pi \left[r_{t+1} +
@@ -289,7 +290,7 @@ environment (model-free RL).</p>
 <p>We start from Monte Carlo Learning, which is the naive way (pure
 trial and error) of model-free RL. By the trials of the game, we have
 the cumulative reward over an episode <span class="math display">\[
-\mathbf{R}_t := \sum_{k = 0}^{n}\gamma^{t}r_{t+k+1}.
+\mathbf{R}_t := \sum_{k = 0}^{n}\gamma^{k}r_{t+k+1}.
 \]</span> Then update the value functions or Q functions by <span
 class="math display">\[
 \begin{align*}
@@ -886,12 +887,6 @@ agent is at state <span class="math inline">\(s\)</span> in time step
       </tags>
   </entry>
   <entry>
-    <title>test_my_site</title>
-    <url>/2021/08/28/test-my-site/</url>
-    <content><![CDATA[
-]]></content>
-  </entry>
-  <entry>
     <title>学期总结</title>
     <url>/2022/02/16/%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/</url>
     <content><![CDATA[<p>去年的时候，抓着暑假的尾巴搭建了自己的博客，但从那之后，似乎也没有再写过博文。如果不考虑用来做测试的那两篇，这应该算是第一篇博文了。</p>
@@ -1050,5 +1045,11 @@ t\right)\le\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
       <tags>
         <tag>Thoughts</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>test_my_site</title>
+    <url>/2021/08/28/test-my-site/</url>
+    <content><![CDATA[
+]]></content>
   </entry>
 </search>
