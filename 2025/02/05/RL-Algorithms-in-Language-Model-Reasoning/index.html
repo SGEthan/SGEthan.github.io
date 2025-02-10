@@ -27,11 +27,13 @@
 <meta property="og:site_name" content="Blog of Ethan@UW">
 <meta property="og:description" content="Summary of RL Algorithms">
 <meta property="og:locale" content="en_US">
+<meta property="og:image" content="http://example.com/images/image-20250209201756802.png">
 <meta property="article:published_time" content="2025-02-06T01:59:57.000Z">
-<meta property="article:modified_time" content="2025-02-08T04:25:19.830Z">
+<meta property="article:modified_time" content="2025-02-10T05:19:17.558Z">
 <meta property="article:author" content="Ethan Deng">
 <meta property="article:tag" content="Research">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="http://example.com/images/image-20250209201756802.png">
 
 <link rel="canonical" href="http://example.com/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/">
 
@@ -234,7 +236,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">Edited on</span>
-                <time title="Modified: 2025-02-07 20:25:19" itemprop="dateModified" datetime="2025-02-07T20:25:19-08:00">2025-02-07</time>
+                <time title="Modified: 2025-02-09 21:19:17" itemprop="dateModified" datetime="2025-02-09T21:19:17-08:00">2025-02-09</time>
               </span>
 
           
@@ -309,30 +311,64 @@ It is a Model-based type RL problem.</p>
 <p>Assume the reward is defined as <span class="math display">\[
 R(s&#39;, s,a) = \mathbb{E}[r_{k+1} ~|~ s_{k+1} = s&#39;, s_k = s, a_k=
 a].
-\]</span> For the value functions, we have <span class="math display">\[
+\]</span> ## Bellman's Equations</p>
+<p>For the value functions, we have <span class="math display">\[
 \begin{align*}
-    V(s)=&amp;~ \mathbb{E} \left[r_t +
-\sum_{k=1}^\infty\gamma^tr_{t+k+1} ~|~ s_{t+1} = s&#39;\right] \\
-        =&amp;~ \mathbb{E} \left[r_t + \gamma V(s&#39;)\right],
+    V(s)=&amp;~ \mathbb{E}_\pi \left[r_{t+1} +
+\sum_{k=1}^\infty\gamma^tr_{t+k+1} ~|~ s_{t} = s\right] \\
+        =&amp;~ \mathbb{E}_\pi \left[r_{t+1} + \gamma V(s&#39;)~|~ s_{t}
+= s\right],
 \end{align*}
 \]</span> where <span class="math inline">\(s&#39;\)</span> is a random
 state dominated by current state and action. Here we get a recursive
-expression named <strong>Bellman's Equation</strong> or
-<strong>Bellman's Optimality Condition</strong>.</p>
+expression named <strong>Bellman's Expectation Equation</strong>.</p>
+<p>Again, our goal in RL is to find a policy, which maximizes the
+expected return from a starting state. Let's now define the partial
+order between the policies: if for all state <span
+class="math inline">\(s\)</span>, we have <span
+class="math inline">\(V^\pi(s) \ge V^{\pi&#39;}(s)\)</span>, then we say
+<span class="math inline">\(\pi&gt;\pi&#39;\)</span>. In MDP with finite
+state set and action set, there exists at lease one policy <span
+class="math inline">\(\pi^*\)</span> such that for any other policy
+<span class="math inline">\(\pi&#39;\)</span>, it holds that <span
+class="math inline">\(\pi^*&gt;\pi&#39;\)</span>. We call it the
+<strong>optimal policy</strong>. With this, we can define the optimal
+value function <span class="math display">\[
+V^*(s) := \max_{\pi}V^{\pi}(s),~~\forall s \in \mathcal{S}.
+\]</span> Also we can define the optimal Q function <span
+class="math display">\[
+Q^*(s,a) = \max_{\pi}Q^{\pi}(s,a),~~\forall s \in \mathcal{S}, a \in
+\mathcal{A}.
+\]</span> To connect them, we have <span class="math display">\[
+\begin{align*}
+Q^*(s,a) =&amp;~ r(s,a) + \gamma
+\sum_{s&#39;\in\cal{S}}\Pr[s&#39;~|~s,a]V^*(s&#39;) \\
+V^*(s) =&amp;~ \max_{a \in \cal{A}}Q^*(s,a).
+\end{align*}
+\]</span> Hence we will have the following <strong>Bellman's Optimality
+Equation</strong>: <span class="math display">\[
+\begin{align*}
+    V^*(s)  =&amp;~ \max_{a\in\cal{A}} \left\{r(s,a) +
+\gamma\sum_{s&#39; \in \cal{S}}\Pr[s&#39;~|~a,a]V^*(s&#39;)\right\} \\
+    Q^*(s,a)=&amp;~ r(s,a) +
+\gamma\sum_{s&#39;\in\cal{S}}\Pr[s&#39;~|~s,a]\max_{a&#39; \in
+\cal{A}}Q^*(s&#39;,s&#39;).
+\end{align*}
+\]</span></p>
 <h2 id="value-iteration">Value Iteration</h2>
 <p>The goal of value iteration is to find the optimal value function
-<span class="math inline">\(V^*\)</span>. Given Bellman's Equation, for
-each time step, we have <span class="math display">\[
+<span class="math inline">\(V^*\)</span>. Starting from random (or
+all-zero) initialization, given Bellman's Optimality Equation, for every
+round, we update the value function by <span class="math display">\[
 \begin{align*}
-    \hat{V}(s) =&amp;~ \max_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
-a]\left(R(s&#39;,s, a) + \gamma \hat{V}(s&#39;)\right) \\
-        =&amp;~\max_{a}\hat{Q}(s,a)
+    V^{k+1}(s) \gets &amp;~ \max_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
+a]\left(r(s,a) + \gamma V^{k}(s&#39;)\right) \\
+        =&amp;~\max_{a}Q^k(s,a)
 \end{align*}
 \]</span> where <span class="math inline">\(\Pr(s&#39;, s, a)\)</span>
-and <span class="math inline">\(R(s&#39;,s,a)\)</span> are assumed
-known, and we use <span class="math inline">\(\hat{V}\)</span> and <span
-class="math inline">\(\hat{Q}\)</span> to represent the intermediate
-<span class="math inline">\(V\)</span> and <span
+and <span class="math inline">\(r(s,a)\)</span> are assumed known, and
+we use $ V^k$ and <span class="math inline">\(Q^k\)</span> to represent
+the intermediate <span class="math inline">\(V\)</span> and <span
 class="math inline">\(Q\)</span> for approximating during the algorithm.
 We start by initiating <span class="math inline">\(\hat{V}\)</span>'s
 for every <span class="math inline">\(s\)</span> to be <span
@@ -346,7 +382,7 @@ get the optimal policy <span class="math inline">\(\pi^*\)</span> by
 <span class="math display">\[
 \begin{align*}
     \pi^*(s) =&amp;~ {\arg\max}_{a}\sum_{s&#39;}\Pr[s&#39;~|~s,
-a]\left(R(s&#39;,s, a) + \gamma V^*(s&#39;)\right) \\
+a]\left(r(s,a) + \gamma V^*(s&#39;)\right) \\
         =&amp;~{\arg\max}_{a}Q^*(s,a)
 \end{align*}
 \]</span> It's a type of dynamic programming.</p>
@@ -363,13 +399,13 @@ class="math inline">\(V^\pi\)</span>: <span class="math display">\[
 \begin{align*}
     V^\pi(s)=&amp;~ \mathbb{E}_\pi[R(s&#39;,s,\pi(s)) + \gamma
 V^\pi(s&#39;)] \\
-        =&amp;~\sum_{s&#39;}\Pr[s&#39;~|~s, \pi(s)]
-\left(R(s&#39;,s,\pi(s)) + \gamma V^\pi(s&#39;)\right)\\
+        =&amp;~\sum_{s&#39;}\Pr[s&#39;~|~s, \pi(s)] \left(r(s,\pi(s)) +
+\gamma V^\pi(s&#39;)\right)\\
         =&amp;~ Q(s,\pi(s))
 \end{align*}
 \]</span> And we update policy by <span class="math display">\[
-\pi(s) = {\arg\max}_a \mathbb{E}[R(s&#39;,s,a) + \gamma V^\pi(s&#39;)] =
-{\arg\max}_aQ(s,a)
+\pi^{k+1}(s) = {\arg\max}_a \mathbb{E}[r(s,a) + \gamma
+V^{\pi_{k}}(s&#39;)] = {\arg\max}_aQ^{\pi_k}(s,a)
 \]</span> Then we lock the policy and update the value functions. By
 iteratively doing this, we are able to get converged results.</p>
 <h2 id="use-of-q-function">Use of Q-function</h2>
@@ -504,6 +540,29 @@ Q^{\pi_{\theta}}(s,a)\nabla_\theta \pi_{\theta}(a~|~s) \\
 \end{align*}
 \]</span> We can use it in the update of <span
 class="math inline">\(\theta\)</span>.</p>
+<h2 id="reinforce">REINFORCE</h2>
+<p>In policy gradient, we need to know <span
+class="math inline">\(Q^{\pi_\theta}(s,a)\)</span>. There are multiple
+ways of estimating it. REINFORCE is a Monte Carlo variant of a policy
+gradient algorithm that estimates <span class="math inline">\(Q\)</span>
+via sampling several steps. For example, in an environment with a finite
+steps (<span class="math inline">\(T\)</span> steps), REINFORCE
+calculates the policy gradient by <span class="math display">\[
+\nabla_\theta V^{\pi_\theta} =
+\mathbb{E}_{\pi_\theta}\left[\sum_{t=0}^T\left(\sum_{t&#39;=t}^T\gamma^{t&#39;-t}r_{t&#39;}\nabla_\theta\log\pi_{\theta}(a_t~|~s_t)\right)\right].
+\]</span> The algorithm runs in steps:</p>
+<ol type="1">
+<li>Sample trajectory <span
+class="math inline">\(\{s_1,a_1,r_1,\dots,s_T,a_T,r_T\}\)</span> using
+current <span class="math inline">\(\pi_\theta\)</span>;</li>
+<li>calculate return <span
+class="math inline">\(\hat{R}_t\gets\sum_{t&#39;=t}^T\gamma^{t&#39;-t}r_{t&#39;}\)</span>
+for every time step <span class="math inline">\(r\)</span>;</li>
+<li>update <span class="math inline">\(\theta\)</span> by <span
+class="math inline">\(\theta_{\mathrm{new}}\gets \theta +
+\alpha\sum_{t=1}^T\hat{R}_t\nabla_\theta
+\log\pi(a_t~|~s_t)\)</span>.</li>
+</ol>
 <h2 id="deep-q-learning-dqn">Deep Q-Learning (DQN)</h2>
 <p>Just like Q-Learning, instead, model the Q function using neural
 network parameterized by <span class="math inline">\(\theta\)</span>,
@@ -694,7 +753,7 @@ link</a>]</h2>
 class="math display">\[
 \begin{align*}    
 \max_{\theta&#39;}&amp;~~\mathbb{E}_{s \sim \nu^{\pi_{\theta_k}},
-a\sim\pi_{\theta_k}(\cdot~|~s)}[\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta}(a~|~s)}A^{\pi_{\theta_k}}(s,a)]\\     
+a\sim\pi_{\theta_k}(\cdot~|~s)}\left[\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta}(a~|~s)}A^{\pi_{\theta_k}}(s,a)\right]\\     
 \text{s.t.}&amp;~~
 \mathbb{E}_{s\sim\nu^{\pi_{\theta_k}}}[D_{KL}(\pi_{\theta_k}(\cdot~|~s),
 \pi_{\theta&#39;}(\cdot~|~s))] \le \delta.
@@ -728,9 +787,9 @@ class="math inline">\(\beta\)</span> is</p>
 hyperparameter.</p>
 <h3 id="ppo-clip">PPO-Clip</h3>
 <p>PPO-Clip is more straightforward, by restricting the difference of
-the policies directly in the optimization function, i.e., <span
-class="math display">\[
-\theta\gets {\arg\max}_{\theta&#39;}\mathbb{E}_{s \sim
+the policies directly in the optimization function using both, i.e.,
+<span class="math display">\[
+\theta_{k+1}\gets {\arg\max}_{\theta&#39;}\mathbb{E}_{s \sim
 \nu^{\pi_{\theta_k}},
 a\sim\pi_{\theta_k}(\cdot~|~s)}\left[\min\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)}A^{\pi_{\theta_k}}(s,a),
 \mathrm{clip}\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)},
@@ -779,6 +838,108 @@ over <span class="math inline">\(A_t^{(k)}\)</span>'s.</p>
 not intentionally designed for this.</p>
 <h2 id="rlhf-reinforcement-learning-with-human-feedback">RLHF:
 Reinforcement Learning with Human Feedback</h2>
+<p>It's hard to teach LLMs generating ``good'' text that aligns with
+human preference via regular Supervised Fine-Tuning (SFT). However, we
+can do that by RLHF. Typically, given a pretrained language model, there
+are several steps of RLHF:</p>
+<ol type="1">
+<li>Gathering data by generating multiple responses from the LM, and use
+human annotation to rank the responses</li>
+<li>Train a reward model for predicting the human preference with future
+reward responses.</li>
+<li>Use RL methods to finetune the model to maximize the rewards, which
+will increase the probability of generating responses human like and
+decrease the probability of generating responses that human
+dislike.</li>
+</ol>
+<h2 id="reward-modeling">Reward Modeling</h2>
+<p>Given a reward model <span
+class="math inline">\(R_{\theta}(q,a)\)</span> parametrized by <span
+class="math inline">\(\theta\)</span> and predict the rating of the
+question-answer pair <span class="math inline">\((q,a)\)</span>,
+following the Bradley-Terry model, which defines the probability that a
+rater prefers <span class="math inline">\(a_i\)</span> over <span
+class="math inline">\(a_j\)</span> as <span class="math display">\[
+\Pr[a_i \succ a_j] = \frac{\exp(R_\theta(q,a_i))}{\exp(R_\theta(q,a_i))
++ \exp(R_\theta(q,a_j))}.
+\]</span> Taking the negative log-likelihood of the probability, we get
+the training objective loss function for pairs <span
+class="math inline">\((q,a_i)\)</span> and <span
+class="math inline">\((q,a_j)\)</span> as <span class="math display">\[
+L(\theta) = -\log\sigma(R_\theta(q,a_i)) - \exp(R_\theta(q,a_j)).
+\]</span></p>
+<h2 id="ppo-in-rlhf">PPO in RLHF</h2>
+<p>In this case, we typically train the critic model (used as value
+function) to be aligned with the output of the reward model. The
+objective can be written as <span class="math display">\[
+L(\theta_{c}) = \mathbb{E}_t[(V_{\theta_c}(s_t) - R_{\theta_r}(s_T))^2],
+\]</span> where <span class="math inline">\(R_{\theta_r}\)</span> is the
+pretrained reward model. And instead of using PPO-clip or penalty alone
+and optimize the objective function, we update the policy by calculating
+the loss of it to maximize the objective using both methods: <span
+class="math display">\[
+L_{\text{ppo}}(\theta) =\mathbb{E}_{s \sim \nu^{\pi_{\theta_k}},
+a\sim\pi_{\theta_k}(\cdot~|~s)}\left[\min\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)}A^{\pi_{\theta_k}}(s,a),
+\mathrm{clip}\left(\frac{\pi_{\theta&#39;}(a~|~s)}{\pi_{\theta_k}(a~|~s)},
+1-\epsilon, 1+\epsilon\right)\cdot A^{\pi_{\theta_k}}(s,a)\right)\right]
+- \mathbb{E}_{s \sim \nu^{\pi_{\theta_k}}}\left[\beta
+D_{KL}(\pi_{\theta_k}(\cdot~|~s), \pi_{\theta&#39;}(\cdot~|~s))\right]
+\]</span> Adding them together, we get the loss function to optimize in
+RLHF using PPO: <span class="math display">\[
+L = L(\theta_r) + L_{\text{ppo}}(\theta).
+\]</span></p>
+<h2 id="grpo-group-relative-policy-optimization">GRPO: Group Relative
+Policy Optimization</h2>
+<p><img src="/images/image-20250209201756802.png" title="Demonstration of PPO and GRPO" width="700"/></p>
+<p>GRPO is proposed to avoid the use of the additional value function
+approximation. Specifically, for each question <span
+class="math inline">\(q\)</span>, GRPO samples a group of outputs <span
+class="math inline">\(\{o_1, o_2, \dots, o_G\}\)</span> from current
+policy <span class="math inline">\(\pi_{\theta_k}\)</span>, then use
+them to optimize <span class="math display">\[
+\begin{align*}
+&amp;L_{\text{GRPO}}(\theta) = \mathop{\mathbb{E}}\limits_{q\sim{\cal
+Q}, \{o_i\}_{i\in[G]}\sim\pi_{\theta_k}(\cdot~|~q)}\\
+&amp;\left[\frac{1}{G}\sum_{i=1}^G\frac{1}{|o_i|}\left\{\min\left\{\frac{\pi_{\theta}(o_{i,t}~|~q,o_{1,&lt;t})}{\pi_{\theta_k}(o_{i,t}~|~q,o_{1,&lt;t})}A^{\pi_{\theta_k}}_{i,t},\mathrm{clip}\left(\frac{\pi_{\theta}(o_{i,t}~|~q,o_{1,&lt;t})}{\pi_{\theta_k}(o_{i,t}~|~q,o_{1,&lt;t})},
+1-\epsilon,
+1+\epsilon\right)A^{\pi_{\theta_k}}_{i,t}\right\}\right\}-\beta
+D_{KL}(\pi_\theta~|~\pi_{\theta_k})\right],
+\end{align*}
+\]</span> where <span class="math inline">\(\epsilon\)</span> and <span
+class="math inline">\(\beta\)</span> are hyper parameters. The KL
+divergence here is estimated by unbiased estimator <span
+class="math display">\[
+D_{KL}=\frac{\pi_{\theta_k}(o_{i,t}~|~q,o_{1,&lt;t})}{\pi_{\theta}(o_{i,t}~|~q,o_{1,&lt;t})}
+-
+\log\frac{\pi_{\theta_k}(o_{i,t}~|~q,o_{1,&lt;t})}{\pi_{\theta}(o_{i,t}~|~q,o_{1,&lt;t})}.
+\]</span> <span class="math inline">\(A^{\pi_{\theta_k}}_{i,t}\)</span>
+is the advantage calculated based on relative rewards of the outputs
+inside each group only. For <strong>outcome based RL</strong>, i.e., the
+reward model outputs rewards based on the outcome for each of the
+outcomes <span
+class="math inline">\(\mathbf{r}:=\{r_1,r_2,\dots,r_G\}\)</span>, we
+assign the advantage of each internal token with the normalized reward,
+i.e., <span class="math display">\[
+\hat{A}_{i,t} \gets
+\frac{r_i-\mathrm{mean}(\mathbf{r})}{\mathrm{std}(\mathbf{r})}.
+\]</span> For <strong>process based RL</strong>, i.e., the reward model
+outputs rewards based on every reasoning step of each outcomes <span
+class="math inline">\(\mathbf{R}
+:=\{\{r_1^{\mathrm{ind}(1)},\dots,r_1^{\mathrm{ind}(k_1)}\},\dots,\{r_G^{\mathrm{ind}(1)},\dots,r_G^{\mathrm{ind}(k_G)}\}\}\)</span>,
+where <span class="math inline">\(k_j\)</span> is the <span
+class="math inline">\(\mathrm{ind}(j)\)</span> is the ending token index
+of <span class="math inline">\(j\)</span>-th step, and <span
+class="math inline">\(k_i\)</span> is the total number of steps in the
+<span class="math inline">\(i\)</span>-th output. We assign the
+advantage by <span class="math display">\[
+\begin{align*}
+\hat{r}_i^{\mathrm{ind}(j)} \gets&amp;~
+\frac{r_i^{\mathrm{ind}(j)}-\mathrm{mean}(\mathbf{R})}{\mathrm{std}(\mathbf{R})}
+\\
+\hat{A}_{i,t} \gets&amp;~ \sum_{\mathrm{ind}(j)\ge
+t}\hat{r}_i^{\mathrm{ind}(j)}.
+\end{align*}
+\]</span></p>
 <h1 id="appendix">Appendix</h1>
 <h2 id="proof-of-policy-gradient-theorem">Proof of Policy Gradient
 Theorem</h2>
@@ -956,12 +1117,13 @@ agent is at state <span class="math inline">\(s\)</span> in time step
       <div class="post-toc-wrap sidebar-panel">
           <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-basics"><span class="nav-number">1.</span> <span class="nav-text">RL basics</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#markov-decision-process"><span class="nav-number">2.</span> <span class="nav-text">Markov Decision Process</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#value-iteration"><span class="nav-number">2.1.</span> <span class="nav-text">Value Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#policy-iteration"><span class="nav-number">2.2.</span> <span class="nav-text">Policy Iteration</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#use-of-q-function"><span class="nav-number">2.3.</span> <span class="nav-text">Use of Q-function</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#q-learning"><span class="nav-number">3.</span> <span class="nav-text">Q-Learning</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#monte-carlo-learning"><span class="nav-number">3.1.</span> <span class="nav-text">Monte Carlo Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#temporal-difference-learning"><span class="nav-number">3.2.</span> <span class="nav-text">Temporal Difference Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#q-learning-1"><span class="nav-number">3.3.</span> <span class="nav-text">Q-Learning</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#sarsa-state-action-reward-state-action"><span class="nav-number">3.4.</span> <span class="nav-text">SARSA:
 State-Action-Reward-State-Action</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#deep-rl"><span class="nav-number">4.</span> <span class="nav-text">Deep RL</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-policy-network-policy-gradient"><span class="nav-number">4.1.</span> <span class="nav-text">Deep Policy Network (Policy
-Gradient)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning-dqn"><span class="nav-number">4.2.</span> <span class="nav-text">Deep Q-Learning (DQN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic-network"><span class="nav-number">4.3.</span> <span class="nav-text">Actor-Critic Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trpo-trust-region-policy-optimization-paper-link"><span class="nav-number">4.4.</span> <span class="nav-text">TRPO: Trust
-Region Policy Optimization [paper link]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo-proximal-policy-optimization-paper-link"><span class="nav-number">4.5.</span> <span class="nav-text">PPO: Proximal
+Gradient)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reinforce"><span class="nav-number">4.2.</span> <span class="nav-text">REINFORCE</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#deep-q-learning-dqn"><span class="nav-number">4.3.</span> <span class="nav-text">Deep Q-Learning (DQN)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#actor-critic-network"><span class="nav-number">4.4.</span> <span class="nav-text">Actor-Critic Network</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#trpo-trust-region-policy-optimization-paper-link"><span class="nav-number">4.5.</span> <span class="nav-text">TRPO: Trust
+Region Policy Optimization [paper link]</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo-proximal-policy-optimization-paper-link"><span class="nav-number">4.6.</span> <span class="nav-text">PPO: Proximal
 Policy Optimization [paper
-link]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-penalty"><span class="nav-number">4.5.1.</span> <span class="nav-text">PPO-Penalty</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-clip"><span class="nav-number">4.5.2.</span> <span class="nav-text">PPO-Clip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gae-generalized-advantage-estimation"><span class="nav-number">4.5.3.</span> <span class="nav-text">GAE: Generalized Advantage
+link]</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-penalty"><span class="nav-number">4.6.1.</span> <span class="nav-text">PPO-Penalty</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ppo-clip"><span class="nav-number">4.6.2.</span> <span class="nav-text">PPO-Clip</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#gae-generalized-advantage-estimation"><span class="nav-number">4.6.3.</span> <span class="nav-text">GAE: Generalized Advantage
 Estimation</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#rl-in-language-models"><span class="nav-number">5.</span> <span class="nav-text">RL in Language Models</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#rlhf-reinforcement-learning-with-human-feedback"><span class="nav-number">5.1.</span> <span class="nav-text">RLHF:
-Reinforcement Learning with Human Feedback</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appendix"><span class="nav-number">6.</span> <span class="nav-text">Appendix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-policy-gradient-theorem"><span class="nav-number">6.1.</span> <span class="nav-text">Proof of Policy Gradient
+Reinforcement Learning with Human Feedback</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#reward-modeling"><span class="nav-number">5.2.</span> <span class="nav-text">Reward Modeling</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#ppo-in-rlhf"><span class="nav-number">5.3.</span> <span class="nav-text">PPO in RLHF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#grpo-group-relative-policy-optimization"><span class="nav-number">5.4.</span> <span class="nav-text">GRPO: Group Relative
+Policy Optimization</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#appendix"><span class="nav-number">6.</span> <span class="nav-text">Appendix</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#proof-of-policy-gradient-theorem"><span class="nav-number">6.1.</span> <span class="nav-text">Proof of Policy Gradient
 Theorem</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
