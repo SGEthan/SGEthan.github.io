@@ -226,7 +226,7 @@ body {
   box-sizing: border-box;
   color: var(--text-color);
   font-family: Noto Serif SC, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 1.15em;
+  font-size: 1.25em;
   line-height: 2;
   min-height: 100%;
   position: relative;
@@ -1180,7 +1180,7 @@ pre code {
 }
 .site-title {
   font-family: Noto Serif SC, 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  font-size: 1.375em;
+  font-size: 1.15em;
   font-weight: normal;
   line-height: 1.5;
   margin: 0;
@@ -1321,7 +1321,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #ff6f3b;
+    background: #1f3c5b;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2574,7 +2574,7 @@ header.header {
 .main-inner {
   border-radius: initial;
   box-sizing: border-box;
-  width: calc(100% - 252px);
+  width: calc(100% - 212px);
 }
 @media (max-width: 991px) {
   .main-inner {
@@ -2583,7 +2583,7 @@ header.header {
   }
 }
 .footer-inner {
-  padding-right: 252px;
+  padding-right: 212px;
 }
 @media (max-width: 991px) {
   .footer-inner {
@@ -2593,7 +2593,7 @@ header.header {
   }
 }
 .column {
-  width: 240px;
+  width: 200px;
 }
 @media (max-width: 991px) {
   .column {
@@ -2799,6 +2799,7 @@ body {
 .sidebar {
   transition-duration: 0.4s;
   opacity: 0.8;
+  font-size: 90%;
 }
 .posts-expand .post-title-link {
   color: #222;
@@ -2812,4 +2813,31 @@ body {
 }
 .content-wrap {
   opacity: 0.9;
+}
+.main-inner {
+  opacity: 0.9;
+}
+.header {
+  opacity: 0.8;
+}
+.site-meta {
+  font-size: 110%;
+}
+.main-menu.menu {
+  font-size: 90%;
+}
+.main-inner.index.posts-expand {
+  font-size: 75%;
+  padding-top: 80px;
+  color: #222;
+}
+.main-inner.post.posts-expand {
+  font-size: 75%;
+  padding-top: 80px;
+  color: #222;
+}
+.main-inner {
+  font-size: 75%;
+  padding-top: 80px;
+  color: #222;
 }
