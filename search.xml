@@ -120,6 +120,166 @@ href="https://cloud.tencent.com/">腾讯云</a>。</p>
       </tags>
   </entry>
   <entry>
+    <title>学期总结</title>
+    <url>/2022/02/16/%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/</url>
+    <content><![CDATA[<p>去年的时候，抓着暑假的尾巴搭建了自己的博客，但从那之后，似乎也没有再写过博文。如果不考虑用来做测试的那两篇，这应该算是第一篇博文了。</p>
+<p>转眼一个学期和寒假就这么过去，总算得空，且有闲心来写一些东西。接近半年的时间没有摸自己的博客，竟花了半小时重温了一遍hexo的搭建和使用，才开始动笔写下这篇。</p>
+<p>简单算算，差不多正好六个月，不长不短的一段时间。学到了很多新的东西，思考了很多新的问题，有高光有挫败。Anyway，我仍然期望自己的博客是技术向的，酸腐的文字在这里就不必多说了。</p>
+<h2 id="学习相关">学习相关</h2>
+<p>先从学业相关的东西来开始吧。</p>
+<h3 id="学校课程">学校课程</h3>
+<p>在课程方面，这一学期是从学校课程学到了一些有用的知识的，列举如下：</p>
+<ul>
+<li><p>Web信息处理与应用（<a
+href="http://staff.ustc.edu.cn/~tongxu/webinfo/">课程主页</a>）</p>
+<p>非常有意思的一门课程，徐童老师（<a
+href="http://staff.ustc.edu.cn/~tongxu/">老师的主页</a>）也是非常风趣幽默的一个人，课程涉及知识非常之广范繁杂，但老师的PPT制作良好，适合异步学习。大致涉及了web信息的搜集（爬虫），处理（分类，聚类等大数据知识），检索（网页索引，搜索引擎，多模态检索等）。毕竟是选修课，大多数知识一笔带过，但作为web信息，大数据知识的入门课程还是非常不错的。该学期总共三次实验，大致内容和总结如下：</p>
+<ul>
+<li>实验一：首先对所给的数据集（美国经济相关新闻数据集）进行预处理（这里涉及到<span
+class="math inline">\(NLP\)</span>的工具和知识），然后在数据集上构建一个简单的搜索引擎，要求实现布尔检索和语义检索。项目地址：<a
+href="https://github.com/SGEthan/Info_Retrieving">SGEthan/Info_Retrieving</a></li>
+<li>实验二：知识表示学习相关，要求进行关系预测，即，在所给数据集上，给出实体
+<span class="math inline">\(entity:\mathbf{e}_1\)</span> 和关系 <span
+class="math inline">\(relation:\mathbf{r}\)</span> ，要求计算给出与
+<span class="math inline">\(\mathbf{e_1}\)</span> 有着关系 <span
+class="math inline">\(\mathbf{r}\)</span> 的实体 <span
+class="math inline">\(entity:\mathbf{e_1}\)</span> 的预测。项目地址：<a
+href="https://github.com/SGEthan/Relation_Prediction">SGEthan/Relation_Prediction</a></li>
+<li>实验三：推荐系统的构建，要求在所给数据集的基础上对每个用户进行音乐的推荐。我们采用了<strong>基于物品的协同过滤推荐</strong>。项目地址：<a
+href="https://github.com/SGEthan/Recommend">SGEthan/Recommend</a></li>
+</ul></li>
+<li><p>机器学习 （<a
+href="https://miralab.ai/course/ml_2021fall/">课程主页</a>）</p>
+<p>是我在USTC两年半以来上过的最硬核的一门课程，没有之一，被称为<strong>西区数学之巅</strong>。这门课程的数学涉及范围之广泛，难度之大，是计科和信院大多数课程所不及的，这或许是王杰老师（<a
+href="https://miralab.ai/people/jie-wang/">老师的主页</a>）的个人特点，但也确实契合科大扎实的数理基础风气；课程还有一个特色，使用全英文的参考资料，作业和考试也全部要求英语作答，也是大学以来的第一次。</p>
+<p>从最基础的数学部分讲起，老师用一个学期从最底层的数学向上构建了学习理论的框架，并且介绍了一些应用的理论和算法。课程涉及知识内容列举如下：</p>
+<ul>
+<li>线性回归 Linear Regression</li>
+<li>偏差-方差分解 Bias Variance Decomposition</li>
+<li>贝叶斯线性回归 Bayesian Linear Regression</li>
+<li>分析基础 Basics of Analysis</li>
+<li>凸优化相关 Convex Sets, Convex Functions, Convex Optimization
+Problems &amp; Separation Theorems</li>
+<li>次梯度方法 Subdifferentials</li>
+<li>决策树 Decision Tree</li>
+<li>朴素贝叶斯分类器 Naive Bayes Classifier</li>
+<li>逻辑回归 Logistic Regression</li>
+<li>支持向量机（以及拉格朗日对偶方法） Support Vector Machine, with
+Lagrange Duality</li>
+<li>神经网络与卷积神经网络 Neural Networks &amp; Convolutional Neural
+Networks</li>
+<li>主成分分析 Principal Component Analysis</li>
+<li>强化学习 Reinforcement Learning, with Multi-armed Bandits
+Problem</li>
+</ul>
+<p>王杰老师对于学生的要求非常高，作业题目的难度非常之大，每次作业大约需要至少20个小时来完成，考试难度比作业略小，但期中期末的全班均分都没有及格。虽然很痛苦，但不可否认，这一门课程让我在一个学期学到了非常多的知识，也锻炼了应对英文资料的能力。</p>
+<p>课程的final project是一个强化学习任务，要求我们训练一个Agent，在Atari
+Pong游戏中取得一定的成果，而且为了锻炼我们的能力，不允许使用任何自动求导的工具包。我们组最终选择使用Policy
+Gradient方法去完成（事实上是因为一开始采用的DQN方法没有work），项目地址：<a
+href="https://github.com/SGEthan/RL_PG_Atari_Pong">SGEthan/RL_PG_Atari_Pong</a>
+。</p></li>
+<li><p>其他课程</p>
+<p>有一说一，除了以上两门课，这学期其他课程给我带来的收益可以直接忽略，这其中有：</p>
+<ul>
+<li>计算机网络：我校计网只能说是纯文科，靠着期中期末前的突击，学到了一些东西的，但东西属实不多，大概就是一些计网的理论知识和简单应用。个人认为计算机网络知识的学习还是得靠实践，而且确实有很多有趣的相关项目。寒假在家里折腾了：
+<ul>
+<li>找ISP要来了公网IP，在家里老电脑开了个服务，硬盘映射出去，当作一个NAS使用。因为电脑太老，也没有刷NAS的操作系统，仅仅是简单跑了个服务，用的是<a
+href="http://iscute.cn/chfs">chfs</a>，在这里特别感谢一下项目的开发者，我遇到的bug能够及时给予邮件回馈。</li>
+<li>摸了一下V2Ray，重新搭了自己的服务，虽然仍然用了别人的一把梭脚本。下学期选过信安课程之后可能会考虑自己实现一个协议试试看。</li>
+</ul></li>
+<li>人工智能导论：纯文科，期末考前一天学完900页的AIMA，提前交卷居然还考得不错，属实没啥用的一门课</li>
+<li>模式识别导论：了解了一些传统的统计学习方法，包括概率，几何，聚类方法。学到了一些东西，也写了一些没啥用的小项目，甚至都懒得传到Github的那种。最草的是，期末考试前，把每一种算法都复习的滚瓜烂熟，结果他娘的考了一张纯文科试卷，这道压轴题可能会让我记住很久：“模式识别的一般流程是什么样的？请按照上述流程设计一个过程来进行羽毛球的筛选”，整张卷子的数学不超过小学水平，一道算法都没考，全是概念，全靠硬糊，最后成绩自然也不甚理想，奶奶的。</li>
+<li>编译原理：个人对于底层技术没有丝毫兴趣，这门课全靠队友带飞，非常感谢我的队友包容我摸鱼一学期（当然也有可能是因为我ML大作业带他飞了）。</li>
+<li>随机过程：计科的最后一门数理基础课，还是比较有用的，Markov过程在AI方面的应用相当之广泛，现在接触的很多Learning
+Theory都不可避免的需要随机过程的知识和方法，挺后悔没有好好学，不过期末速成的结果也挺满意，这样的知识密度，感觉也不太需要一个学期的时间来学习。</li>
+<li>热学：我的评价是：寄，装逼装了一个学期，期末考试提前交卷还调戏助教，结果卷面计算全崩，差点挂科。总结之：再在课程群装逼我就是啥b。</li>
+</ul></li>
+</ul>
+<h3 id="瞎折腾">瞎折腾</h3>
+<p>学期中还是折腾了一些有意思的东西的，也有一些东西记录下来：</p>
+<ul>
+<li><p>一开始是想弄<a
+href="https://github.com/ageitgey/face_recognition">face_recognition</a>，一番折腾之后，为了使用CUDA，弄了WSL，为了使用WSL的GUI，弄了Windows
+11。然而从安装好Windows
+11之后到现在几个月，也没重新弄起来face_recognition。这里有一些记录：</p>
+<ul>
+<li><p>CUDA的安装过程痛苦不堪，以国内的网络环境，各种源站崩的崩，慢的慢，整个安装过程属实折磨，配置环境整个过程花费了近一周时间，一直在跟魔幻的网络battle，也因此折腾了各种奇奇怪怪的代理方法，以与GFW斗智斗勇。如果有机会回顾一遍的话，我会将整个折腾过程记录下来。（希望没有机会回顾了🙏）</p></li>
+<li><p>不同Ubuntu版本的apt源是有区别的，如果不一致，就会导致报错：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
+<p>不同的源名称对应如下：</p>
+<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Ubuntu 12.04 (LTS)代号为precise。</span><br><span class="line">Ubuntu 14.04 (LTS)代号为trusty。</span><br><span class="line">Ubuntu 15.04 代号为vivid。</span><br><span class="line">Ubuntu 15.10 代号为wily。</span><br><span class="line">Ubuntu 16.04 (LTS)代号为xenial。</span><br><span class="line">Ubuntu 18.04 (LTS)代号为bionic。</span><br><span class="line">Ubuntu 20.04 (LTS)代号为focal。</span><br></pre></td></tr></table></figure>
+<p>参考资料：<a
+href="https://blog.csdn.net/woshiheweigui/article/details/115557020">ubuntu20.04
+apt 安装报 E: Unable to correct problems, you have held broken
+packages._woshiheweigui的博客-CSDN博客</a></p></li>
+</ul></li>
+<li><p>折腾模式识别大作业的时候记录了这些东西：</p>
+<ul>
+<li><p>可以用布尔数组来对<code>ndarray</code>进行截取，即给定一个同维相同shape的布尔数组，将这个布尔数组作为索引，就可以得到对应布尔值为真的位置的数字构成的一维数组。实验中的例子：</p>
+<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = x_pca[label == <span class="number">1</span>, <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
+<p>这里的<code>label</code>是一个一维数组，仅含<code>0</code>和<code>1</code>两种元素。故<code>label == 1</code>在这里会返回一个相同大小的布尔数组，<code>1</code>元素对应索引位置的元素为<code>True</code>，反之为<code>False</code>。</p>
+<p><code>x_pca</code>是一个数据集，<code>768*8</code>的<code>ndarray</code>，如此截取，可以得到<code>x_pca</code>中所有输出为<code>1</code>的所对应的样本。</p></li>
+<li><p>在 <span class="math inline">\(k-Fold\)</span>
+交叉验证时，我们所用到的数据是<strong>训练集中的全部数据</strong>，<strong>不包含测试集</strong></p></li>
+<li><p><code>numpy.ravel()</code>和<code>numpy.flatten()</code>的区别：<code>ravel()</code>返回的是一个<strong>视图</strong>，也就意味着，对其的修改，是会影响到原矩阵的；但<code>flatten()</code>返回的是一个<strong>拷贝</strong>，也就意味着，对其的修改，不会影响到原矩阵</p></li>
+</ul></li>
+</ul>
+<h3 id="科研相关">科研相关</h3>
+<p>这部分主要是寒假的工作了，整个寒假基本都交给了读论文。上学期虽然（名义上）加入了老师的实验室，做数据隐私和安全相关工作，但是由于自己课程太多，时间太紧张（大多交给了王者荣耀），并没有花费什么精力去做这个事情。期末和国外的教授联系对接之后，一整个寒假都在读论文，主要集中在Learning
+Theory，略微看起来像applied tech一些的，也都是很理论的Graph
+Learning问题。刚开始读论文的时候有一些记录，后来逐渐魔幻，就摆烂了，没有再将新的概念以笔记的形式记录下来。读第一篇论文的时候记录了这样几个Notation/Theorem：</p>
+<ul>
+<li><p><span class="math inline">\(\tilde{O}(g(n))\)</span>：</p>
+<p>stands for <span
+class="math inline">\(O(g(n)\log{g(n)})\)</span>.</p></li>
+<li><p>Union Bound: <span class="math display">\[
+\mathbb{P}[\mathop{\cup}\limits_{i}A_i]\leq \sum_i\mathbb{P}[A_i]
+\]</span></p></li>
+<li><p>Hoeffding's Inequality:</p>
+<p>Let <span class="math inline">\(Z_1,\dots,Z_n\)</span> be independent
+bounded random variables with <span
+class="math inline">\(Z_i\in[a,b]\)</span> for all <span
+class="math inline">\(i\)</span>, where <span
+class="math inline">\(-\infty&lt;a\le b&lt;\infty\)</span>. Then <span
+class="math display">\[
+\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\ge
+t\right)\le\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
+\]</span> and <span class="math display">\[
+\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\le
+-t\right)\ge\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
+\]</span> for all <span class="math inline">\(t\ge 0\)</span></p></li>
+</ul>
+<p>现在在等着选择一个确定的方向，来正式开始自己的本科科研。希望能在未来半年内做出一些成果吧，要不然属实没有大学读了……</p>
+<h2 id="学习之外">学习之外</h2>
+<p>半年多以来经历了很多事情，也有很多或深刻或奇怪的思考，难以总结之，也不适合作为博文放上来，在此就摘自己的跨年总结，来替代一下吧。</p>
+<h3 id="跨年总结">跨年总结</h3>
+<p>（写于2021年12月底，在空间跨年的时候发出）</p>
+<p>开始写的时候突然惊觉，上一次在空间写这种长篇的，回忆总结性的文字，竟是两年前的跨年夜。不知不觉，已经700多天了。</p>
+<p>曾于两年前定下的目标和计划，因为自己，因为其他的一些人和一些事，总与如今的事实有所偏差。好在，偏的并不算特别多。</p>
+<p>去年的跨年夜，我处在前所未有，如今也未再复现过的满足中，那是今天为止，最接近自己希冀的状态的时刻。彼时彼刻，幸福感压倒了一切，连思考都变得不再必要，也就并无自我的总结与记录。
+如今如此，从那般梦境坠落之后，又经历了更多的情节故事，这中间的思考和自省，也值得被记录写下。</p>
+<p>两年，18岁，19岁。</p>
+<p>成年之后的一段时间，遇见的人，经历的事，所施于我的影响，犹如脱胎换骨一般。如今回望
+，自己已远不是曾经那样了。</p>
+<p>与一些人从远到近，与一些人从近到远，熙熙攘攘，擦肩而过。不幸地失去了一些人，也幸运地留下了，发现了一些人。相识，相熟，相爱，相别，丰富之故事，复杂之情感，交织组成了这相当魔幻的一年多。</p>
+<p>由于自己对事件时间精确的记忆，每一段独特的故事，都深刻于脑中，以看起来永不消逝的形式存在着，每沉于其中，总难以自拔。</p>
+<p>“溺于可忆而不可追的过去， 执于可知而不可求的梦境。”</p>
+<p>有过甜蜜，以至于看到了未来的尽头，沉于其中，似乎一切原本的苦涩都消之无形；有过坠落，仿佛所有生活的支柱都离我而去，未来的可能也不再有吸引力，生命垂于岌岌可危的一念之间；也有现在的释然和平淡，即已如今如此，不妨放下一切期待和愿景，摆脱所有自我限制的桎梏，享受每一个独特的当下。</p>
+<p>曾被问到，如果有机会忘掉一切，回到几年前，会愿意吗？</p>
+<p>我斩钉截铁的答案是，不愿意。虽然有不满，有困难，有这样那样的挫折和遗憾，但必须要承认，这段经历是丰富的，是精彩的，是我之所以成为我的必要缘由。</p>
+<p>“我最近经历的，可真有点多了”</p>
+<p>“这算是成年仪式吗”</p>
+<p>“如果是，那它的效果可真好”</p>
+<p>时光荏苒，如今的我，已不再会如两年前一样，写下具体而细致的期望和愿景。唯愿，平安喜乐，万事胜意。</p>
+<h3 id="愿景">愿景</h3>
+<p>倒没什么特别的期望，就希望一切顺利吧，科研，学业，身体，情绪。</p>
+<p>麻了，开头还说想让自己的博客是纯技术向来着，结果最后还是写了这些酸酸的文字。就写到这里罢。</p>
+]]></content>
+      <tags>
+        <tag>Thoughts</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Review of Reinforcement Learning</title>
     <url>/2025/02/05/RL-Algorithms-in-Language-Model-Reasoning/</url>
     <content><![CDATA[<h1 id="rl-basics">RL basics</h1>
@@ -891,165 +1051,5 @@ agent is at state <span class="math inline">\(s\)</span> in time step
     <url>/2021/08/28/test-my-site/</url>
     <content><![CDATA[
 ]]></content>
-  </entry>
-  <entry>
-    <title>学期总结</title>
-    <url>/2022/02/16/%E5%AD%A6%E6%9C%9F%E6%80%BB%E7%BB%93/</url>
-    <content><![CDATA[<p>去年的时候，抓着暑假的尾巴搭建了自己的博客，但从那之后，似乎也没有再写过博文。如果不考虑用来做测试的那两篇，这应该算是第一篇博文了。</p>
-<p>转眼一个学期和寒假就这么过去，总算得空，且有闲心来写一些东西。接近半年的时间没有摸自己的博客，竟花了半小时重温了一遍hexo的搭建和使用，才开始动笔写下这篇。</p>
-<p>简单算算，差不多正好六个月，不长不短的一段时间。学到了很多新的东西，思考了很多新的问题，有高光有挫败。Anyway，我仍然期望自己的博客是技术向的，酸腐的文字在这里就不必多说了。</p>
-<h2 id="学习相关">学习相关</h2>
-<p>先从学业相关的东西来开始吧。</p>
-<h3 id="学校课程">学校课程</h3>
-<p>在课程方面，这一学期是从学校课程学到了一些有用的知识的，列举如下：</p>
-<ul>
-<li><p>Web信息处理与应用（<a
-href="http://staff.ustc.edu.cn/~tongxu/webinfo/">课程主页</a>）</p>
-<p>非常有意思的一门课程，徐童老师（<a
-href="http://staff.ustc.edu.cn/~tongxu/">老师的主页</a>）也是非常风趣幽默的一个人，课程涉及知识非常之广范繁杂，但老师的PPT制作良好，适合异步学习。大致涉及了web信息的搜集（爬虫），处理（分类，聚类等大数据知识），检索（网页索引，搜索引擎，多模态检索等）。毕竟是选修课，大多数知识一笔带过，但作为web信息，大数据知识的入门课程还是非常不错的。该学期总共三次实验，大致内容和总结如下：</p>
-<ul>
-<li>实验一：首先对所给的数据集（美国经济相关新闻数据集）进行预处理（这里涉及到<span
-class="math inline">\(NLP\)</span>的工具和知识），然后在数据集上构建一个简单的搜索引擎，要求实现布尔检索和语义检索。项目地址：<a
-href="https://github.com/SGEthan/Info_Retrieving">SGEthan/Info_Retrieving</a></li>
-<li>实验二：知识表示学习相关，要求进行关系预测，即，在所给数据集上，给出实体
-<span class="math inline">\(entity:\mathbf{e}_1\)</span> 和关系 <span
-class="math inline">\(relation:\mathbf{r}\)</span> ，要求计算给出与
-<span class="math inline">\(\mathbf{e_1}\)</span> 有着关系 <span
-class="math inline">\(\mathbf{r}\)</span> 的实体 <span
-class="math inline">\(entity:\mathbf{e_1}\)</span> 的预测。项目地址：<a
-href="https://github.com/SGEthan/Relation_Prediction">SGEthan/Relation_Prediction</a></li>
-<li>实验三：推荐系统的构建，要求在所给数据集的基础上对每个用户进行音乐的推荐。我们采用了<strong>基于物品的协同过滤推荐</strong>。项目地址：<a
-href="https://github.com/SGEthan/Recommend">SGEthan/Recommend</a></li>
-</ul></li>
-<li><p>机器学习 （<a
-href="https://miralab.ai/course/ml_2021fall/">课程主页</a>）</p>
-<p>是我在USTC两年半以来上过的最硬核的一门课程，没有之一，被称为<strong>西区数学之巅</strong>。这门课程的数学涉及范围之广泛，难度之大，是计科和信院大多数课程所不及的，这或许是王杰老师（<a
-href="https://miralab.ai/people/jie-wang/">老师的主页</a>）的个人特点，但也确实契合科大扎实的数理基础风气；课程还有一个特色，使用全英文的参考资料，作业和考试也全部要求英语作答，也是大学以来的第一次。</p>
-<p>从最基础的数学部分讲起，老师用一个学期从最底层的数学向上构建了学习理论的框架，并且介绍了一些应用的理论和算法。课程涉及知识内容列举如下：</p>
-<ul>
-<li>线性回归 Linear Regression</li>
-<li>偏差-方差分解 Bias Variance Decomposition</li>
-<li>贝叶斯线性回归 Bayesian Linear Regression</li>
-<li>分析基础 Basics of Analysis</li>
-<li>凸优化相关 Convex Sets, Convex Functions, Convex Optimization
-Problems &amp; Separation Theorems</li>
-<li>次梯度方法 Subdifferentials</li>
-<li>决策树 Decision Tree</li>
-<li>朴素贝叶斯分类器 Naive Bayes Classifier</li>
-<li>逻辑回归 Logistic Regression</li>
-<li>支持向量机（以及拉格朗日对偶方法） Support Vector Machine, with
-Lagrange Duality</li>
-<li>神经网络与卷积神经网络 Neural Networks &amp; Convolutional Neural
-Networks</li>
-<li>主成分分析 Principal Component Analysis</li>
-<li>强化学习 Reinforcement Learning, with Multi-armed Bandits
-Problem</li>
-</ul>
-<p>王杰老师对于学生的要求非常高，作业题目的难度非常之大，每次作业大约需要至少20个小时来完成，考试难度比作业略小，但期中期末的全班均分都没有及格。虽然很痛苦，但不可否认，这一门课程让我在一个学期学到了非常多的知识，也锻炼了应对英文资料的能力。</p>
-<p>课程的final project是一个强化学习任务，要求我们训练一个Agent，在Atari
-Pong游戏中取得一定的成果，而且为了锻炼我们的能力，不允许使用任何自动求导的工具包。我们组最终选择使用Policy
-Gradient方法去完成（事实上是因为一开始采用的DQN方法没有work），项目地址：<a
-href="https://github.com/SGEthan/RL_PG_Atari_Pong">SGEthan/RL_PG_Atari_Pong</a>
-。</p></li>
-<li><p>其他课程</p>
-<p>有一说一，除了以上两门课，这学期其他课程给我带来的收益可以直接忽略，这其中有：</p>
-<ul>
-<li>计算机网络：我校计网只能说是纯文科，靠着期中期末前的突击，学到了一些东西的，但东西属实不多，大概就是一些计网的理论知识和简单应用。个人认为计算机网络知识的学习还是得靠实践，而且确实有很多有趣的相关项目。寒假在家里折腾了：
-<ul>
-<li>找ISP要来了公网IP，在家里老电脑开了个服务，硬盘映射出去，当作一个NAS使用。因为电脑太老，也没有刷NAS的操作系统，仅仅是简单跑了个服务，用的是<a
-href="http://iscute.cn/chfs">chfs</a>，在这里特别感谢一下项目的开发者，我遇到的bug能够及时给予邮件回馈。</li>
-<li>摸了一下V2Ray，重新搭了自己的服务，虽然仍然用了别人的一把梭脚本。下学期选过信安课程之后可能会考虑自己实现一个协议试试看。</li>
-</ul></li>
-<li>人工智能导论：纯文科，期末考前一天学完900页的AIMA，提前交卷居然还考得不错，属实没啥用的一门课</li>
-<li>模式识别导论：了解了一些传统的统计学习方法，包括概率，几何，聚类方法。学到了一些东西，也写了一些没啥用的小项目，甚至都懒得传到Github的那种。最草的是，期末考试前，把每一种算法都复习的滚瓜烂熟，结果他娘的考了一张纯文科试卷，这道压轴题可能会让我记住很久：“模式识别的一般流程是什么样的？请按照上述流程设计一个过程来进行羽毛球的筛选”，整张卷子的数学不超过小学水平，一道算法都没考，全是概念，全靠硬糊，最后成绩自然也不甚理想，奶奶的。</li>
-<li>编译原理：个人对于底层技术没有丝毫兴趣，这门课全靠队友带飞，非常感谢我的队友包容我摸鱼一学期（当然也有可能是因为我ML大作业带他飞了）。</li>
-<li>随机过程：计科的最后一门数理基础课，还是比较有用的，Markov过程在AI方面的应用相当之广泛，现在接触的很多Learning
-Theory都不可避免的需要随机过程的知识和方法，挺后悔没有好好学，不过期末速成的结果也挺满意，这样的知识密度，感觉也不太需要一个学期的时间来学习。</li>
-<li>热学：我的评价是：寄，装逼装了一个学期，期末考试提前交卷还调戏助教，结果卷面计算全崩，差点挂科。总结之：再在课程群装逼我就是啥b。</li>
-</ul></li>
-</ul>
-<h3 id="瞎折腾">瞎折腾</h3>
-<p>学期中还是折腾了一些有意思的东西的，也有一些东西记录下来：</p>
-<ul>
-<li><p>一开始是想弄<a
-href="https://github.com/ageitgey/face_recognition">face_recognition</a>，一番折腾之后，为了使用CUDA，弄了WSL，为了使用WSL的GUI，弄了Windows
-11。然而从安装好Windows
-11之后到现在几个月，也没重新弄起来face_recognition。这里有一些记录：</p>
-<ul>
-<li><p>CUDA的安装过程痛苦不堪，以国内的网络环境，各种源站崩的崩，慢的慢，整个安装过程属实折磨，配置环境整个过程花费了近一周时间，一直在跟魔幻的网络battle，也因此折腾了各种奇奇怪怪的代理方法，以与GFW斗智斗勇。如果有机会回顾一遍的话，我会将整个折腾过程记录下来。（希望没有机会回顾了🙏）</p></li>
-<li><p>不同Ubuntu版本的apt源是有区别的，如果不一致，就会导致报错：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">E: Unable to correct problems, you have held broken packages.</span><br></pre></td></tr></table></figure>
-<p>不同的源名称对应如下：</p>
-<figure class="highlight plaintext"><table><tr><td class="code"><pre><span class="line">Ubuntu 12.04 (LTS)代号为precise。</span><br><span class="line">Ubuntu 14.04 (LTS)代号为trusty。</span><br><span class="line">Ubuntu 15.04 代号为vivid。</span><br><span class="line">Ubuntu 15.10 代号为wily。</span><br><span class="line">Ubuntu 16.04 (LTS)代号为xenial。</span><br><span class="line">Ubuntu 18.04 (LTS)代号为bionic。</span><br><span class="line">Ubuntu 20.04 (LTS)代号为focal。</span><br></pre></td></tr></table></figure>
-<p>参考资料：<a
-href="https://blog.csdn.net/woshiheweigui/article/details/115557020">ubuntu20.04
-apt 安装报 E: Unable to correct problems, you have held broken
-packages._woshiheweigui的博客-CSDN博客</a></p></li>
-</ul></li>
-<li><p>折腾模式识别大作业的时候记录了这些东西：</p>
-<ul>
-<li><p>可以用布尔数组来对<code>ndarray</code>进行截取，即给定一个同维相同shape的布尔数组，将这个布尔数组作为索引，就可以得到对应布尔值为真的位置的数字构成的一维数组。实验中的例子：</p>
-<figure class="highlight python"><table><tr><td class="code"><pre><span class="line">col = x_pca[label == <span class="number">1</span>, <span class="number">0</span>]</span><br></pre></td></tr></table></figure>
-<p>这里的<code>label</code>是一个一维数组，仅含<code>0</code>和<code>1</code>两种元素。故<code>label == 1</code>在这里会返回一个相同大小的布尔数组，<code>1</code>元素对应索引位置的元素为<code>True</code>，反之为<code>False</code>。</p>
-<p><code>x_pca</code>是一个数据集，<code>768*8</code>的<code>ndarray</code>，如此截取，可以得到<code>x_pca</code>中所有输出为<code>1</code>的所对应的样本。</p></li>
-<li><p>在 <span class="math inline">\(k-Fold\)</span>
-交叉验证时，我们所用到的数据是<strong>训练集中的全部数据</strong>，<strong>不包含测试集</strong></p></li>
-<li><p><code>numpy.ravel()</code>和<code>numpy.flatten()</code>的区别：<code>ravel()</code>返回的是一个<strong>视图</strong>，也就意味着，对其的修改，是会影响到原矩阵的；但<code>flatten()</code>返回的是一个<strong>拷贝</strong>，也就意味着，对其的修改，不会影响到原矩阵</p></li>
-</ul></li>
-</ul>
-<h3 id="科研相关">科研相关</h3>
-<p>这部分主要是寒假的工作了，整个寒假基本都交给了读论文。上学期虽然（名义上）加入了老师的实验室，做数据隐私和安全相关工作，但是由于自己课程太多，时间太紧张（大多交给了王者荣耀），并没有花费什么精力去做这个事情。期末和国外的教授联系对接之后，一整个寒假都在读论文，主要集中在Learning
-Theory，略微看起来像applied tech一些的，也都是很理论的Graph
-Learning问题。刚开始读论文的时候有一些记录，后来逐渐魔幻，就摆烂了，没有再将新的概念以笔记的形式记录下来。读第一篇论文的时候记录了这样几个Notation/Theorem：</p>
-<ul>
-<li><p><span class="math inline">\(\tilde{O}(g(n))\)</span>：</p>
-<p>stands for <span
-class="math inline">\(O(g(n)\log{g(n)})\)</span>.</p></li>
-<li><p>Union Bound: <span class="math display">\[
-\mathbb{P}[\mathop{\cup}\limits_{i}A_i]\leq \sum_i\mathbb{P}[A_i]
-\]</span></p></li>
-<li><p>Hoeffding's Inequality:</p>
-<p>Let <span class="math inline">\(Z_1,\dots,Z_n\)</span> be independent
-bounded random variables with <span
-class="math inline">\(Z_i\in[a,b]\)</span> for all <span
-class="math inline">\(i\)</span>, where <span
-class="math inline">\(-\infty&lt;a\le b&lt;\infty\)</span>. Then <span
-class="math display">\[
-\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\ge
-t\right)\le\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
-\]</span> and <span class="math display">\[
-\mathbb{P}\left(\frac{1}{n}\sum_{i=1}^{n}(Z_i-\mathbb{E}[Z_i])\le
--t\right)\ge\exp\left(-\frac{2nt^2}{(b-a)^2}\right)
-\]</span> for all <span class="math inline">\(t\ge 0\)</span></p></li>
-</ul>
-<p>现在在等着选择一个确定的方向，来正式开始自己的本科科研。希望能在未来半年内做出一些成果吧，要不然属实没有大学读了……</p>
-<h2 id="学习之外">学习之外</h2>
-<p>半年多以来经历了很多事情，也有很多或深刻或奇怪的思考，难以总结之，也不适合作为博文放上来，在此就摘自己的跨年总结，来替代一下吧。</p>
-<h3 id="跨年总结">跨年总结</h3>
-<p>（写于2021年12月底，在空间跨年的时候发出）</p>
-<p>开始写的时候突然惊觉，上一次在空间写这种长篇的，回忆总结性的文字，竟是两年前的跨年夜。不知不觉，已经700多天了。</p>
-<p>曾于两年前定下的目标和计划，因为自己，因为其他的一些人和一些事，总与如今的事实有所偏差。好在，偏的并不算特别多。</p>
-<p>去年的跨年夜，我处在前所未有，如今也未再复现过的满足中，那是今天为止，最接近自己希冀的状态的时刻。彼时彼刻，幸福感压倒了一切，连思考都变得不再必要，也就并无自我的总结与记录。
-如今如此，从那般梦境坠落之后，又经历了更多的情节故事，这中间的思考和自省，也值得被记录写下。</p>
-<p>两年，18岁，19岁。</p>
-<p>成年之后的一段时间，遇见的人，经历的事，所施于我的影响，犹如脱胎换骨一般。如今回望
-，自己已远不是曾经那样了。</p>
-<p>与一些人从远到近，与一些人从近到远，熙熙攘攘，擦肩而过。不幸地失去了一些人，也幸运地留下了，发现了一些人。相识，相熟，相爱，相别，丰富之故事，复杂之情感，交织组成了这相当魔幻的一年多。</p>
-<p>由于自己对事件时间精确的记忆，每一段独特的故事，都深刻于脑中，以看起来永不消逝的形式存在着，每沉于其中，总难以自拔。</p>
-<p>“溺于可忆而不可追的过去， 执于可知而不可求的梦境。”</p>
-<p>有过甜蜜，以至于看到了未来的尽头，沉于其中，似乎一切原本的苦涩都消之无形；有过坠落，仿佛所有生活的支柱都离我而去，未来的可能也不再有吸引力，生命垂于岌岌可危的一念之间；也有现在的释然和平淡，即已如今如此，不妨放下一切期待和愿景，摆脱所有自我限制的桎梏，享受每一个独特的当下。</p>
-<p>曾被问到，如果有机会忘掉一切，回到几年前，会愿意吗？</p>
-<p>我斩钉截铁的答案是，不愿意。虽然有不满，有困难，有这样那样的挫折和遗憾，但必须要承认，这段经历是丰富的，是精彩的，是我之所以成为我的必要缘由。</p>
-<p>“我最近经历的，可真有点多了”</p>
-<p>“这算是成年仪式吗”</p>
-<p>“如果是，那它的效果可真好”</p>
-<p>时光荏苒，如今的我，已不再会如两年前一样，写下具体而细致的期望和愿景。唯愿，平安喜乐，万事胜意。</p>
-<h3 id="愿景">愿景</h3>
-<p>倒没什么特别的期望，就希望一切顺利吧，科研，学业，身体，情绪。</p>
-<p>麻了，开头还说想让自己的博客是纯技术向来着，结果最后还是写了这些酸酸的文字。就写到这里罢。</p>
-]]></content>
-      <tags>
-        <tag>Thoughts</tag>
-      </tags>
   </entry>
 </search>
