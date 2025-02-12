@@ -1321,7 +1321,7 @@ pre code {
     vertical-align: middle;
   }
   .links-of-author a::before {
-    background: #1f3c5b;
+    background: #ff3b03;
     display: inline-block;
     margin-right: 3px;
     transform: translateY(-2px);
@@ -2825,16 +2825,6 @@ body {
 }
 .main-menu.menu {
   font-size: 90%;
-}
-.main-inner.index.posts-expand {
-  font-size: 75%;
-  padding-top: 80px;
-  color: #222;
-}
-.main-inner.post.posts-expand {
-  font-size: 75%;
-  padding-top: 80px;
-  color: #222;
 }
 .main-inner {
   font-size: 75%;
