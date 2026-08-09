@@ -1,0 +1,100 @@
+{
+  "protocol": {
+    "split": "WorldTrack held-out",
+    "frames": 64,
+    "max_tracks": 256,
+    "query_chunk_size": 256,
+    "observation_batch_size": 8,
+    "dtype": "bfloat16",
+    "checkpoint": "output/recurrent_d4rt_v2_9mix_3gpu_30ksamples/latest.pt",
+    "checkpoint_step": 10000,
+    "video_codec": "H.264 / yuv420p / faststart",
+    "legend": "cyan dots/trails = GT; colored crosses/trails = prediction"
+  },
+  "cases": [
+    {
+      "slug": "pstudio_boxes_27",
+      "subset": "Panoptic Studio",
+      "sequence": "boxes_27",
+      "title": "Boxes · fast object motion",
+      "note": "A sample where the bounded-state model is competitive on both APD and EPE.",
+      "video": "pstudio_boxes_27.mp4",
+      "poster": "pstudio_boxes_27.jpg",
+      "frames": 64,
+      "display_tracks": 48,
+      "constant_d4rt": {
+        "apd": 0.5762044270833333,
+        "epe": 0.37399273077118483,
+        "alignment_scale": 1.064037587429353
+      },
+      "opend4rt": {
+        "apd": 0.5089518229166666,
+        "epe": 0.41491406561275246,
+        "alignment_scale": 1.0021812648718846
+      }
+    },
+    {
+      "slug": "adt_clean_136_6",
+      "subset": "Aria Digital Twin",
+      "sequence": "Apartment_release_clean_seq136_6",
+      "title": "Apartment · egocentric camera",
+      "note": "A near-parity indoor sequence with camera and scene motion.",
+      "video": "adt_clean_136_6.mp4",
+      "poster": "adt_clean_136_6.jpg",
+      "frames": 64,
+      "display_tracks": 48,
+      "constant_d4rt": {
+        "apd": 0.437255859375,
+        "epe": 0.6695182021156372,
+        "alignment_scale": 0.3989800593526894
+      },
+      "opend4rt": {
+        "apd": 0.4194488525390625,
+        "epe": 0.6472009653907543,
+        "alignment_scale": 0.3811379753954998
+      }
+    },
+    {
+      "slug": "dynamic_replica_01f258",
+      "subset": "Dynamic Replica",
+      "sequence": "01f258-3_obj_source_left_6",
+      "title": "Dynamic Replica · object motion",
+      "note": "Both models retain the dominant motion, while OpenD4RT remains more accurate.",
+      "video": "dynamic_replica_01f258.mp4",
+      "poster": "dynamic_replica_01f258.jpg",
+      "frames": 64,
+      "display_tracks": 48,
+      "constant_d4rt": {
+        "apd": 0.8161773681640625,
+        "epe": 0.15250690175133047,
+        "alignment_scale": 0.6994470002244614
+      },
+      "opend4rt": {
+        "apd": 0.9080352783203125,
+        "epe": 0.09541231973579758,
+        "alignment_scale": 0.7058043458505608
+      }
+    },
+    {
+      "slug": "pointodyssey_dancingroom",
+      "subset": "PointOdyssey",
+      "sequence": "dancingroom1_3rd1_3",
+      "title": "Dancing room · hard long-range case",
+      "note": "An honest failure case exposing the current fixed-state retention gap.",
+      "video": "pointodyssey_dancingroom.mp4",
+      "poster": "pointodyssey_dancingroom.jpg",
+      "frames": 64,
+      "display_tracks": 48,
+      "constant_d4rt": {
+        "apd": 0.272979736328125,
+        "epe": 1.0790065846258248,
+        "alignment_scale": 1.5335021502423636
+      },
+      "opend4rt": {
+        "apd": 0.5985565185546875,
+        "epe": 0.3579366609472202,
+        "alignment_scale": 1.3259260907199697
+      }
+    }
+  ]
+}
