@@ -1,0 +1,572 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#081421">
+  <title>Constant-D4RT vs. OpenD4RT · 设计文档</title>
+  <style>
+    :root {
+      color-scheme: dark;
+      --bg: #081421;
+      --surface: #0f2135;
+      --line: #263d55;
+      --text: #edf5ff;
+      --muted: #9bb0c7;
+      --accent: #58d9cc;
+      --accent-2: #85a9ff;
+      --code: #07111c;
+    }
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      margin: 0;
+      background:
+        radial-gradient(circle at 12% 0%, rgb(88 217 204 / 10%), transparent 31rem),
+        radial-gradient(circle at 92% 18%, rgb(133 169 255 / 9%), transparent 28rem),
+        var(--bg);
+      color: var(--text);
+      font: 15px/1.8 ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif;
+      -webkit-font-smoothing: antialiased;
+    }
+    .topbar {
+      position: sticky;
+      top: 0;
+      z-index: 5;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 12px max(18px, env(safe-area-inset-left));
+      border-bottom: 1px solid rgb(38 61 85 / 85%);
+      background: rgb(8 20 33 / 88%);
+      backdrop-filter: blur(18px);
+    }
+    .brand { font-size: 13px; font-weight: 750; letter-spacing: .02em; }
+    .back {
+      display: inline-flex;
+      align-items: center;
+      min-height: 38px;
+      padding: 7px 13px;
+      border: 1px solid var(--line);
+      border-radius: 999px;
+      color: var(--accent);
+      text-decoration: none;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    main { width: min(100% - 32px, 980px); margin: 44px auto 90px; }
+    article {
+      padding: clamp(24px, 5vw, 62px);
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: rgb(15 33 53 / 84%);
+      box-shadow: 0 30px 90px rgb(0 0 0 / 20%);
+    }
+    h1, h2, h3 { line-height: 1.3; letter-spacing: -.025em; scroll-margin-top: 80px; }
+    h1 { margin: 0 0 22px; font-size: clamp(29px, 6vw, 48px); }
+    h2 { margin: 55px 0 17px; padding-top: 8px; border-top: 1px solid var(--line); font-size: clamp(22px, 4vw, 31px); }
+    h3 { margin: 34px 0 12px; font-size: 20px; }
+    p { margin: 0 0 18px; }
+    a { color: var(--accent); text-underline-offset: 3px; }
+    strong { color: #fff; }
+    blockquote {
+      margin: 20px 0;
+      padding: 15px 18px;
+      border-left: 3px solid var(--accent);
+      border-radius: 0 10px 10px 0;
+      background: rgb(88 217 204 / 7%);
+      color: #c5d6e8;
+    }
+    blockquote p:last-child { margin-bottom: 0; }
+    code {
+      padding: .15em .38em;
+      border: 1px solid rgb(38 61 85 / 75%);
+      border-radius: 5px;
+      background: var(--code);
+      color: #c8e1ff;
+      font: .88em/1.5 ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    }
+    pre {
+      max-width: 100%;
+      margin: 21px 0;
+      padding: 18px;
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: var(--code);
+      -webkit-overflow-scrolling: touch;
+    }
+    pre code { padding: 0; border: 0; background: transparent; font-size: 12px; }
+    table {
+      display: block;
+      width: 100%;
+      margin: 22px 0 28px;
+      overflow-x: auto;
+      border-collapse: collapse;
+      white-space: nowrap;
+      -webkit-overflow-scrolling: touch;
+    }
+    th, td { padding: 11px 13px; border: 1px solid var(--line); text-align: left; }
+    th { background: rgb(133 169 255 / 9%); color: #fff; }
+    tr:nth-child(even) td { background: rgb(255 255 255 / 1.8%); }
+    ul, ol { margin: 0 0 20px; padding-left: 1.5em; }
+    li { margin: 5px 0; }
+    img { display: block; max-width: 100%; height: auto; margin: 26px auto; border-radius: 12px; background: #fff; }
+    hr { height: 1px; margin: 42px 0; border: 0; background: var(--line); }
+    .generated { margin-top: 22px; color: var(--muted); font-size: 11px; text-align: center; }
+    @media (max-width: 620px) {
+      body { font-size: 14px; line-height: 1.75; }
+      .topbar { padding-top: max(10px, env(safe-area-inset-top)); }
+      main { width: min(100% - 20px, 980px); margin-top: 20px; }
+      article { padding: 24px 18px 34px; border-radius: 16px; }
+      h2 { margin-top: 43px; }
+      th, td { padding: 9px 10px; font-size: 12px; }
+    }
+  </style>
+</head>
+<body>
+  <header class="topbar">
+    <span class="brand">CONSTANT-D4RT · DESIGN REPORT</span>
+    <a class="back" href="constant_d4rt_results.html">← 返回结果看板</a>
+  </header>
+  <main>
+    <article><h1 id="constant-d4rt-vs-opend4rt">Constant-D4RT vs. OpenD4RT：设计、实验与当前进度</h1>
+<blockquote>
+<p>更新日期：2026-08-09<br>
+当前实现：Constant-D4RT v2（固定状态的 recurrent adapter）<br>
+对比基线：OpenD4RT 发布实现与 <code>OpenD4RT_48CLIP_9Mix_NoCropAUG</code> checkpoint，<strong>不是 D4RT 论文原始闭源模型</strong>。</p>
+<p>可视化入口：<a href="constant_d4rt_results.html">Constant-D4RT results dashboard</a></p>
+</blockquote>
+<h2 id="_1">结论先行</h2>
+<p>这个项目的目标不是给 OpenD4RT 增加一个普通的 temporal cache，而是把它从“整段视频一次性编码”的 clip model 改造成因果、可持续更新、峰值工作显存不随视频长度增长的 4D tracking model。</p>
+<p>当前 v2 已经完成了这条路线的第一个闭环：9Mix 数据对齐、3 GPU / 30,000 samples 训练、WorldTrack held-out 公平对比和 16/32/64/128 帧双模型 scaling curve 均已跑完。固定 <code>512</code> 个 scene-state tokens、最多 <code>256</code> 个 active tracks 和 <code>256</code> 的 query chunk 时，实测 recurrent working state 与 CUDA peak memory 在 16–128 帧保持不变；完整 held-out 对比中峰值显存从 OpenD4RT 的 <code>7.014 GiB</code> 降到 <code>4.624 GiB</code>，降低 <code>34.1%</code>。</p>
+<p>模型质量还没有追平：同一完整 held-out 协议下，Constant-D4RT 的 APD 为 <code>0.4245</code>，OpenD4RT 为 <code>0.6950</code>；EPE 分别为 <code>0.7314</code> 和 <code>0.3211</code>。执行路径优化后，batch-8 causal throughput mode 达到 <code>165.84 FPS</code>，OpenD4RT 为 <code>65.96 FPS</code>，即 <code>2.51×</code>；峰值显存仍为 <code>4.624 GiB</code>。因此目前最准确的项目状态是：<strong>bounded-memory 和 throughput objective 已成立，accuracy/long-horizon retention 是主要研究问题。</strong></p>
+<p><img alt="Constant-D4RT and OpenD4RT scaling curves" src="assets/constant_d4rt/scaling_curves.png"></p>
+<h2 id="1-opend4rt">1. OpenD4RT 的设计</h2>
+<p>OpenD4RT 是 feed-forward、clip-level 的统一 4D reconstruction/tracking model：</p>
+<pre><code class="language-text">video I[0:T]
+    │
+    ▼
+ViT-g video encoder ───────────────► clip memory M[0:T]
+                                          ▲
+query (u, v, t_src, t_tgt, t_cam)         │ cross-attention
+    │                                     │
+    ├─ UV Fourier features                │
+    ├─ source-frame local RGB patch       │
+    └─ learned discrete time embeddings ─► independent query decoder
+                                                   │
+                                                   ▼
+                               xyz / uv / visibility / displacement /
+                                      normal / confidence
+</code></pre>
+<p>它有两个非常重要的优点：</p>
+<ol>
+<li>视频 encoder 同时看到整个 clip，时空证据完整，适合任意 source/target/camera-time query。</li>
+<li>independent-query decoder 把 dense reconstruction 和 sparse tracking 统一成同一种 query API：<code>(u, v, t_src, t_tgt, t_cam)</code>。</li>
+</ol>
+<p>代价是它没有跨帧持久状态。输入前缀变长时，需要把整个 clip 作为输入重新编码，并让 query 访问 clip-level memory；source RGB patch 也从原视频中提取。实现中的 <code>max_tokens</code> 会限制 encoder token 数，因此不能简单声称显存会无限线性增长，但模型语义和执行方式仍然是长度相关的 offline clip inference，而不是可以无限向前更新的 streaming state machine。</p>
+<h2 id="2-constant-d4rt-v2">2. 我们当前的 Constant-D4RT v2</h2>
+<p>当前实现保留 OpenD4RT 的 query/output 语义，把 full-clip scene memory 换成固定大小的 recurrent scene state：</p>
+<pre><code class="language-text">                         ┌──────────────────────────────────────┐
+previous frame I[t-1] ─┐ │                                      │
+                       ├─► frozen 2-frame OpenD4RT encoder ─► O_t│
+current frame I[t] ────┘ │                                  │   │
+                         │                                  ▼   │
+fixed scene state S[t-1] ├────────► gated cross-attn updater ─► S[t]
+                         │                                      │
+source (u,v,t_src) ──────┴─► fixed UV + RGB identity token      │
+                                                                │
+(identity, t_src, t_tgt, t_cam, relative time) ─► query adapter │
+                                                                ▼
+                                      frozen OpenD4RT decoder + trainable heads
+                                                                │
+                                                                ▼
+                                                          4D outputs
+</code></pre>
+<p>核心递推是：</p>
+<p>[
+O_t = E(I_{t-1}, I_t), \qquad
+S_t = U(S_{t-1}, O_t), \qquad |S_t| = N_s.
+]</p>
+<p>在当前 v2 run 中，<code>N_s = 512</code>。updater 先把 1280-d state/observation tokens 投影到 256-d，用 8-head cross-attention 得到更新量，再通过 learned sigmoid gate 写回固定状态，并接一个 gated FFN residual。整个 OpenD4RT base encoder/decoder 冻结；训练的部分包括 initial state、state updater、continuous relative-time projector、zero-initialized query adapter，以及从 OpenD4RT heads 复制出来的 task heads，共 <code>3,781,121</code> 个参数。</p>
+<h3 id="21-persistent-point-identity">2.1 Persistent point identity</h3>
+<p>OpenD4RT 在 decode 时仍可从 <code>t_src</code> 帧读取 source patch。Constant-D4RT 在 track 注册时只读取一次 source pixel 的 UV Fourier feature 和局部 RGB patch，将二者压缩成固定 identity token。之后旧 RGB frame 可以释放，query 使用 identity token 而不是回看原始 source frame。</p>
+<p>训练时 9Mix query 的 <code>t_src</code> 不一定相同，因此实现会从各自 source frame 捕获 identity；当前 WorldTrack 协议只评测 first-frame visible queries，所以在线评测统一在 frame 0 捕获。当前 active identity table 有固定上限，但还没有 production-grade 的 track eviction / re-identification / lifecycle manager。</p>
+<h3 id="22-long-time-query-encoding">2.2 Long-time query encoding</h3>
+<p>OpenD4RT 的 <code>t_src/t_tgt/t_cam</code> 是 learned discrete embeddings，训练 checkpoint 的参考 horizon 为 48 帧。我们保留并 clamp 这些 pretrained embeddings，同时叠加 signed log relative-time Fourier residual：</p>
+<p>[
+\Delta t = t_{tgt} - t_{src}, \qquad
+x = \operatorname{sign}(\Delta t)
+    \frac{\log(1+|\Delta t|)}{\log(48)}.
+]</p>
+<p>这使超过原始 clip horizon 的 query 和 retrospective query 至少能获得连续、带方向的时间表示，而不只是在第 47 帧 embedding 上饱和。</p>
+<h3 id="23-training-objectives">2.3 Training objectives</h3>
+<p>v2 的每个 16-frame 训练 clip 因果地逐帧更新 state，并联合优化四类目标：</p>
+<ul>
+<li><code>revisit supervision</code>：读完整个 clip 后，从 final state 回答全部 canonical D4RT queries。</li>
+<li><code>causal supervision</code>：每条 query 在 source、target、camera 三个时刻都已被观察到的第一个 state 上回答一次，匹配在线推理。</li>
+<li><code>OpenD4RT output distillation</code>：对 full-clip OpenD4RT teacher 的六个 output heads 做 Smooth-L1 distillation。</li>
+<li><code>query preservation</code>：加入最新一帧前后，对完全属于旧历史的 <code>xyz/uv/visibility</code> query 约束输出不要无故漂移。</li>
+</ul>
+<p>实际权重为 <code>revisit 1.0 + causal 1.0 + teacher 0.5 + preservation 0.05</code>，每 4 个 recurrent steps 做一次 TBPTT detach。</p>
+<h3 id="24-strict-streaming-throughput-mode">2.4 Strict streaming 与 throughput mode</h3>
+<p>每个 observation <code>O_t = E(I_{t-1}, I_t)</code> 彼此独立于 recurrent state，因此可以先将固定数量的 observation pairs 合成 GPU batch，再严格按 <code>t</code> 的顺序执行 <code>S_{t-1} → S_t</code> 和 query decoding。当前 evaluator 提供两种执行方式：</p>
+<ul>
+<li><code>--observation-batch-size 1</code>：minimum-latency strict streaming，每来一帧立即编码并输出。</li>
+<li><code>--observation-batch-size 8</code>：默认 throughput mode，最多缓存 8 帧 observation；encoder batched 执行，但 state update 和每帧输出仍然因果，不使用未来 observation。</li>
+</ul>
+<p>batch size 是固定常数，所以 GPU memory 对视频长度 <code>T</code> 仍为 <code>O(1)</code>；代价是 throughput mode 最多增加 8 帧等待延迟。实现还使用 pinned host staging、non-blocking H2D/D2H copies，并把 update-gate 统计保留在 GPU 上，消除了旧 evaluator 每帧 <code>.item()</code> / <code>.cpu().numpy()</code> 造成的同步。</p>
+<h2 id="3">3. 两种设计的直接对比</h2>
+<table>
+<thead>
+<tr>
+<th>维度</th>
+<th>OpenD4RT 发布版</th>
+<th>Constant-D4RT v2（当前）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>执行方式</td>
+<td>整段 clip feed-forward</td>
+<td>逐帧 causal recurrent update</td>
+</tr>
+<tr>
+<td>Scene representation</td>
+<td>当前完整 clip 的 encoder memory</td>
+<td>固定 <code>512 × 1280</code> scene-state tokens</td>
+</tr>
+<tr>
+<td>新帧处理</td>
+<td>增长前缀需重新进行 clip inference</td>
+<td>用 <code>(I[t-1], I[t])</code> 更新 <code>S[t-1] → S[t]</code>；可固定 micro-batch observations</td>
+</tr>
+<tr>
+<td>Source identity</td>
+<td>decode 时从 clip 中读取 UV/local RGB</td>
+<td>注册时捕获一次 fixed identity token</td>
+</tr>
+<tr>
+<td>Query API</td>
+<td><code>(u,v,t_src,t_tgt,t_cam)</code></td>
+<td>保持相同 API 与 output heads</td>
+</tr>
+<tr>
+<td>时间编码</td>
+<td>learned discrete embeddings</td>
+<td>原 embedding + continuous signed relative time</td>
+</tr>
+<tr>
+<td>历史保真</td>
+<td>full-clip evidence，信息完整</td>
+<td>历史被压缩到固定 state，可能遗忘/干扰</td>
+</tr>
+<tr>
+<td>Active tracks</td>
+<td>query 数可按 chunk 扩展</td>
+<td>固定容量 identity table；当前无 eviction</td>
+</tr>
+<tr>
+<td>坐标系</td>
+<td>query 选择 <code>t_cam</code></td>
+<td>WorldTrack prototype 以 frame/camera 0 为 world reference；未显式维护 camera history</td>
+</tr>
+<tr>
+<td>Peak working memory</td>
+<td>随 clip/token workload 变化</td>
+<td>固定 state、track cap、chunk 下不随 <code>T</code> 变化</td>
+</tr>
+<tr>
+<td>总计算量</td>
+<td>一次 clip inference</td>
+<td>每帧一次 two-frame encode + state update；总计算仍随 <code>T</code> 线性增长</td>
+</tr>
+<tr>
+<td>当前质量</td>
+<td>强 accuracy baseline</td>
+<td>memory/throughput 已达标，accuracy 未达标</td>
+</tr>
+</tbody>
+</table>
+<p>这里的 “constant memory” 有严格边界：它指 <strong>固定 scene-state token 数、active-track cap、query chunk 和分辨率时的 GPU peak working memory 对视频长度 <code>T</code> 有界</strong>。如果增大 track cap、query chunk、分辨率或 state tokens，显存仍会增加；当前数据加载器也可能把完整 <code>.npz</code> 放在 host memory，训练时还会跑 full-clip teacher。因此这不是“所有系统内存恒定”，也不意味着有限 state 能无损记住无限历史。</p>
+<h2 id="4">4. 数据与训练进度</h2>
+<h3 id="41-9mix">4.1 9Mix 对齐</h3>
+<p>当前训练使用与 OpenD4RT <code>configs/train_effective.yaml</code> 对齐的九个来源：</p>
+<ol>
+<li>PointOdyssey</li>
+<li>Dynamic Replica</li>
+<li>Kubric Full</li>
+<li>TartanAir</li>
+<li>Virtual KITTI 2</li>
+<li>ScanNet</li>
+<li>BlendedMVS</li>
+<li>CO3D</li>
+<li>MVS-Synth</li>
+</ol>
+<p>上游配置 provenance 已固定：OpenD4RT upstream head <code>bead824a40f2d719246469aed3acad101287a201</code>，配置最后修改 commit <code>ac212e37829222118862b5f4324ec8b6e02db033</code>，本地 <code>train_effective.yaml</code> 与上游文件为 exact byte match，SHA256 为 <code>3d8a050159b37744106027020b465bfa43b14a1a5a996af1ab9aaf9c2387d275</code>。</p>
+<p>九个数据源都已完成本地 layout validation 和真实 loader sample validation。30,000 samples 的 source sampling audit 通过，最大 mixture probability 偏差为 <code>0.00351</code>，低于 <code>0.02</code> 阈值。WorldTrack <strong>没有</strong>参与训练，只用于 held-out evaluation。</p>
+<h3 id="42-v2-run">4.2 完成的 v2 run</h3>
+<table>
+<thead>
+<tr>
+<th>项目</th>
+<th style="text-align: right;">值</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Distributed steps</td>
+<td style="text-align: right;">10,000</td>
+</tr>
+<tr>
+<td>Global batch</td>
+<td style="text-align: right;">3（3 GPU × 1）</td>
+</tr>
+<tr>
+<td>Seen samples</td>
+<td style="text-align: right;">30,000</td>
+</tr>
+<tr>
+<td>Training clip / queries</td>
+<td style="text-align: right;">16 frames / 512 queries</td>
+</tr>
+<tr>
+<td>State</td>
+<td style="text-align: right;">512 tokens × 1280 dims</td>
+</tr>
+<tr>
+<td>Low-rank update</td>
+<td style="text-align: right;">256 dims, 8 heads</td>
+</tr>
+<tr>
+<td>Query chunk</td>
+<td style="text-align: right;">256</td>
+</tr>
+<tr>
+<td>TBPTT</td>
+<td style="text-align: right;">every 4 frames</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td style="text-align: right;">BF16</td>
+</tr>
+<tr>
+<td>LR</td>
+<td style="text-align: right;"><code>2e-4 → 2e-5</code>, 167-step warmup</td>
+</tr>
+<tr>
+<td>Trainable parameters</td>
+<td style="text-align: right;">3,781,121</td>
+</tr>
+<tr>
+<td>Completion verification</td>
+<td style="text-align: right;">PASS</td>
+</tr>
+</tbody>
+</table>
+<p>训练 base/teacher 使用发布的 <code>OpenD4RT_48CLIP_9Mix_NoCropAUG</code>。为保证比较可复核，model config SHA256 为 <code>2d521a03c16382a7436a91d1ddd1ba692c6d993c9a5785cf34ab759e3eac83b8</code>，checkpoint SHA256 为 <code>65936f72eb902f9a3629e25b2888e8cc2ebf87a89bee7103fe94313fb53dd179</code>。</p>
+<h2 id="5-worldtrack">5. WorldTrack 对比结果</h2>
+<h3 id="51-held-out-comparison">5.1 完整 held-out comparison</h3>
+<p>协议：四个 WorldTrack subsets 各自按排序后 <code>index % 5 == 0</code> 切 held-out；共 40 sequences、9,218 queries；每段取前 64 帧，最多 256 tracks，query chunk 256，BF16，同一 NVIDIA B200，同一 OpenD4RT base artifacts。Constant-D4RT 使用固定 observation batch 8；OpenD4RT 使用其 offline clip batching。</p>
+<p>APD 是 global median-scale alignment 后，在 <code>0.1/0.3/0.5/1.0</code> 四个 metric thresholds 内的点比例均值，越高越好；EPE 是同一 alignment 后的平均 3D endpoint error，越低越好。</p>
+<table>
+<thead>
+<tr>
+<th>Subset</th>
+<th style="text-align: right;">APD ours / OpenD4RT ↑</th>
+<th style="text-align: right;">EPE ours / OpenD4RT ↓</th>
+<th style="text-align: right;">FPS ours / OpenD4RT ↑</th>
+<th style="text-align: right;">Peak GiB ours / OpenD4RT ↓</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>adt_mini</code></td>
+<td style="text-align: right;">0.5236 / 0.7229</td>
+<td style="text-align: right;">0.5144 / 0.2575</td>
+<td style="text-align: right;">160.30 / 64.87</td>
+<td style="text-align: right;">4.624 / 7.014</td>
+</tr>
+<tr>
+<td><code>po_mini</code></td>
+<td style="text-align: right;">0.2265 / 0.5782</td>
+<td style="text-align: right;">1.1897 / 0.4224</td>
+<td style="text-align: right;">175.76 / 66.00</td>
+<td style="text-align: right;">4.624 / 7.014</td>
+</tr>
+<tr>
+<td><code>pstudio_mini</code></td>
+<td style="text-align: right;">0.5125 / 0.7682</td>
+<td style="text-align: right;">0.4643 / 0.1998</td>
+<td style="text-align: right;">165.53 / 68.06</td>
+<td style="text-align: right;">4.624 / 7.014</td>
+</tr>
+<tr>
+<td><code>ds_mini</code></td>
+<td style="text-align: right;">0.4485 / 0.7198</td>
+<td style="text-align: right;">0.6837 / 0.3748</td>
+<td style="text-align: right;">175.31 / 66.87</td>
+<td style="text-align: right;">4.624 / 7.014</td>
+</tr>
+<tr>
+<td><strong>Overall</strong></td>
+<td style="text-align: right;"><strong>0.4245 / 0.6950</strong></td>
+<td style="text-align: right;"><strong>0.7314 / 0.3211</strong></td>
+<td style="text-align: right;"><strong>165.84 / 65.96</strong></td>
+<td style="text-align: right;"><strong>4.624 / 7.014</strong></td>
+</tr>
+</tbody>
+</table>
+<p>这里 overall APD/EPE 按 query count 加权，FPS 按总帧数/总 runtime 计算。Constant-D4RT 的总 runtime 为 <code>15.44 s</code>，OpenD4RT 为 <code>38.81 s</code>；ours 是 <code>2.514×</code>，相对旧的 <code>54.13 FPS</code> recurrent path 提升约 <code>3.06×</code>。peak memory 仍降低 <code>34.08%</code>。</p>
+<p>这个 speedup 依赖 batch-8 throughput mode，不能冒充 zero-buffer latency：strict batch-1 path 会更慢，但可以逐帧立即输出。batch-8 前后的 APD 差值为 <code>-0.000009</code>，EPE 差值为 <code>+0.000346</code>，来自 BF16 batched-kernel reduction order；没有修改 checkpoint、state transition 顺序或 query semantics。机器可读结果见 <a href="assets/constant_d4rt/fps_optimized_64f_comparison.csv"><code>fps_optimized_64f_comparison.csv</code></a>。</p>
+<p>复现 optimized path：</p>
+<pre><code class="language-bash">python eval_recurrent_d4rt_worldtrack.py \
+  --mode recurrent \
+  --recurrent-ckpt output/recurrent_d4rt_v2_9mix_3gpu_30ksamples/latest.pt \
+  --output-dir output/eval_constant_d4rt_optimized \
+  --split heldout --num-frames 64 --max-tracks 256 \
+  --query-chunk-size 256 --observation-batch-size 8 --dtype bfloat16
+</code></pre>
+<p>把 <code>--observation-batch-size</code> 改为 <code>1</code> 即为 strict streaming latency mode。</p>
+<h3 id="52-16128-scaling">5.2 16–128 帧同序列双模型 scaling</h3>
+<p>为了直接观察 horizon，两个模型都在 <code>pstudio_mini/basketball_13.npz</code> 上用同一组 100 tracks/queries 评测，其他条件为 BF16、query chunk 256、NVIDIA B200。这里保留最初的 strict batch-1 数据以隔离 horizon 对 memory/APD/EPE 的影响；它是一条 sequence 的 controlled scaling test，不替代上面的 batch-8 完整 held-out benchmark。</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: right;">Frames</th>
+<th style="text-align: right;">Memory ours / OpenD4RT (GiB) ↓</th>
+<th style="text-align: right;">APD ours / OpenD4RT ↑</th>
+<th style="text-align: right;">EPE ours / OpenD4RT ↓</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: right;">16</td>
+<td style="text-align: right;">4.510 / 6.724</td>
+<td style="text-align: right;">0.3472 / 0.4117</td>
+<td style="text-align: right;">0.6570 / 0.4690</td>
+</tr>
+<tr>
+<td style="text-align: right;">32</td>
+<td style="text-align: right;">4.510 / 6.748</td>
+<td style="text-align: right;">0.3429 / 0.4279</td>
+<td style="text-align: right;">0.6868 / 0.4764</td>
+</tr>
+<tr>
+<td style="text-align: right;">64</td>
+<td style="text-align: right;">4.510 / 7.013</td>
+<td style="text-align: right;">0.2906 / 0.4187</td>
+<td style="text-align: right;">0.7869 / 0.4703</td>
+</tr>
+<tr>
+<td style="text-align: right;">128</td>
+<td style="text-align: right;">4.510 / 7.058</td>
+<td style="text-align: right;">0.2124 / 0.4140</td>
+<td style="text-align: right;">0.8877 / 0.4751</td>
+</tr>
+</tbody>
+</table>
+<p>完整精度数值见 <a href="assets/constant_d4rt/scaling_comparison.csv"><code>scaling_comparison.csv</code></a>。</p>
+<p><img alt="Memory usage versus frames" src="assets/constant_d4rt/memory_usage_vs_frames.png"></p>
+<p><img alt="APD versus frames" src="assets/constant_d4rt/apd_vs_frames.png"></p>
+<p><img alt="EPE versus frames" src="assets/constant_d4rt/epe_vs_frames.png"></p>
+<p>曲线说明两个事实：</p>
+<ul>
+<li>显存：Constant-D4RT 的 peak 在四个 horizon 上完全相同，OpenD4RT 从 <code>6.724</code> 增到 <code>7.058 GiB</code>。另一个 256-track ADT memory audit 中，ours 的显式 bounded working state 为 <code>4.625 MiB</code>、peak CUDA 为 <code>4.624 GiB</code>，16/32/64/128 帧 range 都是 <code>0</code>，验证通过。</li>
+<li>精度：OpenD4RT 的 APD/EPE 在该序列随 horizon 基本稳定；ours 的 APD 下降、EPE 上升，说明固定状态存在明显的 long-horizon forgetting / interference。<strong>这正是下一阶段需要解决的核心，而不是再证明一次 memory curve。</strong></li>
+</ul>
+<h2 id="6">6. 已完成的工程进度</h2>
+<ul>
+<li>OpenD4RT model/checkpoint、WorldTrack evaluator 和 9Mix training configuration 已复现并固定 artifact hashes。</li>
+<li>9Mix 九个数据源已全部就绪；为每个来源实现/修复 loader、layout validator、真实 sample validator、completion marker 和 bad-sample registry。</li>
+<li>数据下载与 pack pipeline 支持校验、断点续跑和持久化恢复；CO3D pack 逐包验证，MVS-Synth recovery 已完成。</li>
+<li>已实现 fixed-state <code>RecurrentD4RT</code>、source-time-aware identity capture、relative-time residual、chunked query decode 和 gated updater。</li>
+<li>已实现 causal + revisit + teacher distillation + preservation 的 v2 training loop，以及 DDP checkpoint/resume、config attestation 和 source sampling audit。</li>
+<li>30,000-sample / 3-GPU v2 training 已完成，最终 checkpoint、定期 checkpoint、metrics 和 verification artifact 均已生成。</li>
+<li>已完成 40-sequence held-out fair comparison、256-track recurrent memory scaling 和 PStudio 16/32/64/128 双模型 scaling。</li>
+<li>已实现 pinned asynchronous staging 和 fixed-size causal observation micro-batching；完整 held-out throughput 从 <code>54.13</code> 提升到 <code>165.84 FPS</code>，并把 <code>speedup &gt; 1</code> 加入 completion gate。</li>
+<li><code>plot_scaling_curves.py</code> 会校验双方 protocol 是否一致，并输出独立/组合 PNG、PDF、CSV 与 metadata。</li>
+</ul>
+<p>大体积 datasets、checkpoints 和原始 <code>output/</code> 均按仓库策略忽略，不会 push；本页、绘图脚本和可查看的最终 PNG 会进入 Git。完整本地 run 位于：</p>
+<pre><code class="language-text">output/recurrent_d4rt_v2_9mix_3gpu_30ksamples/
+  latest.pt
+  completion_verification.json
+  data_validation.json
+  source_sampling_audit.json
+  eval_heldout_64f_256tracks/comparison.json
+  memory_scaling/summary.json
+  scaling_compare_pstudio/{recurrent,d4rt}/frames_{16,32,64,128}/summary.json
+  plots/
+</code></pre>
+<h2 id="7-idea">7. 当前实现与最终 idea 的差距</h2>
+<p>最初的 constant-memory D4RT idea 提出 hierarchical scene state：static geometry、dynamic objects、camera trajectory、recent frames，并配合 track eviction 和 query-preservation training。当前 v2 只实现了最小可验证版本：一个 homogeneous token bank + fixed identity table。因此不能把 roadmap 当成已经实现的功能。</p>
+<table>
+<thead>
+<tr>
+<th>最终方向</th>
+<th>当前状态</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Static / dynamic 分层 memory</td>
+<td>未实现；目前是单一 512-token state</td>
+</tr>
+<tr>
+<td>Explicit camera trajectory state</td>
+<td>未实现；prototype 使用 frame 0 reference</td>
+</tr>
+<tr>
+<td>Recent-frame ring buffer</td>
+<td>仅保留 previous/current 两帧，没有 multi-scale recent memory</td>
+</tr>
+<tr>
+<td>Track lifecycle / eviction / re-ID</td>
+<td>未实现；评测直接限制 active tracks</td>
+</tr>
+<tr>
+<td>Long-range query bank preservation</td>
+<td>只有 newest-step preservation loss</td>
+</tr>
+<tr>
+<td>16→32→64→128→256 curriculum</td>
+<td>当前只在 16-frame clip 训练</td>
+</tr>
+<tr>
+<td>State/token-level teacher distillation</td>
+<td>目前只有 output-level teacher distillation</td>
+</tr>
+<tr>
+<td>Production streaming input</td>
+<td>模型 forward 可 streaming；dataset/eval I/O 仍可加载整段 NPZ</td>
+</tr>
+</tbody>
+</table>
+<h2 id="8">8. 下一步建议</h2>
+<p>下一阶段应该围绕“固定预算下提升历史保真”，而不是扩大成长度相关 memory：</p>
+<ol>
+<li>先做 <code>512 vs 1024</code> state-token、preservation/teacher weights、TBPTT horizon 的受控 ablation，确定问题是容量、优化还是 supervision。</li>
+<li>增加 16→32→64→128 的训练 curriculum，并将 retrospective/revisit queries 明确覆盖到更早历史；当前只用 16-frame training 很难支持 128-frame retention。</li>
+<li>将单一 state 拆成 static/dynamic/recent 三个固定配额，让静态几何低频更新、动态槽高频更新，减少新帧对全局历史的覆盖。</li>
+<li>加入 camera-state tokens 或紧凑 pose history，减少所有变化都被迫写入同一 scene token bank。</li>
+<li>在固定 identity budget 内实现 track admission/eviction/re-ID，并把 eviction 后 query consistency 纳入 loss。</li>
+<li>继续优化 strict batch-1 latency path：CUDA Graph / <code>torch.compile</code>、固定 staging ring，以及可复用的 per-frame encoder feature；当前 <code>2.51×</code> 是 throughput 结果，不代表单帧 latency 已最优。</li>
+<li>保持两个固定 gate：完整 held-out WorldTrack quality gate + 同序列 16–128 scaling gate。任何架构变化必须同时报告 APD、EPE、FPS 和 peak memory。</li>
+</ol>
+<h2 id="9">9. 代码入口</h2>
+<ul>
+<li><code>src/model/recurrent_d4rt.py</code>：fixed state、gated updater、identity capture、relative time 和 query decoding。</li>
+<li><code>train_recurrent_d4rt_9mix.py</code>：9Mix v2 training、causal/revisit/distillation/preservation losses。</li>
+<li><code>eval_recurrent_d4rt_worldtrack.py</code>：Constant-D4RT 与 OpenD4RT 的同协议 WorldTrack evaluation，以及 strict/batched causal execution。</li>
+<li><code>plot_scaling_curves.py</code>：双模型 scaling curve 校验与绘图。</li>
+<li><code>scripts/run_recurrent_d4rt_9mix_3gpu.sh</code>：3-GPU training entrypoint。</li>
+<li><code>scripts/run_recurrent_d4rt_full_pipeline.sh</code>：data validation、training、evaluation 和 verification pipeline。</li>
+<li><code>scripts/verify_recurrent_d4rt_completion.py</code>：完成状态与关键 artifact consistency check。</li>
+<li><code>docs/recurrent_d4rt_v1.md</code>：早期 WorldTrack-only v1 prototype，仅用于历史参考，不代表当前 v2 结果。</li>
+</ul></article>
+    <p class="generated">UTF-8 standalone HTML · generated from constant_d4rt_vs_opend4rt.md</p>
+  </main>
+</body>
+</html>
