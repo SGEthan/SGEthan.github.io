@@ -13,45 +13,45 @@
   },
   "cases": [
     {
-      "slug": "pstudio_boxes_27",
-      "subset": "Panoptic Studio",
-      "sequence": "boxes_27",
-      "title": "Boxes · fast object motion",
-      "note": "A sample where the bounded-state model is competitive on both APD and EPE.",
-      "video": "pstudio_boxes_27.mp4",
-      "poster": "pstudio_boxes_27.jpg",
+      "slug": "adt_skeleton_131_5",
+      "subset": "Aria Digital Twin",
+      "sequence": "Apartment_release_decoration_skeleton_seq131_5",
+      "title": "Apartment skeleton · excellent tracking",
+      "note": "The strongest Constant-D4RT held-out sequence: APD 0.933 and EPE 0.080.",
+      "video": "adt_skeleton_131_5.mp4",
+      "poster": "adt_skeleton_131_5.jpg",
       "frames": 64,
       "display_tracks": 48,
       "constant_d4rt": {
-        "apd": 0.5762044270833333,
-        "epe": 0.37399273077118483,
-        "alignment_scale": 1.064037587429353
+        "apd": 0.9331207275390625,
+        "epe": 0.08013999233117398,
+        "alignment_scale": 0.48714178357007687
       },
       "opend4rt": {
-        "apd": 0.5089518229166666,
-        "epe": 0.41491406561275246,
-        "alignment_scale": 1.0021812648718846
+        "apd": 0.9979095458984375,
+        "epe": 0.03201886432848876,
+        "alignment_scale": 0.40808579867646155
       }
     },
     {
-      "slug": "adt_clean_136_6",
+      "slug": "adt_clean_131_0",
       "subset": "Aria Digital Twin",
-      "sequence": "Apartment_release_clean_seq136_6",
-      "title": "Apartment · egocentric camera",
-      "note": "A near-parity indoor sequence with camera and scene motion.",
-      "video": "adt_clean_136_6.mp4",
-      "poster": "adt_clean_136_6.jpg",
+      "sequence": "Apartment_release_clean_seq131_0",
+      "title": "Apartment clean · stable egocentric track",
+      "note": "A second high-quality indoor sequence: APD 0.851 and EPE 0.131.",
+      "video": "adt_clean_131_0.mp4",
+      "poster": "adt_clean_131_0.jpg",
       "frames": 64,
       "display_tracks": 48,
       "constant_d4rt": {
-        "apd": 0.437255859375,
-        "epe": 0.6695182021156372,
-        "alignment_scale": 0.3989800593526894
+        "apd": 0.8513641357421875,
+        "epe": 0.13122541719842257,
+        "alignment_scale": 0.4078354140195446
       },
       "opend4rt": {
-        "apd": 0.4194488525390625,
-        "epe": 0.6472009653907543,
-        "alignment_scale": 0.3811379753954998
+        "apd": 0.9960784912109375,
+        "epe": 0.028764634208337553,
+        "alignment_scale": 0.5561388587645312
       }
     },
     {
@@ -76,24 +76,45 @@
       }
     },
     {
-      "slug": "pointodyssey_dancingroom",
-      "subset": "PointOdyssey",
-      "sequence": "dancingroom1_3rd1_3",
-      "title": "Dancing room · hard long-range case",
-      "note": "An honest failure case exposing the current fixed-state retention gap.",
-      "video": "pointodyssey_dancingroom.mp4",
-      "poster": "pointodyssey_dancingroom.jpg",
+      "slug": "pstudio_softball_14",
+      "subset": "Panoptic Studio",
+      "sequence": "softball_14",
+      "title": "Softball · fast human motion",
+      "note": "Fast sports motion with APD 0.717 and EPE 0.229.",
+      "video": "pstudio_softball_14.mp4",
+      "poster": "pstudio_softball_14.jpg",
       "frames": 64,
       "display_tracks": 48,
       "constant_d4rt": {
-        "apd": 0.272979736328125,
-        "epe": 1.0790065846258248,
-        "alignment_scale": 1.5335021502423636
+        "apd": 0.7173004150390625,
+        "epe": 0.22920298152887592,
+        "alignment_scale": 0.8838423459072975
       },
       "opend4rt": {
-        "apd": 0.5985565185546875,
-        "epe": 0.3579366609472202,
-        "alignment_scale": 1.3259260907199697
+        "apd": 0.867218017578125,
+        "epe": 0.10519604505049718,
+        "alignment_scale": 0.9545598725503792
+      }
+    },
+    {
+      "slug": "pstudio_tennis_23",
+      "subset": "Panoptic Studio",
+      "sequence": "tennis_23",
+      "title": "Tennis · long articulated motion",
+      "note": "A second sports showcase with APD 0.714 and EPE 0.228.",
+      "video": "pstudio_tennis_23.mp4",
+      "poster": "pstudio_tennis_23.jpg",
+      "frames": 64,
+      "display_tracks": 48,
+      "constant_d4rt": {
+        "apd": 0.7139423076923077,
+        "epe": 0.22834441609352468,
+        "alignment_scale": 0.852766158351842
+      },
+      "opend4rt": {
+        "apd": 0.8974984975961539,
+        "epe": 0.11518957542389673,
+        "alignment_scale": 0.9356580921908979
       }
     }
   ]

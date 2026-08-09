@@ -642,8 +642,8 @@
 
     <section id="demos">
       <div class="section-head">
-        <h2>真实 held-out Demo</h2>
-        <p>四个 WorldTrack 子集各取一个未参与训练的 64 帧序列。纵向依次为输入与 GT、Constant-D4RT、OpenD4RT；所有指标沿用完整评估协议。</p>
+        <h2>Best-scene Showcase</h2>
+        <p>从未参与训练的 WorldTrack held-out 中，按 Constant-D4RT 自身的高 APD、低 EPE 选择 5 段。这里是 qualitative showcase，不代表总体分布；总体结果仍以上方 40-sequence 表格为准。</p>
       </div>
       <div class="demo-legend" aria-label="Demo legend">
         <span class="legend-item"><span class="legend-swatch" style="background:#5de0ff"></span>青色圆点/轨迹：GT</span>
@@ -654,37 +654,37 @@
       <div class="demo-grid">
         <article class="demo-card">
           <div class="demo-media">
-            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/pstudio_boxes_27.jpg" aria-label="Panoptic Studio boxes 27 tracking comparison">
-              <source src="assets/constant_d4rt/demos/pstudio_boxes_27.mp4" type="video/mp4">
+            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/adt_skeleton_131_5.jpg" aria-label="Aria Digital Twin skeleton scene tracking comparison">
+              <source src="assets/constant_d4rt/demos/adt_skeleton_131_5.mp4" type="video/mp4">
             </video>
           </div>
           <div class="demo-body">
-            <div class="demo-kicker">Panoptic Studio · competitive case</div>
-            <h3 class="demo-title">Boxes · fast object motion</h3>
-            <div class="demo-sequence">boxes_27 · 64 frames · 48 displayed tracks</div>
+            <div class="demo-kicker">Aria Digital Twin · #1 ours</div>
+            <h3 class="demo-title">Apartment skeleton · excellent tracking</h3>
+            <div class="demo-sequence">decoration_skeleton_seq131_5 · 64 frames</div>
             <div class="demo-metrics">
-              <span class="demo-metric ours">ours · APD 0.576 · EPE 0.374</span>
-              <span class="demo-metric base">Open · APD 0.509 · EPE 0.415</span>
+              <span class="demo-metric ours">ours · APD 0.933 · EPE 0.080</span>
+              <span class="demo-metric base">Open · APD 0.998 · EPE 0.032</span>
             </div>
-            <p class="demo-note">当前模型少数在 APD 与 EPE 上同时具备竞争力的样本，展示快速物体运动。</p>
+            <p class="demo-note">当前 Constant-D4RT held-out 中表现最好的序列，预测轨迹与 GT 高度重合。</p>
           </div>
         </article>
 
         <article class="demo-card">
           <div class="demo-media">
-            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/adt_clean_136_6.jpg" aria-label="Aria Digital Twin apartment tracking comparison">
-              <source src="assets/constant_d4rt/demos/adt_clean_136_6.mp4" type="video/mp4">
+            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/adt_clean_131_0.jpg" aria-label="Aria Digital Twin apartment clean scene tracking comparison">
+              <source src="assets/constant_d4rt/demos/adt_clean_131_0.mp4" type="video/mp4">
             </video>
           </div>
           <div class="demo-body">
-            <div class="demo-kicker">Aria Digital Twin · near parity</div>
-            <h3 class="demo-title">Apartment · egocentric camera</h3>
-            <div class="demo-sequence">Apartment_release_clean_seq136_6 · 64 frames</div>
+            <div class="demo-kicker">Aria Digital Twin · high quality</div>
+            <h3 class="demo-title">Apartment clean · stable egocentric track</h3>
+            <div class="demo-sequence">Apartment_release_clean_seq131_0 · 64 frames</div>
             <div class="demo-metrics">
-              <span class="demo-metric ours">ours · APD 0.437 · EPE 0.670</span>
-              <span class="demo-metric base">Open · APD 0.419 · EPE 0.647</span>
+              <span class="demo-metric ours">ours · APD 0.851 · EPE 0.131</span>
+              <span class="demo-metric base">Open · APD 0.996 · EPE 0.029</span>
             </div>
-            <p class="demo-note">室内第一视角相机与场景运动；两种方法在该序列上接近。</p>
+            <p class="demo-note">第一视角室内场景中，固定 state 在完整 64 帧内保持稳定跟踪。</p>
           </div>
         </article>
 
@@ -708,19 +708,37 @@
 
         <article class="demo-card">
           <div class="demo-media">
-            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/pointodyssey_dancingroom.jpg" aria-label="PointOdyssey dancing room hard tracking comparison">
-              <source src="assets/constant_d4rt/demos/pointodyssey_dancingroom.mp4" type="video/mp4">
+            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/pstudio_softball_14.jpg" aria-label="Panoptic Studio softball tracking comparison">
+              <source src="assets/constant_d4rt/demos/pstudio_softball_14.mp4" type="video/mp4">
             </video>
           </div>
           <div class="demo-body">
-            <div class="demo-kicker">PointOdyssey · honest failure case</div>
-            <h3 class="demo-title">Dancing room · long-range motion</h3>
-            <div class="demo-sequence">dancingroom1_3rd1_3 · 64 frames</div>
+            <div class="demo-kicker">Panoptic Studio · fast sports motion</div>
+            <h3 class="demo-title">Softball · articulated human motion</h3>
+            <div class="demo-sequence">softball_14 · 64 frames</div>
             <div class="demo-metrics">
-              <span class="demo-metric ours">ours · APD 0.273 · EPE 1.079</span>
-              <span class="demo-metric base">Open · APD 0.599 · EPE 0.358</span>
+              <span class="demo-metric ours">ours · APD 0.717 · EPE 0.229</span>
+              <span class="demo-metric base">Open · APD 0.867 · EPE 0.105</span>
             </div>
-            <p class="demo-note">保留一个明显失败案例：固定 state 在复杂长程人体运动上出现漂移，正是下一阶段要解决的问题。</p>
+            <p class="demo-note">快速挥拍与人体关节运动下，主要轨迹结构在 64 帧中保持连续。</p>
+          </div>
+        </article>
+
+        <article class="demo-card">
+          <div class="demo-media">
+            <video controls muted loop playsinline preload="metadata" poster="assets/constant_d4rt/demos/pstudio_tennis_23.jpg" aria-label="Panoptic Studio tennis tracking comparison">
+              <source src="assets/constant_d4rt/demos/pstudio_tennis_23.mp4" type="video/mp4">
+            </video>
+          </div>
+          <div class="demo-body">
+            <div class="demo-kicker">Panoptic Studio · articulated motion</div>
+            <h3 class="demo-title">Tennis · long body trajectories</h3>
+            <div class="demo-sequence">tennis_23 · 64 frames</div>
+            <div class="demo-metrics">
+              <span class="demo-metric ours">ours · APD 0.714 · EPE 0.228</span>
+              <span class="demo-metric base">Open · APD 0.897 · EPE 0.115</span>
+            </div>
+            <p class="demo-note">大幅度人体运动与长轨迹下，Constant-D4RT 仍保持可用的空间一致性。</p>
           </div>
         </article>
       </div>
