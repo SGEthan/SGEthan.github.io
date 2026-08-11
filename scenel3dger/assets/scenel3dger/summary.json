@@ -1,0 +1,121 @@
+{
+  "scene_id": "scene0003_02",
+  "tracking_update_fps": 2.0,
+  "duration_sec": 45.0,
+  "tracked_object_count": 5,
+  "reappeared_object_count": 3,
+  "late_appearing_object_count": 2,
+  "mean_matched_iou": 0.68977,
+  "objects": [
+    {
+      "global_id": 8,
+      "label": "water cooler",
+      "center_xyz_m": [
+        -0.6692000031471252,
+        -0.9186999797821045,
+        0.5034000277519226
+      ],
+      "extent_xyz_m": [
+        0.388700008392334,
+        0.3686000108718872,
+        1.016800045967102
+      ],
+      "first_seen_sec": 0.0,
+      "last_seen_sec": 44.5,
+      "largest_absence_gap_sec": 26.5,
+      "reappeared": true,
+      "late_appearing": false,
+      "sam_track_fragment_count": 1,
+      "mean_iou": 0.7685
+    },
+    {
+      "global_id": 10,
+      "label": "backpack",
+      "center_xyz_m": [
+        0.22589999437332153,
+        -1.0901999473571777,
+        0.2037999927997589
+      ],
+      "extent_xyz_m": [
+        0.42489999532699585,
+        0.3077000081539154,
+        0.44620001316070557
+      ],
+      "first_seen_sec": 36.5,
+      "last_seen_sec": 39.5,
+      "largest_absence_gap_sec": 0.0,
+      "reappeared": false,
+      "late_appearing": true,
+      "sam_track_fragment_count": 1,
+      "mean_iou": 0.8903
+    },
+    {
+      "global_id": 11,
+      "label": "trash can",
+      "center_xyz_m": [
+        -0.6585000157356262,
+        0.19920000433921814,
+        0.45669999718666077
+      ],
+      "extent_xyz_m": [
+        0.5156000256538391,
+        0.3127000033855438,
+        0.8633000254631042
+      ],
+      "first_seen_sec": 1.0,
+      "last_seen_sec": 44.5,
+      "largest_absence_gap_sec": 22.5,
+      "reappeared": true,
+      "late_appearing": false,
+      "sam_track_fragment_count": 2,
+      "mean_iou": 0.5945
+    },
+    {
+      "global_id": 12,
+      "label": "microwave",
+      "center_xyz_m": [
+        -0.5246000289916992,
+        -0.26100000739097595,
+        1.5384999513626099
+      ],
+      "extent_xyz_m": [
+        0.1216999962925911,
+        0.49729999899864197,
+        0.30720001459121704
+      ],
+      "first_seen_sec": 5.5,
+      "last_seen_sec": 44.5,
+      "largest_absence_gap_sec": 34.0,
+      "reappeared": true,
+      "late_appearing": false,
+      "sam_track_fragment_count": 1,
+      "mean_iou": 0.8691
+    },
+    {
+      "global_id": 22,
+      "label": "door",
+      "center_xyz_m": [
+        1.0681999921798706,
+        -0.9010000228881836,
+        0.7440999746322632
+      ],
+      "extent_xyz_m": [
+        0.218299999833107,
+        0.975600004196167,
+        1.4979000091552734
+      ],
+      "first_seen_sec": 32.5,
+      "last_seen_sec": 38.0,
+      "largest_absence_gap_sec": 0.0,
+      "reappeared": false,
+      "late_appearing": true,
+      "sam_track_fragment_count": 1,
+      "mean_iou": 0.6284
+    }
+  ],
+  "methodology": {
+    "sam3": "text-conditioned 2D video masks and local track IDs",
+    "scannet": "persistent 3D instance identity, metric center, and extent",
+    "sam3d": "not used in this ScanNet pilot"
+  }
+}

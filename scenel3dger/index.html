@@ -1,0 +1,676 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="color-scheme" content="light">
+  <meta name="description" content="SceneL3DGER pilot: SAM3 video masks are linked to stable ScanNet 3D identities to recover objects after long absences and discover late arrivals.">
+  <meta property="og:title" content="SceneL3DGER · Persistent 3D Object Memory">
+  <meta property="og:description" content="A real 45-second ScanNet scene with disappearing, reappearing, and late-arriving objects.">
+  <meta property="og:type" content="website">
+  <meta property="og:image" content="https://blog.stargazerd.site/scenel3dger/assets/scenel3dger/poster.jpg">
+  <title>SceneL3DGER · Persistent 3D Object Memory</title>
+  <style>
+    :root {
+      --paper: #f4f0e6;
+      --paper-2: #faf8f2;
+      --ink: #23231f;
+      --muted: #6e6a60;
+      --line: #d8d0bf;
+      --green: #668f34;
+      --green-soft: #e6edd9;
+      --amber: #c69229;
+      --blue: #477aa8;
+      --brick: #aa5d45;
+      --shadow: 0 22px 70px rgb(66 54 31 / 11%);
+      --radius: 18px;
+    }
+
+    * { box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      margin: 0;
+      min-width: 320px;
+      color: var(--ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
+        "Segoe UI", "PingFang SC", "Microsoft YaHei", sans-serif;
+      line-height: 1.58;
+      background: var(--paper);
+    }
+
+    a { color: #426b22; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    img, video { display: block; max-width: 100%; }
+    code { font-family: "SFMono-Regular", Consolas, monospace; }
+
+    .shell {
+      width: min(1200px, calc(100% - 40px));
+      margin: 0 auto;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 72px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .brand {
+      display: flex;
+      gap: 11px;
+      align-items: center;
+      color: var(--ink);
+      font-weight: 790;
+      letter-spacing: -.025em;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      color: white;
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 12px;
+      border-radius: 8px;
+      background: var(--green);
+    }
+
+    .nav-links { display: flex; gap: 22px; font-size: 13px; }
+    .nav-links a { color: var(--muted); text-decoration: none; }
+
+    .hero {
+      display: grid;
+      grid-template-columns: 1.22fr .78fr;
+      gap: 58px;
+      align-items: center;
+      padding: 82px 0 52px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 10px;
+      color: #4c7026;
+      font-size: 11px;
+      font-weight: 780;
+      letter-spacing: .085em;
+      text-transform: uppercase;
+      border: 1px solid #b9c99f;
+      border-radius: 999px;
+      background: var(--green-soft);
+    }
+
+    .eyebrow::before {
+      width: 7px;
+      height: 7px;
+      content: "";
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    h1 {
+      max-width: 780px;
+      margin: 20px 0 18px;
+      font-size: clamp(48px, 7.4vw, 88px);
+      line-height: .95;
+      letter-spacing: -.065em;
+    }
+
+    h1 span { color: var(--green); }
+
+    .hero-copy {
+      max-width: 760px;
+      margin: 0;
+      color: var(--muted);
+      font-size: 17px;
+    }
+
+    .hero-copy strong { color: var(--ink); }
+
+    .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 11px;
+      margin-top: 26px;
+    }
+
+    .button {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 43px;
+      padding: 0 16px;
+      color: white;
+      font-size: 13px;
+      font-weight: 740;
+      text-decoration: none;
+      border: 1px solid var(--green);
+      border-radius: 10px;
+      background: var(--green);
+    }
+
+    .button.secondary {
+      color: var(--ink);
+      border-color: var(--line);
+      background: var(--paper-2);
+    }
+
+    .hero-note {
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--paper-2);
+      box-shadow: var(--shadow);
+    }
+
+    .note-label {
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 750;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+    }
+
+    .note-question {
+      margin: 11px 0 16px;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: clamp(25px, 3vw, 35px);
+      line-height: 1.16;
+      letter-spacing: -.025em;
+    }
+
+    .note-answer {
+      padding-top: 15px;
+      color: var(--muted);
+      font-size: 13px;
+      border-top: 1px solid var(--line);
+    }
+
+    .note-answer strong { color: var(--green); }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 13px;
+      margin-bottom: 72px;
+    }
+
+    .kpi {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: rgb(250 248 242 / 72%);
+    }
+
+    .kpi-name { color: var(--muted); font-size: 11px; }
+    .kpi-value { margin: 3px 0 1px; font-size: 31px; font-weight: 800; letter-spacing: -.045em; }
+    .kpi-note { color: var(--muted); font-size: 11px; }
+
+    section { margin: 0 0 76px; scroll-margin-top: 24px; }
+
+    .section-head {
+      display: flex;
+      align-items: end;
+      justify-content: space-between;
+      gap: 32px;
+      margin-bottom: 22px;
+    }
+
+    h2 { margin: 0; font-size: clamp(29px, 4vw, 43px); line-height: 1.08; letter-spacing: -.045em; }
+    .section-head p { max-width: 590px; margin: 0; color: var(--muted); font-size: 13px; }
+
+    .video-panel {
+      overflow: hidden;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: #e7e2d7;
+      box-shadow: var(--shadow);
+    }
+
+    video { width: 100%; border-radius: 11px; background: #dbe3e5; }
+
+    .video-caption {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 12px 4px 2px;
+      color: var(--muted);
+      font-size: 11px;
+    }
+
+    .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; }
+    .legend span { display: inline-flex; align-items: center; gap: 6px; }
+    .legend i { width: 8px; height: 8px; border-radius: 50%; }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 22px;
+      counter-reset: stage;
+    }
+
+    .stage {
+      position: relative;
+      min-height: 196px;
+      padding: 22px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-2);
+      counter-increment: stage;
+    }
+
+    .stage:not(:last-child)::after {
+      position: absolute;
+      top: 50%;
+      right: -17px;
+      color: #9b9384;
+      content: "→";
+      font-size: 20px;
+      transform: translateY(-50%);
+    }
+
+    .stage::before {
+      display: grid;
+      width: 26px;
+      height: 26px;
+      margin-bottom: 18px;
+      place-items: center;
+      color: white;
+      content: counter(stage);
+      font-size: 11px;
+      font-weight: 800;
+      border-radius: 50%;
+      background: var(--green);
+    }
+
+    .stage h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: -.02em; }
+    .stage p { margin: 0; color: var(--muted); font-size: 12px; }
+    .stage code { color: #5b7e31; font-size: 11px; }
+
+    .honesty {
+      display: grid;
+      grid-template-columns: auto 1fr;
+      gap: 16px;
+      align-items: start;
+      margin-top: 18px;
+      padding: 18px 20px;
+      color: #5f594d;
+      font-size: 12px;
+      border: 1px solid #dbc999;
+      border-radius: 14px;
+      background: #f5ecd6;
+    }
+
+    .honesty strong { color: var(--ink); }
+    .honesty-icon {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      place-items: center;
+      color: white;
+      font-weight: 800;
+      border-radius: 9px;
+      background: var(--amber);
+    }
+
+    .table-wrap {
+      overflow-x: auto;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-2);
+    }
+
+    table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: 13px; }
+    th { padding: 16px 17px 12px; color: var(--muted); font-size: 10px; font-weight: 720; text-align: right; text-transform: uppercase; letter-spacing: .055em; border-bottom: 1px solid var(--line); }
+    th:first-child, td:first-child { text-align: left; }
+    td { padding: 16px 17px; text-align: right; border-bottom: 1px solid #e5dfd2; font-variant-numeric: tabular-nums; }
+    tr:last-child td { border-bottom: 0; }
+    tbody tr:hover { background: #f3efe5; }
+
+    .object-name { display: flex; align-items: center; gap: 9px; font-weight: 700; }
+    .object-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
+    .tag { display: inline-block; padding: 3px 7px; color: #4f712a; font-size: 10px; font-weight: 750; border-radius: 6px; background: var(--green-soft); }
+    .tag.late { color: #8a5a17; background: #f3e5c4; }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 18px;
+    }
+
+    .evidence {
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-2);
+    }
+
+    .evidence img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-bottom: 1px solid var(--line); }
+    .evidence-copy { padding: 17px 19px 19px; }
+    .evidence-time { color: var(--green); font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px; }
+    .evidence h3 { margin: 5px 0 4px; font-size: 17px; }
+    .evidence p { margin: 0; color: var(--muted); font-size: 12px; }
+
+    .protocol-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 18px;
+    }
+
+    .protocol {
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--paper-2);
+    }
+
+    .protocol h3 { margin: 0 0 12px; font-size: 17px; }
+    .protocol ul { display: grid; gap: 9px; margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
+    .protocol strong { color: var(--ink); }
+
+    .takeaway {
+      display: grid;
+      grid-template-columns: 1.2fr .8fr;
+      gap: 34px;
+      align-items: center;
+      padding: 35px;
+      border: 1px solid #bac7a7;
+      border-radius: 22px;
+      background: #e9eedf;
+    }
+
+    .takeaway h2 { max-width: 700px; }
+    .takeaway p { margin: 0; color: #616b53; font-size: 13px; }
+
+    footer {
+      display: flex;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 30px 0 42px;
+      color: var(--muted);
+      font-size: 11px;
+      border-top: 1px solid var(--line);
+    }
+
+    @media (max-width: 900px) {
+      .hero, .takeaway { grid-template-columns: 1fr; }
+      .hero { gap: 28px; padding-top: 58px; }
+      .kpis, .flow { grid-template-columns: repeat(2, 1fr); }
+      .stage:nth-child(2)::after { display: none; }
+      .section-head { align-items: start; flex-direction: column; gap: 10px; }
+    }
+
+    @media (max-width: 620px) {
+      .shell { width: min(100% - 24px, 1200px); }
+      .nav-links { display: none; }
+      h1 { font-size: 50px; }
+      .kpis, .flow, .gallery, .protocol-grid { grid-template-columns: 1fr; }
+      .stage::after { display: none; }
+      .video-panel { padding: 6px; border-radius: 13px; }
+      .video-caption, footer { flex-direction: column; }
+      .takeaway { padding: 25px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="shell">
+    <nav>
+      <a class="brand" href="#top">
+        <span class="brand-mark">3D</span>
+        <span>SceneL3DGER</span>
+      </a>
+      <div class="nav-links">
+        <a href="#demo">Demo</a>
+        <a href="#pipeline">Pipeline</a>
+        <a href="#events">Events</a>
+        <a href="#protocol">Protocol</a>
+      </div>
+    </nav>
+
+    <main id="top">
+      <header class="hero">
+        <div>
+          <span class="eyebrow">Single-scene feasibility pilot</span>
+          <h1>Objects leave the view. <span>The memory does not.</span></h1>
+          <p class="hero-copy">
+            We run <strong>SAM3 text-conditioned video tracking</strong> on a continuous RGB scan,
+            link every valid mask to a stable 3D scene identity, and keep that object readable while
+            it is absent. The same registry also admits objects that appear only near the end.
+          </p>
+          <div class="hero-actions">
+            <a class="button" href="#demo">Watch the full scene</a>
+            <a class="button secondary" href="assets/scenel3dger/summary.json">Download audit summary</a>
+          </div>
+        </div>
+        <aside class="hero-note">
+          <div class="note-label">Question tested</div>
+          <div class="note-question">Can one object readout target survive both long occlusion and track fragmentation?</div>
+          <div class="note-answer">
+            <strong>Yes, in this supervised ScanNet pilot.</strong> The trash can is emitted under
+            multiple SAM-local IDs, yet all fragments resolve to one metric 3D object ID.
+          </div>
+        </aside>
+      </header>
+
+      <div class="kpis" aria-label="Pilot summary">
+        <div class="kpi">
+          <div class="kpi-name">CONTINUOUS SCENE</div>
+          <div class="kpi-value">44.5 s</div>
+          <div class="kpi-note">1,336 native RGB frames</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-name">STABLE 3D OBJECTS</div>
+          <div class="kpi-value">5</div>
+          <div class="kpi-note">all five requested classes matched</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-name">LONG REAPPEARANCES</div>
+          <div class="kpi-value">3</div>
+          <div class="kpi-note">up to 34.0 s absent</div>
+        </div>
+        <div class="kpi">
+          <div class="kpi-name">LATE DISCOVERIES</div>
+          <div class="kpi-value">2</div>
+          <div class="kpi-note">first observed after 32.5 s</div>
+        </div>
+      </div>
+
+      <section id="demo">
+        <div class="section-head">
+          <h2>One uncut scene</h2>
+          <p>
+            RGB is rendered at the native 30 FPS. SAM3 and the 3D registry update at 2 Hz, exactly
+            as used by the pilot. “Memory” means the object is not currently matched but its identity
+            and metric position remain in the registry.
+          </p>
+        </div>
+        <div class="video-panel">
+          <video controls autoplay muted loop playsinline preload="metadata"
+            poster="assets/scenel3dger/poster.jpg">
+            <source src="assets/scenel3dger/scene0003_02_object_memory.mp4" type="video/mp4">
+            Your browser does not support embedded H.264 video.
+          </video>
+          <div class="video-caption">
+            <div class="legend">
+              <span><i style="background:#668f34"></i>visible / newly registered</span>
+              <span><i style="background:#8a867d"></i>retained in memory</span>
+              <span><i style="background:#477aa8"></i>reappeared after a long gap</span>
+            </div>
+            <span>ScanNet <code>scene0003_02</code> · no temporal cuts</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="pipeline">
+        <div class="section-head">
+          <h2>What the pilot actually does</h2>
+          <p>
+            The experiment separates 2D perception from persistent 3D identity. This is a target
+            generation pipeline for memory supervision, not a claim that SAM3 alone predicts metric 3D.
+          </p>
+        </div>
+        <div class="flow">
+          <article class="stage">
+            <h3>RGB stream</h3>
+            <p>Use the full 30 FPS ScanNet sequence. A frame is sampled every 0.5 seconds for tracking.</p>
+          </article>
+          <article class="stage">
+            <h3>SAM3 masks</h3>
+            <p>Five fixed text prompts produce per-frame masks and model-local track IDs.</p>
+          </article>
+          <article class="stage">
+            <h3>3D association</h3>
+            <p>Mask overlap plus class agreement resolves each valid observation to one stable ScanNet instance.</p>
+          </article>
+          <article class="stage">
+            <h3>Persistent registry</h3>
+            <p>Track fragments merge by 3D ID; center, extent, last-seen time, and visibility survive absence.</p>
+          </article>
+        </div>
+        <div class="honesty">
+          <div class="honesty-icon">!</div>
+          <div>
+            <strong>SAM3D was not used here.</strong> ScanNet already supplies persistent instance IDs and
+            metric 3D annotations, so adding a learned image-to-3D reconstruction stage would only inject
+            avoidable error. In an in-the-wild video without 3D labels, that stage becomes necessary.
+          </div>
+        </div>
+      </section>
+
+      <section id="events">
+        <div class="section-head">
+          <h2>The registry's event log</h2>
+          <p>
+            Reappearance requires at least four seconds without a valid match. “Late” means the first
+            observation occurs after 60% of the scene. Metric positions are axis-aligned ScanNet coordinates.
+          </p>
+        </div>
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Object</th>
+                <th>3D ID</th>
+                <th>First seen</th>
+                <th>Last seen</th>
+                <th>Longest absence</th>
+                <th>SAM fragments</th>
+                <th>Matched IoU</th>
+                <th>Event</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="object-name"><i class="object-dot"></i>Water cooler</span></td>
+                <td>#8</td><td>0.0 s</td><td>44.5 s</td><td>26.5 s</td><td>1</td><td>0.769</td><td><span class="tag">reappeared</span></td>
+              </tr>
+              <tr>
+                <td><span class="object-name"><i class="object-dot"></i>Trash can</span></td>
+                <td>#11</td><td>1.0 s</td><td>44.5 s</td><td>22.5 s</td><td>2</td><td>0.595</td><td><span class="tag">reappeared + merged</span></td>
+              </tr>
+              <tr>
+                <td><span class="object-name"><i class="object-dot"></i>Microwave</span></td>
+                <td>#12</td><td>5.5 s</td><td>44.5 s</td><td>34.0 s</td><td>1</td><td>0.869</td><td><span class="tag">reappeared</span></td>
+              </tr>
+              <tr>
+                <td><span class="object-name"><i class="object-dot"></i>Door</span></td>
+                <td>#22</td><td>32.5 s</td><td>38.0 s</td><td>—</td><td>1</td><td>0.628</td><td><span class="tag late">late</span></td>
+              </tr>
+              <tr>
+                <td><span class="object-name"><i class="object-dot"></i>Backpack</span></td>
+                <td>#10</td><td>36.5 s</td><td>39.5 s</td><td>—</td><td>1</td><td>0.890</td><td><span class="tag late">late</span></td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
+
+      <section>
+        <div class="section-head">
+          <h2>Four moments, one memory</h2>
+          <p>The evidence frames are decoded directly from the published video, including the held-memory interval with zero current matches.</p>
+        </div>
+        <div class="gallery">
+          <article class="evidence">
+            <img src="assets/scenel3dger/early-water-cooler.jpg" alt="Early scene with water cooler and trash can masks">
+            <div class="evidence-copy">
+              <div class="evidence-time">t = 03.0 s</div>
+              <h3>Initial registration</h3>
+              <p>The water cooler and trash can acquire stable IDs and metric centers.</p>
+            </div>
+          </article>
+          <article class="evidence">
+            <img src="assets/scenel3dger/memory-only-midstream.jpg" alt="Middle of scene with zero visible tracked objects but three in memory">
+            <div class="evidence-copy">
+              <div class="evidence-time">t = 25.0 s</div>
+              <h3>Nothing is currently visible</h3>
+              <p>All three early objects are off-camera; their 3D entries remain queryable.</p>
+            </div>
+          </article>
+          <article class="evidence">
+            <img src="assets/scenel3dger/late-objects.jpg" alt="Late backpack and door observations">
+            <div class="evidence-copy">
+              <div class="evidence-time">t = 38.0 s</div>
+              <h3>Late objects join</h3>
+              <p>The door and backpack were absent at the beginning and are admitted when they first appear.</p>
+            </div>
+          </article>
+          <article class="evidence">
+            <img src="assets/scenel3dger/reappeared-kitchen.jpg" alt="Trash can reappears near end of scene under its original 3D ID">
+            <div class="evidence-copy">
+              <div class="evidence-time">t = 43.3 s</div>
+              <h3>The old identity returns</h3>
+              <p>The trash can is matched back to ID #11 after more than twenty seconds away.</p>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section id="protocol">
+        <div class="section-head">
+          <h2>Protocol and limits</h2>
+          <p>This is a feasibility demonstration for designing object-level memory supervision. It is not an object-tracking benchmark.</p>
+        </div>
+        <div class="protocol-grid">
+          <article class="protocol">
+            <h3>Fixed setup</h3>
+            <ul>
+              <li><strong>Scene:</strong> ScanNet v2 <code>scene0003_02</code>, one continuous 44.5-second scan.</li>
+              <li><strong>Prompts:</strong> water cooler, trash can, microwave, door, backpack.</li>
+              <li><strong>Tracking:</strong> original SAM3 checkpoint, 2 Hz sampled RGB, no manual mask clicks.</li>
+              <li><strong>Association:</strong> exact class agreement plus 2D instance-mask overlap; mean accepted IoU 0.690.</li>
+            </ul>
+          </article>
+          <article class="protocol">
+            <h3>What is and is not learned</h3>
+            <ul>
+              <li><strong>Predicted:</strong> text-conditioned SAM3 masks and SAM-local track identities.</li>
+              <li><strong>Supervised:</strong> persistent object identity, center, extent, and reappearance from ScanNet annotations.</li>
+              <li><strong>Not tested:</strong> open-vocabulary recall, SAM3D reconstruction error, or memory-capacity scaling.</li>
+              <li><strong>Next experiment:</strong> turn each registry entry into a decoder query target for SceneL3DGER memory training.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section class="takeaway">
+        <h2>The supervision signal is viable: one 3D object target can span fragmented 2D tracks and long visual absence.</h2>
+        <p>
+          The next step is not another tracking heuristic. It is to train memory queries to recover these
+          object identities, metric locations, and semantic features from the fixed-capacity SceneL3DGER state.
+        </p>
+      </section>
+    </main>
+
+    <footer>
+      <span>SceneL3DGER · object-memory feasibility pilot · August 2026</span>
+      <span>Artifacts are from one ScanNet scene; all reported events are generated from the published trace.</span>
+    </footer>
+  </div>
+</body>
+</html>
