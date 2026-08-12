@@ -3,7 +3,12 @@
   "evaluation": {
     "date_utc": "2026-08-11",
     "decoding": "greedy",
-    "scope": "four fixed held-out qualitative examples; not an aggregate benchmark",
+    "scope": "early-training pipeline snapshot; not a model-quality evaluation or aggregate benchmark",
+    "training_rows_available": 976220,
+    "training_rows_consumed": 3200,
+    "epoch_fraction_consumed": 0.003278,
+    "optimizer_steps": 200,
+    "optimizer_steps_per_epoch": 61015,
     "steps": [50, 100, 150, 200],
     "step_200_controls": ["zero_memory", "wrong_scene"]
   },

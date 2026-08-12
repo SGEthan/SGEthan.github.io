@@ -349,7 +349,7 @@
     .audit-stat strong {
       display: block;
       margin-bottom: 3px;
-      color: var(--brick);
+      color: var(--green);
       font-size: 27px;
       line-height: 1;
       letter-spacing: -.04em;
@@ -501,7 +501,7 @@
         <a href="#demo">Demo</a>
         <a href="#pipeline">Pipeline</a>
         <a href="#events">Events</a>
-        <a href="#qa-audit">QA audit</a>
+        <a href="#qa-audit">Early QA</a>
         <a href="#protocol">Protocol</a>
       </div>
     </nav>
@@ -707,18 +707,19 @@
 
       <section id="qa-audit">
         <div class="section-head">
-          <h2>Checkpoint QA audit</h2>
+          <h2>Early-training QA snapshot</h2>
           <p>
-            Four fixed held-out examples generated locally with greedy decoding from the same V11 run.
-            These are qualitative failure cases for review, not an aggregate benchmark or a success claim.
+            Four fixed held-out examples generated locally from the V11 step-200 checkpoint.
+            This immature checkpoint has consumed only 0.328% of one epoch. The panel checks that
+            training and generation execute end to end; it is not a model-quality evaluation.
             <a href="assets/scenel3dger/checkpoint-generations-v11.json">Download raw outputs and reference NLLs.</a>
           </p>
         </div>
 
-        <div class="audit-summary" aria-label="Qualitative audit summary">
-          <div class="audit-stat"><strong>0 / 4</strong><span>correct at step 200</span></div>
-          <div class="audit-stat"><strong>4 / 4</strong><span>wrong-scene answers equal normal answers</span></div>
-          <div class="audit-stat"><strong>3 / 4</strong><span>zero memory changes the decoded answer</span></div>
+        <div class="audit-summary" aria-label="Checkpoint training maturity">
+          <div class="audit-stat"><strong>3,200</strong><span>QA examples consumed</span></div>
+          <div class="audit-stat"><strong>0.328%</strong><span>of the 976,220-row training epoch</span></div>
+          <div class="audit-stat"><strong>200 / 61,015</strong><span>optimizer steps in one full epoch</span></div>
         </div>
 
         <div class="table-wrap">
@@ -802,10 +803,12 @@
         </div>
 
         <div class="audit-note">
-          <strong>Current interpretation:</strong> the memory tensor affects three of four decoded answers when it is
-          removed entirely, but the model does not distinguish the correct scene from a wrong scene on any of these
-          four examples. Training from step 50 to 200 also produces little qualitative improvement. This small panel
-          therefore supports a failure diagnosis—weak scene-specific readout—not a performance conclusion.
+          <strong>What can and cannot be concluded:</strong> at step 200, removing memory changes three of four
+          decoded answers, while replacing it with a wrong scene leaves all four unchanged. This says only that
+          scene-specific readout has not emerged this early. With 99.672% of the first epoch still unseen, the wrong
+          answers, flat step-50-to-200 generations, and immature losses are expected training snapshots—not evidence
+          that the architecture cannot work. Performance conclusions require substantially longer training and a
+          precommitted held-out evaluation.
         </div>
       </section>
 
