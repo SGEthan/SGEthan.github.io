@@ -1,0 +1,64 @@
+{
+  "checkpoint_version": "fresh_u3wm_object_v11_fifo_hard_negative_bank_cutr300",
+  "evaluation": {
+    "date_utc": "2026-08-11",
+    "decoding": "greedy",
+    "scope": "four fixed held-out qualitative examples; not an aggregate benchmark",
+    "steps": [50, 100, 150, 200],
+    "step_200_controls": ["zero_memory", "wrong_scene"]
+  },
+  "samples": [
+    {
+      "question_id": "scene0005_00_0_object_size_realtime",
+      "scene_id": "scene0005_00",
+      "question_type": "object_size_realtime",
+      "question": "What are the dimensions of the bench? Specifically, please provide the length, width, and height of the bench in meters.",
+      "reference": "The bench is 4.2 meters in length, 0.5 meters in width, and 1.2 meters in height.",
+      "checkpoints": {
+        "50": {"answer": "The bench is 1.8 meters in length, 0.6 meters in width, and 0.5 meters in height.", "reference_nll": 0.5210249423980713},
+        "100": {"answer": "The bench is 1.6 meters in length, 0.6 meters in width, and 0.5 meters in height.", "reference_nll": 0.5092151165008545},
+        "150": {"answer": "The bench is 1.6 meters in length, 0.6 meters in width, and 0.5 meters in height.", "reference_nll": 0.4854206144809723},
+        "200": {"answer": "The bench is 1.6 meters in length, 0.6 meters in width, and 0.5 meters in height.", "reference_nll": 0.49288100004196167, "zero_memory_answer": "The bench is 1.0m long, 0.2m wide, and 0.1m tall.", "zero_memory_reference_nll": 0.47226378321647644, "wrong_scene_answer": "The bench is 1.6 meters in length, 0.6 meters in width, and 0.5 meters in height.", "wrong_scene_reference_nll": 0.5076685547828674}
+      }
+    },
+    {
+      "question_id": "train-scene0002-6",
+      "scene_id": "scene0002_00",
+      "question_type": "object_recognition_realtime",
+      "question": "What is in front of the radiator?",
+      "reference": "small table",
+      "checkpoints": {
+        "50": {"answer": "bed", "reference_nll": 1.8961845636367798},
+        "100": {"answer": "white rectangular cabinet", "reference_nll": 1.9975532293319702},
+        "150": {"answer": "bed", "reference_nll": 1.9932451248168945},
+        "200": {"answer": "bed", "reference_nll": 2.0092453956604004, "zero_memory_answer": "nothing", "zero_memory_reference_nll": 3.0646591186523438, "wrong_scene_answer": "bed", "wrong_scene_reference_nll": 1.9779609441757202}
+      }
+    },
+    {
+      "question_id": "scene0022_01_1_object_counting_backward",
+      "scene_id": "scene0022_01",
+      "question_type": "object_counting_backward",
+      "question": "Have you encountered a table so far in the stream? Choices: (A) Yes (B) No. Please answer with the option letter only.",
+      "reference": "A",
+      "checkpoints": {
+        "50": {"answer": "B", "reference_nll": 0.8509268164634705},
+        "100": {"answer": "B", "reference_nll": 0.8509671092033386},
+        "150": {"answer": "B", "reference_nll": 1.2321703433990479},
+        "200": {"answer": "B", "reference_nll": 0.9553725123405457, "zero_memory_answer": "B", "zero_memory_reference_nll": 2.1321377754211426, "wrong_scene_answer": "B", "wrong_scene_reference_nll": 0.9026331901550293}
+      }
+    },
+    {
+      "question_id": "scene0010_01_0_camera_direction_forward",
+      "scene_id": "scene0010_01",
+      "question_type": "camera_direction_forward",
+      "question": "Where will the camera be located compared to here in 5 seconds? Choices: (A) to the front-left (B) to the front-right (C) almost in the same position (D) to the right. Answer with the option letter only.",
+      "reference": "D",
+      "checkpoints": {
+        "50": {"answer": "B", "reference_nll": 0.5602836608886719},
+        "100": {"answer": "B", "reference_nll": 0.6057842373847961},
+        "150": {"answer": "B", "reference_nll": 0.6348569393157959},
+        "200": {"answer": "B", "reference_nll": 0.6613529920578003, "zero_memory_answer": "C", "zero_memory_reference_nll": 1.264960765838623, "wrong_scene_answer": "B", "wrong_scene_reference_nll": 0.6348572969436646}
+      }
+    }
+  ]
+}

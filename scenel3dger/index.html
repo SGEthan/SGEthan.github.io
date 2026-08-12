@@ -332,6 +332,79 @@
     tr:last-child td { border-bottom: 0; }
     tbody tr:hover { background: #f3efe5; }
 
+    .audit-summary {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 13px;
+      margin-bottom: 18px;
+    }
+
+    .audit-stat {
+      padding: 18px 20px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper-2);
+    }
+
+    .audit-stat strong {
+      display: block;
+      margin-bottom: 3px;
+      color: var(--brick);
+      font-size: 27px;
+      line-height: 1;
+      letter-spacing: -.04em;
+    }
+
+    .audit-stat span { color: var(--muted); font-size: 11px; }
+
+    .qa-table { min-width: 1180px; table-layout: fixed; }
+    .qa-table th, .qa-table td { text-align: left; vertical-align: top; }
+    .qa-table th:first-child { width: 250px; }
+    .qa-table th:nth-child(2) { width: 210px; }
+    .qa-table th:nth-child(n+3) { width: 180px; }
+    .qa-table td { font-size: 12px; line-height: 1.45; }
+    .qa-question { font-weight: 680; }
+    .qa-type {
+      display: block;
+      margin-top: 6px;
+      color: var(--muted);
+      font-family: "SFMono-Regular", Consolas, monospace;
+      font-size: 9px;
+    }
+    .answer-reference { color: #426b22; font-weight: 700; }
+    .answer-wrong { color: #8d4937; }
+
+    .control-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .control-card {
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: var(--paper-2);
+    }
+
+    .control-card h3 { margin: 0 0 5px; font-size: 14px; }
+    .control-card p { margin: 0 0 10px; color: var(--muted); font-size: 11px; }
+    .control-answer { font-size: 11px; line-height: 1.45; }
+    .control-answer + .control-answer { margin-top: 7px; }
+    .control-answer b { color: var(--muted); font-size: 9px; letter-spacing: .04em; text-transform: uppercase; }
+
+    .audit-note {
+      margin-top: 18px;
+      padding: 18px 20px;
+      color: #5f594d;
+      font-size: 12px;
+      border-left: 4px solid var(--brick);
+      background: #f0e7df;
+    }
+
+    .audit-note strong { color: var(--ink); }
+
     .object-name { display: flex; align-items: center; gap: 9px; font-weight: 700; }
     .object-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
     .tag { display: inline-block; padding: 3px 7px; color: #4f712a; font-size: 10px; font-weight: 750; border-radius: 6px; background: var(--green-soft); }
@@ -400,7 +473,7 @@
     @media (max-width: 900px) {
       .hero, .takeaway { grid-template-columns: 1fr; }
       .hero { gap: 28px; padding-top: 58px; }
-      .kpis, .flow { grid-template-columns: repeat(2, 1fr); }
+      .kpis, .flow, .control-grid { grid-template-columns: repeat(2, 1fr); }
       .stage:nth-child(2)::after { display: none; }
       .section-head { align-items: start; flex-direction: column; gap: 10px; }
     }
@@ -409,7 +482,7 @@
       .shell { width: min(100% - 24px, 1200px); }
       .nav-links { display: none; }
       h1 { font-size: 50px; }
-      .kpis, .flow, .gallery, .protocol-grid { grid-template-columns: 1fr; }
+      .kpis, .flow, .gallery, .protocol-grid, .audit-summary, .control-grid { grid-template-columns: 1fr; }
       .stage::after { display: none; }
       .video-panel { padding: 6px; border-radius: 13px; }
       .video-caption, footer { flex-direction: column; }
@@ -428,6 +501,7 @@
         <a href="#demo">Demo</a>
         <a href="#pipeline">Pipeline</a>
         <a href="#events">Events</a>
+        <a href="#qa-audit">QA audit</a>
         <a href="#protocol">Protocol</a>
       </div>
     </nav>
@@ -628,6 +702,110 @@
               <p>The trash can is matched back to ID #11 after more than twenty seconds away.</p>
             </div>
           </article>
+        </div>
+      </section>
+
+      <section id="qa-audit">
+        <div class="section-head">
+          <h2>Checkpoint QA audit</h2>
+          <p>
+            Four fixed held-out examples generated locally with greedy decoding from the same V11 run.
+            These are qualitative failure cases for review, not an aggregate benchmark or a success claim.
+            <a href="assets/scenel3dger/checkpoint-generations-v11.json">Download raw outputs and reference NLLs.</a>
+          </p>
+        </div>
+
+        <div class="audit-summary" aria-label="Qualitative audit summary">
+          <div class="audit-stat"><strong>0 / 4</strong><span>correct at step 200</span></div>
+          <div class="audit-stat"><strong>4 / 4</strong><span>wrong-scene answers equal normal answers</span></div>
+          <div class="audit-stat"><strong>3 / 4</strong><span>zero memory changes the decoded answer</span></div>
+        </div>
+
+        <div class="table-wrap">
+          <table class="qa-table">
+            <thead>
+              <tr>
+                <th>Held-out question</th>
+                <th>Reference</th>
+                <th>Step 50</th>
+                <th>Step 100</th>
+                <th>Step 150</th>
+                <th>Step 200</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td><span class="qa-question">What are the dimensions of the bench?</span><span class="qa-type">object_size_realtime · scene0005_00</span></td>
+                <td class="answer-reference">4.2 m × 0.5 m × 1.2 m</td>
+                <td class="answer-wrong">1.8 m × 0.6 m × 0.5 m</td>
+                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
+                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
+                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
+              </tr>
+              <tr>
+                <td><span class="qa-question">What is in front of the radiator?</span><span class="qa-type">object_recognition_realtime · scene0002_00</span></td>
+                <td class="answer-reference">small table</td>
+                <td class="answer-wrong">bed</td>
+                <td class="answer-wrong">white rectangular cabinet</td>
+                <td class="answer-wrong">bed</td>
+                <td class="answer-wrong">bed</td>
+              </tr>
+              <tr>
+                <td><span class="qa-question">Have you encountered a table so far?</span><span class="qa-type">object_counting_backward · scene0022_01</span></td>
+                <td class="answer-reference">A · Yes</td>
+                <td class="answer-wrong">B · No</td>
+                <td class="answer-wrong">B · No</td>
+                <td class="answer-wrong">B · No</td>
+                <td class="answer-wrong">B · No</td>
+              </tr>
+              <tr>
+                <td><span class="qa-question">Where will the camera be located in five seconds?</span><span class="qa-type">camera_direction_forward · scene0010_01</span></td>
+                <td class="answer-reference">D · to the right</td>
+                <td class="answer-wrong">B · to the front-right</td>
+                <td class="answer-wrong">B · to the front-right</td>
+                <td class="answer-wrong">B · to the front-right</td>
+                <td class="answer-wrong">B · to the front-right</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="control-grid" aria-label="Step 200 memory interventions">
+          <article class="control-card">
+            <h3>Bench dimensions</h3>
+            <p>Reference: 4.2 × 0.5 × 1.2 m</p>
+            <div class="control-answer"><b>Normal</b><br>1.6 × 0.6 × 0.5 m</div>
+            <div class="control-answer"><b>Zero memory</b><br>1.0 × 0.2 × 0.1 m</div>
+            <div class="control-answer"><b>Wrong scene</b><br>1.6 × 0.6 × 0.5 m</div>
+          </article>
+          <article class="control-card">
+            <h3>Object by radiator</h3>
+            <p>Reference: small table</p>
+            <div class="control-answer"><b>Normal</b><br>bed</div>
+            <div class="control-answer"><b>Zero memory</b><br>nothing</div>
+            <div class="control-answer"><b>Wrong scene</b><br>bed</div>
+          </article>
+          <article class="control-card">
+            <h3>Previously saw table</h3>
+            <p>Reference: A · Yes</p>
+            <div class="control-answer"><b>Normal</b><br>B · No</div>
+            <div class="control-answer"><b>Zero memory</b><br>B · No</div>
+            <div class="control-answer"><b>Wrong scene</b><br>B · No</div>
+          </article>
+          <article class="control-card">
+            <h3>Future camera direction</h3>
+            <p>Reference: D · to the right</p>
+            <div class="control-answer"><b>Normal</b><br>B · to the front-right</div>
+            <div class="control-answer"><b>Zero memory</b><br>C · same position</div>
+            <div class="control-answer"><b>Wrong scene</b><br>B · to the front-right</div>
+          </article>
+        </div>
+
+        <div class="audit-note">
+          <strong>Current interpretation:</strong> the memory tensor affects three of four decoded answers when it is
+          removed entirely, but the model does not distinguish the correct scene from a wrong scene on any of these
+          four examples. Training from step 50 to 200 also produces little qualitative improvement. This small panel
+          therefore supports a failure diagnosis—weak scene-specific readout—not a performance conclusion.
         </div>
       </section>
 
