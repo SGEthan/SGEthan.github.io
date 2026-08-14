@@ -4,31 +4,39 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="color-scheme" content="light">
-  <meta name="description" content="SceneL3DGER pilot: SAM3 video masks are linked to stable ScanNet 3D identities to recover objects after long absences and discover late arrivals.">
-  <meta property="og:title" content="SceneL3DGER · Persistent 3D Object Memory">
-  <meta property="og:description" content="A real 45-second ScanNet scene with disappearing, reappearing, and late-arriving objects.">
+  <meta name="description" content="SceneL3DGER research progress: a constant-size recurrent visual memory trained end to end for long-stream video question answering.">
+  <meta property="og:title" content="SceneL3DGER · Research Progress">
+  <meta property="og:description" content="Architecture, supervision, training curves, and an audited 10k evaluation of a constant-size visual memory.">
   <meta property="og:type" content="website">
   <meta property="og:image" content="https://blog.stargazerd.site/scenel3dger/assets/scenel3dger/poster.jpg">
-  <title>SceneL3DGER · Persistent 3D Object Memory</title>
+  <title>SceneL3DGER · Research Progress</title>
   <style>
     :root {
-      --paper: #f4f0e6;
-      --paper-2: #faf8f2;
-      --ink: #23231f;
-      --muted: #6e6a60;
-      --line: #d8d0bf;
-      --green: #668f34;
-      --green-soft: #e6edd9;
-      --amber: #c69229;
-      --blue: #477aa8;
-      --brick: #aa5d45;
-      --shadow: 0 22px 70px rgb(66 54 31 / 11%);
+      --paper: #f3f0e8;
+      --surface: #fbfaf6;
+      --surface-2: #efede5;
+      --ink: #20211d;
+      --muted: #6c6b63;
+      --line: #d8d3c7;
+      --line-strong: #bcb5a7;
+      --green: #557a43;
+      --green-2: #769361;
+      --green-soft: #e4ecdd;
+      --blue: #587c9b;
+      --blue-soft: #e2eaf0;
+      --ochre: #a87731;
+      --ochre-soft: #f1e6d0;
+      --plum: #80637c;
+      --plum-soft: #ebe2e9;
+      --red: #a35346;
+      --red-soft: #f1e1dc;
+      --shadow: 0 18px 55px rgb(52 46 34 / 9%);
       --radius: 18px;
+      --mono: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
     }
 
     * { box-sizing: border-box; }
     html { scroll-behavior: smooth; }
-
     body {
       margin: 0;
       min-width: 320px;
@@ -39,26 +47,29 @@
       background: var(--paper);
     }
 
-    a { color: #426b22; text-decoration-thickness: 1px; text-underline-offset: 3px; }
+    a { color: #426434; text-decoration-thickness: 1px; text-underline-offset: 3px; }
     img, video { display: block; max-width: 100%; }
-    code { font-family: "SFMono-Regular", Consolas, monospace; }
+    code { font-family: var(--mono); }
+    button { font: inherit; }
 
-    .shell {
-      width: min(1200px, calc(100% - 40px));
-      margin: 0 auto;
-    }
+    .shell { width: min(1220px, calc(100% - 42px)); margin: 0 auto; }
 
     nav {
+      position: sticky;
+      z-index: 20;
+      top: 0;
       display: flex;
+      min-height: 68px;
       align-items: center;
       justify-content: space-between;
-      min-height: 72px;
-      border-bottom: 1px solid var(--line);
+      border-bottom: 1px solid rgb(188 181 167 / 72%);
+      background: rgb(243 240 232 / 92%);
+      backdrop-filter: blur(14px);
     }
 
     .brand {
       display: flex;
-      gap: 11px;
+      gap: 10px;
       align-items: center;
       color: var(--ink);
       font-weight: 790;
@@ -72,34 +83,35 @@
       height: 34px;
       place-items: center;
       color: white;
-      font-family: "SFMono-Regular", Consolas, monospace;
-      font-size: 12px;
-      border-radius: 8px;
+      font-family: var(--mono);
+      font-size: 11px;
+      border-radius: 9px;
       background: var(--green);
     }
 
-    .nav-links { display: flex; gap: 22px; font-size: 13px; }
+    .nav-links { display: flex; gap: 22px; font-size: 12px; }
     .nav-links a { color: var(--muted); text-decoration: none; }
+    .nav-links a:hover { color: var(--ink); }
 
     .hero {
       display: grid;
-      grid-template-columns: 1.22fr .78fr;
-      gap: 58px;
+      grid-template-columns: minmax(0, 1.2fr) minmax(320px, .8fr);
+      gap: 62px;
       align-items: center;
-      padding: 82px 0 52px;
+      padding: 76px 0 38px;
     }
 
     .eyebrow {
       display: inline-flex;
-      align-items: center;
       gap: 8px;
+      align-items: center;
       padding: 6px 10px;
-      color: #4c7026;
-      font-size: 11px;
-      font-weight: 780;
-      letter-spacing: .085em;
+      color: #4c6c3d;
+      font-size: 10px;
+      font-weight: 800;
+      letter-spacing: .08em;
       text-transform: uppercase;
-      border: 1px solid #b9c99f;
+      border: 1px solid #b9c7ae;
       border-radius: 999px;
       background: var(--green-soft);
     }
@@ -110,748 +122,505 @@
       content: "";
       border-radius: 50%;
       background: var(--green);
+      box-shadow: 0 0 0 4px rgb(85 122 67 / 12%);
     }
 
     h1 {
-      max-width: 780px;
+      max-width: 820px;
       margin: 20px 0 18px;
-      font-size: clamp(48px, 7.4vw, 88px);
-      line-height: .95;
-      letter-spacing: -.065em;
+      font-size: clamp(48px, 6.5vw, 84px);
+      font-weight: 790;
+      line-height: .97;
+      letter-spacing: -.062em;
     }
 
     h1 span { color: var(--green); }
-
-    .hero-copy {
-      max-width: 760px;
-      margin: 0;
-      color: var(--muted);
-      font-size: 17px;
-    }
-
+    .hero-copy { max-width: 760px; margin: 0; color: var(--muted); font-size: 17px; }
     .hero-copy strong { color: var(--ink); }
 
-    .hero-actions {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 11px;
-      margin-top: 26px;
-    }
-
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 25px; }
     .button {
       display: inline-flex;
+      min-height: 42px;
       align-items: center;
       justify-content: center;
-      min-height: 43px;
-      padding: 0 16px;
+      padding: 0 15px;
       color: white;
-      font-size: 13px;
-      font-weight: 740;
+      font-size: 12px;
+      font-weight: 750;
       text-decoration: none;
       border: 1px solid var(--green);
-      border-radius: 10px;
+      border-radius: 9px;
       background: var(--green);
     }
+    .button.secondary { color: var(--ink); border-color: var(--line); background: var(--surface); }
 
-    .button.secondary {
-      color: var(--ink);
-      border-color: var(--line);
-      background: var(--paper-2);
-    }
-
-    .hero-note {
-      padding: 28px;
+    .hero-state {
+      overflow: hidden;
       border: 1px solid var(--line);
-      border-radius: 20px;
-      background: var(--paper-2);
+      border-radius: 21px;
+      background: var(--surface);
       box-shadow: var(--shadow);
     }
 
-    .note-label {
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 750;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-    }
+    .state-top { padding: 24px 25px 22px; border-bottom: 1px solid var(--line); }
+    .state-label { color: var(--muted); font-family: var(--mono); font-size: 10px; letter-spacing: .06em; text-transform: uppercase; }
+    .state-step { margin: 7px 0 4px; font-size: 36px; font-weight: 810; line-height: 1; letter-spacing: -.05em; }
+    .state-step span { color: var(--muted); font-size: 17px; font-weight: 550; }
+    .progress-track { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 99px; background: #dfdcd3; }
+    .progress-fill { width: 37.15%; height: 100%; border-radius: inherit; background: var(--green); }
+    .state-row { display: grid; grid-template-columns: 1fr 1fr; }
+    .state-cell { padding: 17px 24px 19px; }
+    .state-cell + .state-cell { border-left: 1px solid var(--line); }
+    .state-cell strong { display: block; margin-top: 3px; font-size: 18px; letter-spacing: -.03em; }
+    .state-cell span { color: var(--muted); font-size: 10px; }
+    .state-warning { padding: 14px 24px; color: #714338; font-size: 11px; border-top: 1px solid #dfc4bc; background: var(--red-soft); }
 
-    .note-question {
-      margin: 11px 0 16px;
-      font-family: Georgia, "Times New Roman", serif;
-      font-size: clamp(25px, 3vw, 35px);
-      line-height: 1.16;
-      letter-spacing: -.025em;
-    }
-
-    .note-answer {
-      padding-top: 15px;
-      color: var(--muted);
-      font-size: 13px;
-      border-top: 1px solid var(--line);
-    }
-
-    .note-answer strong { color: var(--green); }
-
-    .kpis {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 13px;
-      margin-bottom: 72px;
-    }
-
-    .kpi {
-      padding: 20px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: rgb(250 248 242 / 72%);
-    }
-
-    .kpi-name { color: var(--muted); font-size: 11px; }
+    .kpis { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin: 18px 0 78px; }
+    .kpi { padding: 20px; border: 1px solid var(--line); border-radius: 14px; background: rgb(251 250 246 / 76%); }
+    .kpi-name { color: var(--muted); font-size: 10px; letter-spacing: .045em; }
     .kpi-value { margin: 3px 0 1px; font-size: 31px; font-weight: 800; letter-spacing: -.045em; }
     .kpi-note { color: var(--muted); font-size: 11px; }
 
-    section { margin: 0 0 76px; scroll-margin-top: 24px; }
+    section { margin: 0 0 86px; scroll-margin-top: 92px; }
+    .section-kicker { margin-bottom: 7px; color: var(--green); font-family: var(--mono); font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .section-head { display: flex; gap: 34px; align-items: end; justify-content: space-between; margin-bottom: 23px; }
+    h2 { margin: 0; font-size: clamp(29px, 4vw, 44px); line-height: 1.06; letter-spacing: -.045em; }
+    .section-head p { max-width: 600px; margin: 0; color: var(--muted); font-size: 13px; }
 
-    .section-head {
-      display: flex;
-      align-items: end;
-      justify-content: space-between;
-      gap: 32px;
-      margin-bottom: 22px;
-    }
-
-    h2 { margin: 0; font-size: clamp(29px, 4vw, 43px); line-height: 1.08; letter-spacing: -.045em; }
-    .section-head p { max-width: 590px; margin: 0; color: var(--muted); font-size: 13px; }
-
-    .video-panel {
-      overflow: hidden;
-      padding: 12px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: #e7e2d7;
-      box-shadow: var(--shadow);
-    }
-
-    video { width: 100%; border-radius: 11px; background: #dbe3e5; }
-
-    .video-caption {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      padding: 12px 4px 2px;
-      color: var(--muted);
-      font-size: 11px;
-    }
-
-    .legend { display: flex; flex-wrap: wrap; gap: 8px 16px; }
-    .legend span { display: inline-flex; align-items: center; gap: 6px; }
-    .legend i { width: 8px; height: 8px; border-radius: 50%; }
-
-    .flow {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 22px;
-      counter-reset: stage;
-    }
-
-    .stage {
-      position: relative;
-      min-height: 196px;
+    .architecture-board {
+      overflow-x: auto;
       padding: 22px;
       border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper-2);
-      counter-increment: stage;
-    }
-
-    .stage:not(:last-child)::after {
-      position: absolute;
-      top: 50%;
-      right: -17px;
-      color: #9b9384;
-      content: "→";
-      font-size: 20px;
-      transform: translateY(-50%);
-    }
-
-    .stage::before {
-      display: grid;
-      width: 26px;
-      height: 26px;
-      margin-bottom: 18px;
-      place-items: center;
-      color: white;
-      content: counter(stage);
-      font-size: 11px;
-      font-weight: 800;
-      border-radius: 50%;
-      background: var(--green);
-    }
-
-    .stage h3 { margin: 0 0 8px; font-size: 16px; letter-spacing: -.02em; }
-    .stage p { margin: 0; color: var(--muted); font-size: 12px; }
-    .stage code { color: #5b7e31; font-size: 11px; }
-
-    .honesty {
-      display: grid;
-      grid-template-columns: auto 1fr;
-      gap: 16px;
-      align-items: start;
-      margin-top: 18px;
-      padding: 18px 20px;
-      color: #5f594d;
-      font-size: 12px;
-      border: 1px solid #dbc999;
-      border-radius: 14px;
-      background: #f5ecd6;
-    }
-
-    .honesty strong { color: var(--ink); }
-    .honesty-icon {
-      display: grid;
-      width: 34px;
-      height: 34px;
-      place-items: center;
-      color: white;
-      font-weight: 800;
-      border-radius: 9px;
-      background: var(--amber);
-    }
-
-    .table-wrap {
-      overflow-x: auto;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper-2);
-    }
-
-    table { width: 100%; min-width: 850px; border-collapse: collapse; font-size: 13px; }
-    th { padding: 16px 17px 12px; color: var(--muted); font-size: 10px; font-weight: 720; text-align: right; text-transform: uppercase; letter-spacing: .055em; border-bottom: 1px solid var(--line); }
-    th:first-child, td:first-child { text-align: left; }
-    td { padding: 16px 17px; text-align: right; border-bottom: 1px solid #e5dfd2; font-variant-numeric: tabular-nums; }
-    tr:last-child td { border-bottom: 0; }
-    tbody tr:hover { background: #f3efe5; }
-
-    .audit-summary {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 13px;
-      margin-bottom: 18px;
-    }
-
-    .audit-stat {
-      padding: 18px 20px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--paper-2);
-    }
-
-    .audit-stat strong {
-      display: block;
-      margin-bottom: 3px;
-      color: var(--green);
-      font-size: 27px;
-      line-height: 1;
-      letter-spacing: -.04em;
-    }
-
-    .audit-stat span { color: var(--muted); font-size: 11px; }
-
-    .qa-table { min-width: 1180px; table-layout: fixed; }
-    .qa-table th, .qa-table td { text-align: left; vertical-align: top; }
-    .qa-table th:first-child { width: 250px; }
-    .qa-table th:nth-child(2) { width: 210px; }
-    .qa-table th:nth-child(n+3) { width: 180px; }
-    .qa-table td { font-size: 12px; line-height: 1.45; }
-    .qa-question { font-weight: 680; }
-    .qa-type {
-      display: block;
-      margin-top: 6px;
-      color: var(--muted);
-      font-family: "SFMono-Regular", Consolas, monospace;
-      font-size: 9px;
-    }
-    .answer-reference { color: #426b22; font-weight: 700; }
-    .answer-wrong { color: #8d4937; }
-
-    .control-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 12px;
-      margin-top: 18px;
-    }
-
-    .control-card {
-      padding: 17px;
-      border: 1px solid var(--line);
-      border-radius: 14px;
-      background: var(--paper-2);
-    }
-
-    .control-card h3 { margin: 0 0 5px; font-size: 14px; }
-    .control-card p { margin: 0 0 10px; color: var(--muted); font-size: 11px; }
-    .control-answer { font-size: 11px; line-height: 1.45; }
-    .control-answer + .control-answer { margin-top: 7px; }
-    .control-answer b { color: var(--muted); font-size: 9px; letter-spacing: .04em; text-transform: uppercase; }
-
-    .audit-note {
-      margin-top: 18px;
-      padding: 18px 20px;
-      color: #5f594d;
-      font-size: 12px;
-      border-left: 4px solid var(--brick);
-      background: #f0e7df;
-    }
-
-    .audit-note strong { color: var(--ink); }
-
-    .object-name { display: flex; align-items: center; gap: 9px; font-weight: 700; }
-    .object-dot { width: 9px; height: 9px; border-radius: 50%; background: var(--green); }
-    .tag { display: inline-block; padding: 3px 7px; color: #4f712a; font-size: 10px; font-weight: 750; border-radius: 6px; background: var(--green-soft); }
-    .tag.late { color: #8a5a17; background: #f3e5c4; }
-
-    .gallery {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 18px;
-    }
-
-    .evidence {
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper-2);
-    }
-
-    .evidence img { width: 100%; aspect-ratio: 16 / 9; object-fit: cover; border-bottom: 1px solid var(--line); }
-    .evidence-copy { padding: 17px 19px 19px; }
-    .evidence-time { color: var(--green); font-family: "SFMono-Regular", Consolas, monospace; font-size: 11px; }
-    .evidence h3 { margin: 5px 0 4px; font-size: 17px; }
-    .evidence p { margin: 0; color: var(--muted); font-size: 12px; }
-
-    .protocol-grid {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-
-    .protocol {
-      padding: 24px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius);
-      background: var(--paper-2);
-    }
-
-    .protocol h3 { margin: 0 0 12px; font-size: 17px; }
-    .protocol ul { display: grid; gap: 9px; margin: 0; padding-left: 18px; color: var(--muted); font-size: 12px; }
-    .protocol strong { color: var(--ink); }
-
-    .takeaway {
-      display: grid;
-      grid-template-columns: 1.2fr .8fr;
-      gap: 34px;
-      align-items: center;
-      padding: 35px;
-      border: 1px solid #bac7a7;
       border-radius: 22px;
-      background: #e9eedf;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .architecture-board svg { display: block; min-width: 1080px; width: 100%; height: auto; }
+    .arch-box { fill: #fbfaf6; stroke: #c9c3b7; stroke-width: 1.4; }
+    .arch-input { fill: #efede5; }
+    .arch-semantic { fill: #e2eaf0; stroke: #aebfcb; }
+    .arch-spatial { fill: #f1e6d0; stroke: #d2b98e; }
+    .arch-memory { fill: #e4ecdd; stroke: #aebfa0; }
+    .arch-readout { fill: #ebe2e9; stroke: #c8b4c4; }
+    .arch-output { fill: #f1e1dc; stroke: #d4afa5; }
+    .arch-title { fill: #20211d; font-size: 16px; font-weight: 760; }
+    .arch-copy { fill: #66675f; font-size: 11px; }
+    .arch-mini { fill: #557a43; font-family: var(--mono); font-size: 9px; font-weight: 700; }
+    .arch-arrow { fill: none; stroke: #8f8a80; stroke-width: 1.7; marker-end: url(#arrow); }
+    .arch-dash { stroke-dasharray: 5 5; }
+
+    .arch-caption { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-top: 16px; }
+    .arch-note { padding: 15px 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .arch-note b { display: block; margin-bottom: 4px; font-size: 12px; }
+    .arch-note span { color: var(--muted); font-size: 10px; }
+
+    .loss-layout { display: grid; grid-template-columns: .92fr 1.08fr; gap: 18px; }
+    .loss-formula-card, .loss-card, .chart-card, .result-card, .note-card {
+      border: 1px solid var(--line);
+      border-radius: var(--radius);
+      background: var(--surface);
+    }
+    .loss-formula-card { display: flex; min-height: 100%; flex-direction: column; justify-content: space-between; padding: 27px; }
+    .loss-formula { margin: 22px 0; font-family: Georgia, "Times New Roman", serif; font-size: clamp(21px, 2.2vw, 30px); line-height: 1.65; letter-spacing: -.02em; }
+    .loss-formula .w { color: var(--green); }
+    .loss-formula-card p { margin: 0; color: var(--muted); font-size: 12px; }
+    .loss-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+    .loss-card { position: relative; min-height: 146px; padding: 18px; }
+    .loss-card .weight { position: absolute; top: 15px; right: 16px; color: var(--green); font-family: var(--mono); font-size: 10px; font-weight: 800; }
+    .loss-card h3 { margin: 0 0 7px; font-size: 14px; }
+    .loss-card p { margin: 0; color: var(--muted); font-size: 11px; }
+    .loss-card code { display: block; margin-top: 10px; color: #53554d; font-size: 9px; }
+
+    .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
+    .chart-card { padding: 21px 21px 16px; }
+    .chart-card.wide { grid-column: 1 / -1; }
+    .chart-head { display: flex; gap: 20px; align-items: start; justify-content: space-between; margin-bottom: 12px; }
+    .chart-head h3 { margin: 0 0 3px; font-size: 16px; letter-spacing: -.02em; }
+    .chart-head p { max-width: 520px; margin: 0; color: var(--muted); font-size: 10px; }
+    .chart-badge { flex: none; padding: 4px 8px; color: var(--muted); font-family: var(--mono); font-size: 9px; border: 1px solid var(--line); border-radius: 99px; background: var(--surface-2); }
+    .chart { position: relative; min-height: 285px; }
+    .chart svg { display: block; width: 100%; height: auto; overflow: visible; }
+    .chart text { fill: #77736b; font-family: var(--mono); font-size: 9px; }
+    .chart .grid-line { stroke: #dedad0; stroke-width: 1; }
+    .chart .axis-line { stroke: #bdb7aa; stroke-width: 1; }
+    .chart .resume-line { stroke: #aaa397; stroke-width: 1; stroke-dasharray: 4 4; }
+    .chart .resume-label { fill: #8b857b; font-size: 8px; }
+    .chart .hover-dot { cursor: crosshair; fill: transparent; stroke: transparent; }
+    .chart-legend { display: flex; flex-wrap: wrap; gap: 8px 16px; margin-top: 6px; }
+    .legend-item { display: inline-flex; gap: 6px; align-items: center; color: var(--muted); font-size: 9px; }
+    .legend-item i { width: 16px; height: 3px; border-radius: 99px; }
+    .chart-foot { margin-top: 11px; padding-top: 11px; color: var(--muted); font-size: 10px; border-top: 1px solid var(--line); }
+
+    .health-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 18px; }
+    .health { padding: 18px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+    .health .status { display: inline-block; margin-bottom: 9px; padding: 3px 7px; font-size: 9px; font-weight: 800; border-radius: 5px; }
+    .status.bad { color: #844438; background: var(--red-soft); }
+    .status.mixed { color: #7e5d23; background: var(--ochre-soft); }
+    .status.good { color: #456635; background: var(--green-soft); }
+    .health h3 { margin: 0 0 5px; font-size: 14px; }
+    .health p { margin: 0; color: var(--muted); font-size: 10px; }
+
+    .eval-layout { display: grid; grid-template-columns: minmax(0, 1.5fr) minmax(280px, .5fr); gap: 18px; }
+    .eval-board { padding: 22px; border: 1px solid var(--line); border-radius: 20px; background: var(--surface); }
+    .eval-axis { display: grid; grid-template-columns: 80px repeat(3, 1fr); gap: 9px; margin-bottom: 9px; color: var(--muted); font-family: var(--mono); font-size: 9px; text-align: center; text-transform: uppercase; }
+    .eval-row { display: grid; grid-template-columns: 80px repeat(3, 1fr); gap: 9px; margin-bottom: 9px; }
+    .eval-row-label { display: flex; align-items: center; color: var(--muted); font-family: var(--mono); font-size: 9px; text-transform: uppercase; }
+    .eval-cell { min-width: 0; padding: 14px; border: 1px solid var(--line); border-radius: 12px; background: #f6f4ed; }
+    .eval-cell.near { border-color: #b7c6aa; background: var(--green-soft); }
+    .eval-score { display: flex; align-items: baseline; justify-content: space-between; gap: 6px; }
+    .eval-score strong { font-size: 23px; line-height: 1; letter-spacing: -.04em; }
+    .eval-score span { color: var(--red); font-family: var(--mono); font-size: 8px; }
+    .dual-bar { display: grid; gap: 4px; margin: 12px 0 7px; }
+    .bar-track { position: relative; height: 4px; overflow: hidden; border-radius: 99px; background: #ddd9cf; }
+    .bar-track i { display: block; height: 100%; border-radius: inherit; }
+    .bar-current { background: var(--green); }
+    .bar-baseline { background: #98958d; }
+    .eval-values { display: flex; justify-content: space-between; color: var(--muted); font-size: 8px; }
+
+    .result-stack { display: grid; gap: 12px; }
+    .result-card { padding: 20px; }
+    .result-card .label { color: var(--muted); font-size: 9px; text-transform: uppercase; letter-spacing: .06em; }
+    .result-card .big { margin: 4px 0 2px; font-size: 36px; font-weight: 820; line-height: 1; letter-spacing: -.05em; }
+    .result-card p { margin: 8px 0 0; color: var(--muted); font-size: 10px; }
+    .result-card.negative { border-color: #d8bcb4; background: #f6ebe7; }
+    .result-card.positive { border-color: #bdcbb2; background: #eaf0e4; }
+
+    .audit-note { display: grid; grid-template-columns: auto 1fr; gap: 15px; align-items: start; margin-top: 18px; padding: 18px 20px; color: #67584f; font-size: 11px; border: 1px solid #d8bcb4; border-radius: 14px; background: var(--red-soft); }
+    .audit-note strong { color: var(--ink); }
+    .audit-icon { display: grid; width: 30px; height: 30px; place-items: center; color: white; font-weight: 800; border-radius: 8px; background: var(--red); }
+
+    .protocol-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+    .note-card { padding: 20px; }
+    .note-card h3 { margin: 0 0 9px; font-size: 14px; }
+    .note-card ul { display: grid; gap: 7px; margin: 0; padding-left: 17px; color: var(--muted); font-size: 10px; }
+    .note-card strong { color: var(--ink); }
+
+    .video-panel { overflow: hidden; padding: 11px; border: 1px solid var(--line); border-radius: 20px; background: #e4e0d6; box-shadow: var(--shadow); }
+    video { width: 100%; border-radius: 11px; background: #dbe3e5; }
+    .video-caption { display: flex; gap: 24px; justify-content: space-between; padding: 12px 4px 2px; color: var(--muted); font-size: 10px; }
+    .pilot-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 16px; }
+    .pilot-event { padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
+    .pilot-event b { display: block; margin-bottom: 4px; font-size: 13px; }
+    .pilot-event span { color: var(--muted); font-size: 10px; }
+
+    .takeaway { display: grid; grid-template-columns: 1.15fr .85fr; gap: 34px; align-items: center; padding: 34px; border: 1px solid #bac7ae; border-radius: 22px; background: #e7ede1; }
+    .takeaway p { margin: 0; color: #59634f; font-size: 12px; }
+
+    footer { display: flex; gap: 24px; justify-content: space-between; padding: 30px 0 42px; color: var(--muted); font-size: 10px; border-top: 1px solid var(--line); }
+
+    @media (max-width: 960px) {
+      .hero, .loss-layout, .eval-layout, .takeaway { grid-template-columns: 1fr; }
+      .hero { gap: 28px; padding-top: 55px; }
+      .chart-grid { grid-template-columns: 1fr; }
+      .chart-card.wide { grid-column: auto; }
+      .kpis, .arch-caption { grid-template-columns: repeat(2, 1fr); }
+      .section-head { align-items: start; flex-direction: column; gap: 9px; }
     }
 
-    .takeaway h2 { max-width: 700px; }
-    .takeaway p { margin: 0; color: #616b53; font-size: 13px; }
-
-    footer {
-      display: flex;
-      justify-content: space-between;
-      gap: 24px;
-      padding: 30px 0 42px;
-      color: var(--muted);
-      font-size: 11px;
-      border-top: 1px solid var(--line);
-    }
-
-    @media (max-width: 900px) {
-      .hero, .takeaway { grid-template-columns: 1fr; }
-      .hero { gap: 28px; padding-top: 58px; }
-      .kpis, .flow, .control-grid { grid-template-columns: repeat(2, 1fr); }
-      .stage:nth-child(2)::after { display: none; }
-      .section-head { align-items: start; flex-direction: column; gap: 10px; }
-    }
-
-    @media (max-width: 620px) {
-      .shell { width: min(100% - 24px, 1200px); }
+    @media (max-width: 680px) {
+      .shell { width: min(100% - 24px, 1220px); }
       .nav-links { display: none; }
-      h1 { font-size: 50px; }
-      .kpis, .flow, .gallery, .protocol-grid, .audit-summary, .control-grid { grid-template-columns: 1fr; }
-      .stage::after { display: none; }
+      h1 { font-size: 49px; }
+      .kpis, .loss-grid, .health-row, .protocol-grid, .pilot-grid, .arch-caption { grid-template-columns: 1fr; }
+      .eval-axis, .eval-row { grid-template-columns: 58px repeat(3, 1fr); gap: 5px; }
+      .eval-cell { padding: 9px 7px; }
+      .eval-score { display: block; }
+      .eval-score strong { font-size: 18px; }
+      .eval-score span { display: block; margin-top: 3px; }
+      .chart-card { padding: 16px 12px 13px; }
+      .chart-head { display: block; }
+      .chart-badge { display: inline-block; margin-top: 7px; }
       .video-panel { padding: 6px; border-radius: 13px; }
       .video-caption, footer { flex-direction: column; }
-      .takeaway { padding: 25px; }
     }
   </style>
 </head>
 <body>
   <div class="shell">
     <nav>
-      <a class="brand" href="#top">
-        <span class="brand-mark">3D</span>
-        <span>SceneL3DGER</span>
-      </a>
+      <a class="brand" href="#top"><span class="brand-mark">3D</span><span>SceneL3DGER</span></a>
       <div class="nav-links">
-        <a href="#demo">Demo</a>
-        <a href="#pipeline">Pipeline</a>
-        <a href="#events">Events</a>
-        <a href="#qa-audit">Early QA</a>
-        <a href="#protocol">Protocol</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#losses">Losses</a>
+        <a href="#training">Training</a>
+        <a href="#evaluation">Evaluation</a>
+        <a href="#object-pilot">Object pilot</a>
       </div>
     </nav>
 
     <main id="top">
       <header class="hero">
         <div>
-          <span class="eyebrow">Single-scene feasibility pilot</span>
-          <h1>Objects leave the view. <span>The memory does not.</span></h1>
+          <span class="eyebrow">Frozen v2 · six-layer recurrent writer · training</span>
+          <h1>A fixed-size memory for <span>long RGB streams.</span></h1>
           <p class="hero-copy">
-            We run <strong>SAM3 text-conditioned video tracking</strong> on a continuous RGB scan,
-            link every valid mask to a stable 3D scene identity, and keep that object readable while
-            it is absent. The same registry also admits objects that appear only near the end.
+            SceneL3DGER compresses every observed frame into a persistent <strong>512 × 2048</strong>
+            state, then answers text questions through one Qwen generative path. This page reports the
+            current architecture, every active supervision signal, the real training trace, and the first
+            audited 10,000-question evaluation.
           </p>
           <div class="hero-actions">
-            <a class="button" href="#demo">Watch the full scene</a>
-            <a class="button secondary" href="assets/scenel3dger/summary.json">Download audit summary</a>
+            <a class="button" href="#evaluation">See the 10k result</a>
+            <a class="button secondary" href="https://wandb.ai/ycdeng-university-of-washington/scenel3dger-e2e-memory/runs/b0s3tayx">Open live W&amp;B</a>
           </div>
         </div>
-        <aside class="hero-note">
-          <div class="note-label">Question tested</div>
-          <div class="note-question">Can one object readout target survive both long occlusion and track fragmentation?</div>
-          <div class="note-answer">
-            <strong>Yes, in this supervised ScanNet pilot.</strong> The trash can is emitted under
-            multiple SAM-local IDs, yet all fragments resolve to one metric 3D object ID.
+        <aside class="hero-state" aria-label="Training status">
+          <div class="state-top">
+            <div class="state-label">latest validated training step</div>
+            <div class="state-step">68,000 <span>/ 183,045</span></div>
+            <div class="progress-track"><div class="progress-fill"></div></div>
           </div>
+          <div class="state-row">
+            <div class="state-cell"><span>LATEST AUDITED CKPT</span><strong>step 65k</strong></div>
+            <div class="state-cell"><span>OFFICIAL BENCH10K</span><strong>35.16%</strong></div>
+          </div>
+          <div class="state-warning">Known issue: the core/writer aggregate gradient is non-finite in the current segment; its clip scale is zero.</div>
         </aside>
       </header>
 
-      <div class="kpis" aria-label="Pilot summary">
-        <div class="kpi">
-          <div class="kpi-name">CONTINUOUS SCENE</div>
-          <div class="kpi-value">44.5 s</div>
-          <div class="kpi-note">1,336 native RGB frames</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-name">STABLE 3D OBJECTS</div>
-          <div class="kpi-value">5</div>
-          <div class="kpi-note">all five requested classes matched</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-name">LONG REAPPEARANCES</div>
-          <div class="kpi-value">3</div>
-          <div class="kpi-note">up to 34.0 s absent</div>
-        </div>
-        <div class="kpi">
-          <div class="kpi-name">LATE DISCOVERIES</div>
-          <div class="kpi-value">2</div>
-          <div class="kpi-note">first observed after 32.5 s</div>
-        </div>
+      <div class="kpis" aria-label="Current experiment at a glance">
+        <article class="kpi"><div class="kpi-name">PERSISTENT STATE</div><div class="kpi-value">512 × 2048</div><div class="kpi-note">constant across stream length</div></article>
+        <article class="kpi"><div class="kpi-name">TRAINING SET</div><div class="kpi-value">976,220</div><div class="kpi-note">QA rows · 4,897 scenes</div></article>
+        <article class="kpi"><div class="kpi-name">OBJECT QUERIES</div><div class="kpi-value">300</div><div class="kpi-note">initialized from Apple CuTR RGB</div></article>
+        <article class="kpi"><div class="kpi-name">TARGET SCHEDULE</div><div class="kpi-value">3 epochs</div><div class="kpi-note">8 × H200 · BPTT 16</div></article>
       </div>
 
-      <section id="demo">
+      <section id="architecture">
+        <div class="section-kicker">01 · model</div>
         <div class="section-head">
-          <h2>One uncut scene</h2>
-          <p>
-            RGB is rendered at the native 30 FPS. SAM3 and the 3D registry update at 2 Hz, exactly
-            as used by the pilot. “Memory” means the object is not currently matched but its identity
-            and metric position remain in the registry.
-          </p>
+          <h2>Architecture overview</h2>
+          <p>Each RGB frame is encoded along two frozen visual paths. All 192 aligned patch pairs update a bank of free associative registers; no frame tokens or explicit 3D map survive after the update.</p>
         </div>
-        <div class="video-panel">
-          <video controls autoplay muted loop playsinline preload="metadata"
-            poster="assets/scenel3dger/poster.jpg">
-            <source src="assets/scenel3dger/scene0003_02_object_memory.mp4" type="video/mp4">
-            Your browser does not support embedded H.264 video.
-          </video>
-          <div class="video-caption">
-            <div class="legend">
-              <span><i style="background:#668f34"></i>visible / newly registered</span>
-              <span><i style="background:#8a867d"></i>retained in memory</span>
-              <span><i style="background:#477aa8"></i>reappeared after a long gap</span>
+        <div class="architecture-board">
+          <svg viewBox="0 0 1180 570" role="img" aria-labelledby="arch-title arch-desc">
+            <title id="arch-title">SceneL3DGER frozen-v2 architecture</title>
+            <desc id="arch-desc">Parallel semantic and geometry-aware visual tokens are fused, recurrently written into constant memory, then read by Qwen, object, and pose branches.</desc>
+            <defs>
+              <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#8f8a80"/></marker>
+            </defs>
+
+            <rect class="arch-box arch-input" x="28" y="205" rx="14" width="118" height="104"/>
+            <text class="arch-title" x="87" y="244" text-anchor="middle">RGB frame</text>
+            <text class="arch-copy" x="87" y="265" text-anchor="middle">at time t</text>
+            <text class="arch-mini" x="87" y="288" text-anchor="middle">ONLY INPUT</text>
+
+            <rect class="arch-box arch-semantic" x="205" y="91" rx="14" width="174" height="113"/>
+            <text class="arch-title" x="292" y="128" text-anchor="middle">Qwen ViT</text>
+            <text class="arch-copy" x="292" y="151" text-anchor="middle">semantic visual tokens</text>
+            <text class="arch-mini" x="292" y="179" text-anchor="middle">192 × 2048 · FROZEN</text>
+
+            <rect class="arch-box arch-spatial" x="205" y="312" rx="14" width="174" height="113"/>
+            <text class="arch-title" x="292" y="349" text-anchor="middle">TTT3R decoder</text>
+            <text class="arch-copy" x="292" y="372" text-anchor="middle">geometry-aware visual tokens</text>
+            <text class="arch-mini" x="292" y="400" text-anchor="middle">192 × 768 · FROZEN</text>
+
+            <rect class="arch-box" x="443" y="185" rx="14" width="180" height="145"/>
+            <text class="arch-title" x="533" y="222" text-anchor="middle">Patch fusion</text>
+            <text class="arch-copy" x="533" y="246" text-anchor="middle">two MLP encoders</text>
+            <text class="arch-copy" x="533" y="264" text-anchor="middle">concat → LN → linear</text>
+            <text class="arch-mini" x="533" y="294" text-anchor="middle">192 × 2048 OBSERVATIONS</text>
+            <text class="arch-copy" x="533" y="312" text-anchor="middle">aligned one-to-one</text>
+
+            <rect class="arch-box arch-memory" x="687" y="153" rx="17" width="226" height="209"/>
+            <text class="arch-title" x="800" y="190" text-anchor="middle">Recurrent writer</text>
+            <text class="arch-copy" x="800" y="217" text-anchor="middle">[old memory ; observations]</text>
+            <text class="arch-copy" x="800" y="240" text-anchor="middle">6 × full self-attention</text>
+            <text class="arch-copy" x="800" y="260" text-anchor="middle">16 heads + MLP</text>
+            <text class="arch-mini" x="800" y="291" text-anchor="middle">X / Y / TIME RoPE · QK ONLY</text>
+            <text class="arch-copy" x="800" y="317" text-anchor="middle">first 512 outputs + per-dim gate</text>
+            <text class="arch-mini" x="800" y="340" text-anchor="middle">Mₜ : 512 × 2048</text>
+
+            <rect class="arch-box arch-readout" x="978" y="52" rx="13" width="174" height="124"/>
+            <text class="arch-title" x="1065" y="87" text-anchor="middle">Qwen readout</text>
+            <text class="arch-copy" x="1065" y="108" text-anchor="middle">MLP projector → 512 tokens</text>
+            <text class="arch-copy" x="1065" y="128" text-anchor="middle">question + LoRA Qwen</text>
+            <text class="arch-mini" x="1065" y="153" text-anchor="middle">GENERATED ANSWER</text>
+
+            <rect class="arch-box arch-readout" x="978" y="222" rx="13" width="174" height="124"/>
+            <text class="arch-title" x="1065" y="257" text-anchor="middle">Object readout</text>
+            <text class="arch-copy" x="1065" y="278" text-anchor="middle">300 CuTR queries · 2 layers</text>
+            <text class="arch-copy" x="1065" y="298" text-anchor="middle">self + cross attention</text>
+            <text class="arch-mini" x="1065" y="323" text-anchor="middle">CLASS + 3D BOX</text>
+
+            <rect class="arch-box arch-readout" x="978" y="392" rx="13" width="174" height="124"/>
+            <text class="arch-title" x="1065" y="427" text-anchor="middle">Pose readout</text>
+            <text class="arch-copy" x="1065" y="448" text-anchor="middle">time query · 2 layers</text>
+            <text class="arch-copy" x="1065" y="468" text-anchor="middle">cross-attend memory</text>
+            <text class="arch-mini" x="1065" y="493" text-anchor="middle">TRANSLATION + ROTATION</text>
+
+            <rect class="arch-box arch-memory" x="687" y="423" rx="13" width="226" height="78"/>
+            <text class="arch-title" x="800" y="454" text-anchor="middle">Previous Mₜ₋₁</text>
+            <text class="arch-copy" x="800" y="478" text-anchor="middle">trainable random registers · no slot PE</text>
+
+            <path class="arch-arrow" d="M146 235 C170 235 176 147 205 147"/>
+            <path class="arch-arrow" d="M146 280 C170 280 176 368 205 368"/>
+            <path class="arch-arrow" d="M379 147 C410 147 415 223 443 223"/>
+            <path class="arch-arrow" d="M379 368 C410 368 415 293 443 293"/>
+            <path class="arch-arrow" d="M623 257 L687 257"/>
+            <path class="arch-arrow" d="M800 423 L800 363"/>
+            <path class="arch-arrow" d="M913 206 C948 206 943 114 978 114"/>
+            <path class="arch-arrow" d="M913 258 L978 284"/>
+            <path class="arch-arrow" d="M913 318 C948 318 943 454 978 454"/>
+            <path class="arch-arrow arch-dash" d="M533 185 C533 115 655 115 687 181"/>
+            <text class="arch-mini" x="605" y="110" text-anchor="middle">PATCH x / y / t</text>
+          </svg>
+        </div>
+        <div class="arch-caption">
+          <div class="arch-note"><b>Constant persistent state</b><span>Stream length changes compute, not stored state: only the newest 512 registers persist.</span></div>
+          <div class="arch-note"><b>No explicit 3D memory input</b><span>TTT3R contributes post-decoder visual tokens; XYZ boxes supervise only a transient reader.</span></div>
+          <div class="arch-note"><b>Free associative slots</b><span>A slot is not assigned a fixed place or time. Observation coordinates affect Q/K RoPE only.</span></div>
+          <div class="arch-note"><b>One deployed answer path</b><span>Every benchmark answer is generated by Qwen from all projected memory cells plus the text query.</span></div>
+        </div>
+      </section>
+
+      <section id="losses">
+        <div class="section-kicker">02 · supervision</div>
+        <div class="section-head">
+          <h2>What trains the memory</h2>
+          <p>The objective combines language generation with explicit pressure to use the correct scene, numerical consistency, temporal pose, stopping time, and set-level 3D object recovery.</p>
+        </div>
+        <div class="loss-layout">
+          <article class="loss-formula-card">
+            <div>
+              <div class="state-label">actual frozen objective</div>
+              <div class="loss-formula">
+                L = L<sub>QA</sub> + L<sub>memory</sub><br>
+                <span class="w">+ 0.25</span> L<sub>num</sub>
+                <span class="w">+ 0.25</span> L<sub>pose</sub><br>
+                <span class="w">+ 0.25</span> L<sub>time</sub>
+                <span class="w">+ 0.25</span> L<sub>object</sub>
+              </div>
             </div>
-            <span>ScanNet <code>scene0003_02</code> · no temporal cuts</span>
+            <p>The implemented retention penalty is logged but its coefficient is <strong>0.0</strong> in this run. There is no separate numerical answer head and no expert routing at inference.</p>
+          </article>
+          <div class="loss-grid">
+            <article class="loss-card"><span class="weight">× 1.00</span><h3>QA language</h3><p>Token cross-entropy on the reference answer through memory → projector → LoRA Qwen.</p><code>mean answer-token NLL</code></article>
+            <article class="loss-card"><span class="weight">× 1.00</span><h3>Correct-scene memory</h3><p>Forces the right scene memory to beat a matched wrong-scene memory by a 0.10 NLL margin.</p><code>ReLU(0.10 + NLLright − NLLwrong)</code></article>
+            <article class="loss-card"><span class="weight">× 0.25</span><h3>Numerical consistency</h3><p>Reads expected digits from the same language logits and compares log-scaled scalar values.</p><code>SmoothL1(log1p ŷ, log1p y)</code></article>
+            <article class="loss-card"><span class="weight">× 0.25</span><h3>Temporal camera pose</h3><p>A time-addressed query decodes relative translation and rotation from the final memory.</p><code>SmoothL1 translation + geodesic rotation</code></article>
+            <article class="loss-card"><span class="weight">× 0.25</span><h3>When to answer</h3><p>Qwen predicts one of two tokens—continue or stop—from the memory available at the decision frame.</p><code>CE(continue / stop)</code></article>
+            <article class="loss-card"><span class="weight">× 0.25</span><h3>Object set readout</h3><p>Hungarian-matched queries recover semantics, objectness, first-camera center, extent, and rotation.</p><code>CEsem + BCEobj + box center/extent/rotation</code></article>
           </div>
         </div>
       </section>
 
-      <section id="pipeline">
+      <section id="training">
+        <div class="section-kicker">03 · optimization</div>
         <div class="section-head">
-          <h2>What the pilot actually does</h2>
-          <p>
-            The experiment separates 2D perception from persistent 3D identity. This is a target
-            generation pipeline for memory supervision, not a claim that SAM3 alone predicts metric 3D.
-          </p>
+          <h2>The real training trace</h2>
+          <p>Curves come from the exact recovery chain that produced the audited step‑65k checkpoint: R2 through 60k, R3 through 65k, then R4. Training values are 1,000-step means; validation uses the fixed held-out panel.</p>
         </div>
-        <div class="flow">
-          <article class="stage">
-            <h3>RGB stream</h3>
-            <p>Use the full 30 FPS ScanNet sequence. A frame is sampled every 0.5 seconds for tracking.</p>
+        <div class="chart-grid">
+          <article class="chart-card wide">
+            <div class="chart-head">
+              <div><h3>Train vs. fixed-panel validation</h3><p>Low training loss does not transfer to the held-out panel; the widening gap is visible after roughly 40k.</p></div>
+              <span class="chart-badge">steps 16k–68k</span>
+            </div>
+            <div class="chart" id="loss-chart" aria-label="Training and validation total loss chart"></div>
+            <div class="chart-foot">Dashed markers denote checkpoint recovery boundaries, not architecture changes.</div>
           </article>
-          <article class="stage">
-            <h3>SAM3 masks</h3>
-            <p>Five fixed text prompts produce per-frame masks and model-local track IDs.</p>
+          <article class="chart-card">
+            <div class="chart-head"><div><h3>Validation loss composition</h3><p>Components are shown with their actual training coefficients. Object supervision dominates the total.</p></div></div>
+            <div class="chart" id="component-chart" aria-label="Weighted validation loss components chart"></div>
           </article>
-          <article class="stage">
-            <h3>3D association</h3>
-            <p>Mask overlap plus class agreement resolves each valid observation to one stable ScanNet instance.</p>
-          </article>
-          <article class="stage">
-            <h3>Persistent registry</h3>
-            <p>Track fragments merge by 3D ID; center, extent, last-seen time, and visibility survive absence.</p>
+          <article class="chart-card">
+            <div class="chart-head"><div><h3>Writer gradient health</h3><p>Share of logged batches with a finite writer gradient norm in each 1,000-step window.</p></div><span class="chart-badge">higher is better</span></div>
+            <div class="chart" id="gradient-chart" aria-label="Finite writer gradient share chart"></div>
           </article>
         </div>
-        <div class="honesty">
-          <div class="honesty-icon">!</div>
-          <div>
-            <strong>SAM3D was not used here.</strong> ScanNet already supplies persistent instance IDs and
-            metric 3D annotations, so adding a learned image-to-3D reconstruction stage would only inject
-            avoidable error. In an in-the-wild video without 3D labels, that stage becomes necessary.
+        <div class="health-row">
+          <article class="health"><span class="status mixed">MIXED</span><h3>Training objective decreases</h3><p>The 1k-mean train loss falls from 1.57 near 16k to about 1.48 near 68k, but with a large mid-run rise and recovery.</p></article>
+          <article class="health"><span class="status bad">NOT YET</span><h3>QA validation is flat</h3><p>Held-out QA NLL is 0.616 at 16k and 0.649 at 68k. Correct-scene versus wrong-scene NLL remains nearly tied.</p></article>
+          <article class="health"><span class="status bad">KNOWN FAILURE</span><h3>Writer updates stall</h3><p>Since the current recovery segment, aggregate writer/core gradients are non-finite and clip to zero; object and LoRA gradients remain finite.</p></article>
+        </div>
+      </section>
+
+      <section id="evaluation">
+        <div class="section-kicker">04 · official bench10k</div>
+        <div class="section-head">
+          <h2>Audited step‑65k evaluation</h2>
+          <p>10,000 unique predictions, no null outputs, and 3,468/3,468 open-ended judgments completed by the same GPT‑5.6-sol judge and prompt used for the released baseline.</p>
+        </div>
+        <div class="eval-layout">
+          <div class="eval-board" aria-label="Nine-cell current versus baseline evaluation">
+            <div class="eval-axis"><span></span><span>Numerical</span><span>Multiple choice</span><span>Open ended</span></div>
+            <div class="eval-row">
+              <div class="eval-row-label">Backward</div>
+              <div class="eval-cell" data-current="21.32" data-baseline="58.45"><div class="eval-score"><strong>21.32</strong><span>−37.13 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell" data-current="56.23" data-baseline="74.45"><div class="eval-score"><strong>56.23</strong><span>−18.22 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell" data-current="14.94" data-baseline="38.95"><div class="eval-score"><strong>14.94</strong><span>−24.01 pp</span></div><div class="dual-bar"></div></div>
+            </div>
+            <div class="eval-row">
+              <div class="eval-row-label">Realtime</div>
+              <div class="eval-cell" data-current="23.72" data-baseline="59.81"><div class="eval-score"><strong>23.72</strong><span>−36.08 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell" data-current="54.58" data-baseline="69.83"><div class="eval-score"><strong>54.58</strong><span>−15.25 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell" data-current="38.61" data-baseline="57.24"><div class="eval-score"><strong>38.61</strong><span>−18.64 pp</span></div><div class="dual-bar"></div></div>
+            </div>
+            <div class="eval-row">
+              <div class="eval-row-label">Forward</div>
+              <div class="eval-cell" data-current="21.63" data-baseline="54.41"><div class="eval-score"><strong>21.63</strong><span>−32.78 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell" data-current="54.50" data-baseline="61.77"><div class="eval-score"><strong>54.50</strong><span>−7.26 pp</span></div><div class="dual-bar"></div></div>
+              <div class="eval-cell near" data-current="30.94" data-baseline="33.09"><div class="eval-score"><strong>30.94</strong><span>−2.15 pp</span></div><div class="dual-bar"></div></div>
+            </div>
+            <div class="chart-legend">
+              <span class="legend-item"><i style="background:var(--green)"></i>SceneL3DGER step 65k</span>
+              <span class="legend-item"><i style="background:#98958d"></i>same-judge released baseline</span>
+            </div>
+          </div>
+          <div class="result-stack">
+            <article class="result-card negative"><div class="label">nine-cell average</div><div class="big">35.16%</div><p>Baseline: 56.45% · gap: −21.28 percentage points.</p></article>
+            <article class="result-card positive"><div class="label">answer timing accuracy</div><div class="big">86.66%</div><p>Baseline: 68.39% · +18.28 percentage points.</p></article>
+            <article class="result-card"><div class="label">open-ended audit</div><div class="big">1,021</div><p>correct of 3,468; baseline is 1,511 under the exact same judge protocol.</p></article>
           </div>
         </div>
-      </section>
-
-      <section id="events">
-        <div class="section-head">
-          <h2>The registry's event log</h2>
-          <p>
-            Reappearance requires at least four seconds without a valid match. “Late” means the first
-            observation occurs after 60% of the scene. Metric positions are axis-aligned ScanNet coordinates.
-          </p>
-        </div>
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>Object</th>
-                <th>3D ID</th>
-                <th>First seen</th>
-                <th>Last seen</th>
-                <th>Longest absence</th>
-                <th>SAM fragments</th>
-                <th>Matched IoU</th>
-                <th>Event</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="object-name"><i class="object-dot"></i>Water cooler</span></td>
-                <td>#8</td><td>0.0 s</td><td>44.5 s</td><td>26.5 s</td><td>1</td><td>0.769</td><td><span class="tag">reappeared</span></td>
-              </tr>
-              <tr>
-                <td><span class="object-name"><i class="object-dot"></i>Trash can</span></td>
-                <td>#11</td><td>1.0 s</td><td>44.5 s</td><td>22.5 s</td><td>2</td><td>0.595</td><td><span class="tag">reappeared + merged</span></td>
-              </tr>
-              <tr>
-                <td><span class="object-name"><i class="object-dot"></i>Microwave</span></td>
-                <td>#12</td><td>5.5 s</td><td>44.5 s</td><td>34.0 s</td><td>1</td><td>0.869</td><td><span class="tag">reappeared</span></td>
-              </tr>
-              <tr>
-                <td><span class="object-name"><i class="object-dot"></i>Door</span></td>
-                <td>#22</td><td>32.5 s</td><td>38.0 s</td><td>—</td><td>1</td><td>0.628</td><td><span class="tag late">late</span></td>
-              </tr>
-              <tr>
-                <td><span class="object-name"><i class="object-dot"></i>Backpack</span></td>
-                <td>#10</td><td>36.5 s</td><td>39.5 s</td><td>—</td><td>1</td><td>0.890</td><td><span class="tag late">late</span></td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section>
-        <div class="section-head">
-          <h2>Four moments, one memory</h2>
-          <p>The evidence frames are decoded directly from the published video, including the held-memory interval with zero current matches.</p>
-        </div>
-        <div class="gallery">
-          <article class="evidence">
-            <img src="assets/scenel3dger/early-water-cooler.jpg" alt="Early scene with water cooler and trash can masks">
-            <div class="evidence-copy">
-              <div class="evidence-time">t = 03.0 s</div>
-              <h3>Initial registration</h3>
-              <p>The water cooler and trash can acquire stable IDs and metric centers.</p>
-            </div>
-          </article>
-          <article class="evidence">
-            <img src="assets/scenel3dger/memory-only-midstream.jpg" alt="Middle of scene with zero visible tracked objects but three in memory">
-            <div class="evidence-copy">
-              <div class="evidence-time">t = 25.0 s</div>
-              <h3>Nothing is currently visible</h3>
-              <p>All three early objects are off-camera; their 3D entries remain queryable.</p>
-            </div>
-          </article>
-          <article class="evidence">
-            <img src="assets/scenel3dger/late-objects.jpg" alt="Late backpack and door observations">
-            <div class="evidence-copy">
-              <div class="evidence-time">t = 38.0 s</div>
-              <h3>Late objects join</h3>
-              <p>The door and backpack were absent at the beginning and are admitted when they first appear.</p>
-            </div>
-          </article>
-          <article class="evidence">
-            <img src="assets/scenel3dger/reappeared-kitchen.jpg" alt="Trash can reappears near end of scene under its original 3D ID">
-            <div class="evidence-copy">
-              <div class="evidence-time">t = 43.3 s</div>
-              <h3>The old identity returns</h3>
-              <p>The trash can is matched back to ID #11 after more than twenty seconds away.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="qa-audit">
-        <div class="section-head">
-          <h2>Early-training QA snapshot</h2>
-          <p>
-            Four fixed held-out examples generated locally from the V11 step-200 checkpoint.
-            This immature checkpoint has consumed only 0.328% of one epoch. The panel checks that
-            training and generation execute end to end; it is not a model-quality evaluation.
-            <a href="assets/scenel3dger/checkpoint-generations-v11.json">Download raw outputs and reference NLLs.</a>
-          </p>
-        </div>
-
-        <div class="audit-summary" aria-label="Checkpoint training maturity">
-          <div class="audit-stat"><strong>3,200</strong><span>QA examples consumed</span></div>
-          <div class="audit-stat"><strong>0.328%</strong><span>of the 976,220-row training epoch</span></div>
-          <div class="audit-stat"><strong>200 / 61,015</strong><span>optimizer steps in one full epoch</span></div>
-        </div>
-
-        <div class="table-wrap">
-          <table class="qa-table">
-            <thead>
-              <tr>
-                <th>Held-out question</th>
-                <th>Reference</th>
-                <th>Step 50</th>
-                <th>Step 100</th>
-                <th>Step 150</th>
-                <th>Step 200</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr>
-                <td><span class="qa-question">What are the dimensions of the bench?</span><span class="qa-type">object_size_realtime · scene0005_00</span></td>
-                <td class="answer-reference">4.2 m × 0.5 m × 1.2 m</td>
-                <td class="answer-wrong">1.8 m × 0.6 m × 0.5 m</td>
-                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
-                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
-                <td class="answer-wrong">1.6 m × 0.6 m × 0.5 m</td>
-              </tr>
-              <tr>
-                <td><span class="qa-question">What is in front of the radiator?</span><span class="qa-type">object_recognition_realtime · scene0002_00</span></td>
-                <td class="answer-reference">small table</td>
-                <td class="answer-wrong">bed</td>
-                <td class="answer-wrong">white rectangular cabinet</td>
-                <td class="answer-wrong">bed</td>
-                <td class="answer-wrong">bed</td>
-              </tr>
-              <tr>
-                <td><span class="qa-question">Have you encountered a table so far?</span><span class="qa-type">object_counting_backward · scene0022_01</span></td>
-                <td class="answer-reference">A · Yes</td>
-                <td class="answer-wrong">B · No</td>
-                <td class="answer-wrong">B · No</td>
-                <td class="answer-wrong">B · No</td>
-                <td class="answer-wrong">B · No</td>
-              </tr>
-              <tr>
-                <td><span class="qa-question">Where will the camera be located in five seconds?</span><span class="qa-type">camera_direction_forward · scene0010_01</span></td>
-                <td class="answer-reference">D · to the right</td>
-                <td class="answer-wrong">B · to the front-right</td>
-                <td class="answer-wrong">B · to the front-right</td>
-                <td class="answer-wrong">B · to the front-right</td>
-                <td class="answer-wrong">B · to the front-right</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-
-        <div class="control-grid" aria-label="Step 200 memory interventions">
-          <article class="control-card">
-            <h3>Bench dimensions</h3>
-            <p>Reference: 4.2 × 0.5 × 1.2 m</p>
-            <div class="control-answer"><b>Normal</b><br>1.6 × 0.6 × 0.5 m</div>
-            <div class="control-answer"><b>Zero memory</b><br>1.0 × 0.2 × 0.1 m</div>
-            <div class="control-answer"><b>Wrong scene</b><br>1.6 × 0.6 × 0.5 m</div>
-          </article>
-          <article class="control-card">
-            <h3>Object by radiator</h3>
-            <p>Reference: small table</p>
-            <div class="control-answer"><b>Normal</b><br>bed</div>
-            <div class="control-answer"><b>Zero memory</b><br>nothing</div>
-            <div class="control-answer"><b>Wrong scene</b><br>bed</div>
-          </article>
-          <article class="control-card">
-            <h3>Previously saw table</h3>
-            <p>Reference: A · Yes</p>
-            <div class="control-answer"><b>Normal</b><br>B · No</div>
-            <div class="control-answer"><b>Zero memory</b><br>B · No</div>
-            <div class="control-answer"><b>Wrong scene</b><br>B · No</div>
-          </article>
-          <article class="control-card">
-            <h3>Future camera direction</h3>
-            <p>Reference: D · to the right</p>
-            <div class="control-answer"><b>Normal</b><br>B · to the front-right</div>
-            <div class="control-answer"><b>Zero memory</b><br>C · same position</div>
-            <div class="control-answer"><b>Wrong scene</b><br>B · to the front-right</div>
-          </article>
-        </div>
-
         <div class="audit-note">
-          <strong>What can and cannot be concluded:</strong> at step 200, removing memory changes three of four
-          decoded answers, while replacing it with a wrong scene leaves all four unchanged. This says only that
-          scene-specific readout has not emerged this early. With 99.672% of the first epoch still unseen, the wrong
-          answers, flat step-50-to-200 generations, and immature losses are expected training snapshots—not evidence
-          that the architecture cannot work. Performance conclusions require substantially longer training and a
-          precommitted held-out evaluation.
+          <div class="audit-icon">!</div>
+          <div><strong>Interpretation:</strong> this checkpoint is faster at deciding when to answer, but it does not beat the accuracy baseline. Numerical questions are the largest deficit; Forward OEA is the only cell within three points. The result is published here precisely because it is a full, non-cherry-picked 10k evaluation.</div>
         </div>
       </section>
 
       <section id="protocol">
-        <div class="section-head">
-          <h2>Protocol and limits</h2>
-          <p>This is a feasibility demonstration for designing object-level memory supervision. It is not an object-tracking benchmark.</p>
-        </div>
+        <div class="section-kicker">05 · experiment contract</div>
+        <div class="section-head"><h2>What is fixed</h2><p>The current run is deliberately frozen so that restarts do not silently change the method while diagnosing long-run behavior.</p></div>
         <div class="protocol-grid">
-          <article class="protocol">
-            <h3>Fixed setup</h3>
-            <ul>
-              <li><strong>Scene:</strong> ScanNet v2 <code>scene0003_02</code>, one continuous 44.5-second scan.</li>
-              <li><strong>Prompts:</strong> water cooler, trash can, microwave, door, backpack.</li>
-              <li><strong>Tracking:</strong> original SAM3 checkpoint, 2 Hz sampled RGB, no manual mask clicks.</li>
-              <li><strong>Association:</strong> exact class agreement plus 2D instance-mask overlap; mean accepted IoU 0.690.</li>
-            </ul>
-          </article>
-          <article class="protocol">
-            <h3>What is and is not learned</h3>
-            <ul>
-              <li><strong>Predicted:</strong> text-conditioned SAM3 masks and SAM-local track identities.</li>
-              <li><strong>Supervised:</strong> persistent object identity, center, extent, and reappearance from ScanNet annotations.</li>
-              <li><strong>Not tested:</strong> open-vocabulary recall, SAM3D reconstruction error, or memory-capacity scaling.</li>
-              <li><strong>Next experiment:</strong> turn each registry entry into a decoder query target for SceneL3DGER memory training.</li>
-            </ul>
-          </article>
+          <article class="note-card"><h3>Data</h3><ul><li><strong>Train:</strong> 976,220 QA rows across 4,897 scenes.</li><li><strong>Validation:</strong> 50,258 rows across 257 held-out scenes.</li><li><strong>Visual cache:</strong> 5,154 scenes with aligned Qwen and TTT3R tokens.</li><li><strong>Objects:</strong> 308,406 targets across 5,221 semantic labels.</li></ul></article>
+          <article class="note-card"><h3>Optimization</h3><ul><li><strong>Compute:</strong> 8 × H200, per-rank batch 2, BPTT 16 frames.</li><li><strong>LR:</strong> memory 2e−4; Qwen LoRA 1e−5.</li><li><strong>Schedule:</strong> 1,000-step warm-up, 183,045 target steps.</li><li><strong>Validation/checkpoint:</strong> every 1,000 / 5,000 steps.</li></ul></article>
+          <article class="note-card"><h3>Audit boundary</h3><ul><li><strong>Checkpoint:</strong> step 65,000, 3.28 GB, tensor-finite scan passed.</li><li><strong>Eval:</strong> exact released 10k IDs and temporal policy.</li><li><strong>Answers:</strong> memory → projector → one Qwen generation path.</li><li><strong>Not used in answers:</strong> object and pose auxiliary heads.</li></ul></article>
+        </div>
+      </section>
+
+      <section id="object-pilot">
+        <div class="section-kicker">appendix · where object supervision came from</div>
+        <div class="section-head">
+          <h2>Persistent-object target pilot</h2>
+          <p>Before training the object reader, we verified on one continuous ScanNet scene that fragmented SAM3 tracks can resolve to stable annotated 3D identities across long absences.</p>
+        </div>
+        <div class="video-panel">
+          <video controls muted loop playsinline preload="metadata" poster="assets/scenel3dger/poster.jpg">
+            <source src="assets/scenel3dger/scene0003_02_object_memory.mp4" type="video/mp4">
+            Your browser does not support embedded H.264 video.
+          </video>
+          <div class="video-caption"><span>Native 30 FPS RGB · 2 Hz perception/registry update · no temporal cuts</span><span>ScanNet <code>scene0003_02</code></span></div>
+        </div>
+        <div class="pilot-grid">
+          <article class="pilot-event"><b>34.0 s maximum absence</b><span>The microwave reappears under its original persistent object identity.</span></article>
+          <article class="pilot-event"><b>Fragmented tracks merge</b><span>Multiple SAM-local trash-can identities map to one ScanNet 3D instance.</span></article>
+          <article class="pilot-event"><b>Late objects are admitted</b><span>The door and backpack first enter the registry after 32.5 seconds.</span></article>
         </div>
       </section>
 
       <section class="takeaway">
-        <h2>The supervision signal is viable: one 3D object target can span fragmented 2D tracks and long visual absence.</h2>
-        <p>
-          The next step is not another tracking heuristic. It is to train memory queries to recover these
-          object identities, metric locations, and semantic features from the fixed-capacity SceneL3DGER state.
-        </p>
+        <h2>The memory is constant-size and the full pipeline runs—but the current optimization is not yet learning a competitive memory.</h2>
+        <p>The next defensible milestone is not another architectural claim. It is to repair the non-finite writer gradient, rerun the frozen comparison, and show that held-out QA and correct-scene margins improve before the next official 10k evaluation.</p>
       </section>
     </main>
 
     <footer>
-      <span>SceneL3DGER · object-memory feasibility pilot · August 2026</span>
-      <span>Artifacts are from one ScanNet scene; all reported events are generated from the published trace.</span>
+      <span>SceneL3DGER · frozen-v2 research progress · updated August 14, 2026</span>
+      <span>All reported evaluation numbers are from the audited step‑65k full bench10k run.</span>
     </footer>
   </div>
+  <script src="assets/scenel3dger/progress.js"></script>
 </body>
 </html>
