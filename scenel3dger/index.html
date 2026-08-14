@@ -168,7 +168,7 @@
     .state-step { margin: 7px 0 4px; font-size: 36px; font-weight: 810; line-height: 1; letter-spacing: -.05em; }
     .state-step span { color: var(--muted); font-size: 17px; font-weight: 550; }
     .progress-track { height: 8px; margin-top: 18px; overflow: hidden; border-radius: 99px; background: #dfdcd3; }
-    .progress-fill { width: 37.15%; height: 100%; border-radius: inherit; background: var(--green); }
+    .progress-fill { width: 37.70%; height: 100%; border-radius: inherit; background: var(--green); }
     .state-row { display: grid; grid-template-columns: 1fr 1fr; }
     .state-cell { padding: 17px 24px 19px; }
     .state-cell + .state-cell { border-left: 1px solid var(--line); }
@@ -231,6 +231,77 @@
     .loss-card h3 { margin: 0 0 7px; font-size: 14px; }
     .loss-card p { margin: 0; color: var(--muted); font-size: 11px; }
     .loss-card code { display: block; margin-top: 10px; color: #53554d; font-size: 9px; }
+
+    .geometry-board {
+      margin-top: 18px;
+      padding: 24px;
+      border: 1px solid var(--line);
+      border-radius: 20px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+    .geometry-board-head { display: flex; gap: 30px; align-items: end; justify-content: space-between; margin-bottom: 18px; }
+    .geometry-board-head h3 { margin: 0; font-size: 22px; letter-spacing: -.035em; }
+    .geometry-board-head p { max-width: 610px; margin: 0; color: var(--muted); font-size: 11px; }
+    .target-only {
+      flex: none;
+      padding: 5px 9px;
+      color: #79551e;
+      font-family: var(--mono);
+      font-size: 9px;
+      font-weight: 800;
+      border: 1px solid #d8c196;
+      border-radius: 999px;
+      background: var(--ochre-soft);
+    }
+    .geometry-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .geometry-path { padding: 20px; border: 1px solid var(--line); border-radius: 15px; background: #f7f5ee; }
+    .geometry-path.pose { border-top: 4px solid var(--ochre); }
+    .geometry-path.object { border-top: 4px solid var(--plum); }
+    .geometry-path h4 { margin: 0 0 4px; font-size: 16px; }
+    .geometry-path > p { margin: 0; color: var(--muted); font-size: 10px; }
+    .geometry-flow { display: flex; gap: 7px; align-items: stretch; margin: 17px 0; }
+    .geometry-node {
+      display: flex;
+      min-width: 0;
+      flex: 1;
+      align-items: center;
+      justify-content: center;
+      padding: 11px 8px;
+      color: #56574f;
+      font-family: var(--mono);
+      font-size: 8px;
+      font-weight: 700;
+      line-height: 1.35;
+      text-align: center;
+      border: 1px solid var(--line);
+      border-radius: 9px;
+      background: var(--surface);
+    }
+    .geometry-node.memory { color: #456635; border-color: #b7c6aa; background: var(--green-soft); }
+    .geometry-node.target { color: #7b5a26; border-color: #d8c196; background: var(--ochre-soft); }
+    .geometry-arrow { display: grid; flex: none; place-items: center; color: #999287; font-size: 13px; }
+    .geometry-equation {
+      margin-top: 10px;
+      padding: 13px 14px;
+      color: #3f403a;
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 14px;
+      line-height: 1.65;
+      border-left: 3px solid var(--line-strong);
+      background: rgb(239 237 229 / 72%);
+    }
+    .geometry-equation small { display: block; color: var(--muted); font-family: var(--mono); font-size: 8px; }
+    .geometry-notes { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-top: 13px; }
+    .geometry-note { padding: 10px; border: 1px solid var(--line); border-radius: 9px; background: var(--surface); }
+    .geometry-note b { display: block; margin-bottom: 2px; font-size: 10px; }
+    .geometry-note span { display: block; color: var(--muted); font-size: 8px; }
+    .geometry-diagnostic { display: grid; grid-template-columns: 1.1fr repeat(3, 1fr); gap: 10px; margin-top: 14px; }
+    .geometry-diagnostic > div { padding: 14px; border: 1px solid #d8bcb4; border-radius: 11px; background: #f6ebe7; }
+    .geometry-diagnostic .diagnostic-copy { border-color: var(--line); background: var(--surface-2); }
+    .geometry-diagnostic small { display: block; color: var(--muted); font-size: 8px; text-transform: uppercase; letter-spacing: .05em; }
+    .geometry-diagnostic strong { display: block; margin: 3px 0 2px; font-size: 20px; letter-spacing: -.04em; }
+    .geometry-diagnostic span { display: block; color: var(--muted); font-size: 8px; }
 
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .chart-card { padding: 21px 21px 16px; }
@@ -310,7 +381,7 @@
     footer { display: flex; gap: 24px; justify-content: space-between; padding: 30px 0 42px; color: var(--muted); font-size: 10px; border-top: 1px solid var(--line); }
 
     @media (max-width: 960px) {
-      .hero, .loss-layout, .eval-layout, .takeaway { grid-template-columns: 1fr; }
+      .hero, .loss-layout, .geometry-grid, .eval-layout, .takeaway { grid-template-columns: 1fr; }
       .hero { gap: 28px; padding-top: 55px; }
       .chart-grid { grid-template-columns: 1fr; }
       .chart-card.wide { grid-column: auto; }
@@ -322,7 +393,11 @@
       .shell { width: min(100% - 24px, 1220px); }
       .nav-links { display: none; }
       h1 { font-size: 49px; }
-      .kpis, .loss-grid, .health-row, .protocol-grid, .pilot-grid, .arch-caption { grid-template-columns: 1fr; }
+      .kpis, .loss-grid, .geometry-notes, .geometry-diagnostic, .health-row, .protocol-grid, .pilot-grid, .arch-caption { grid-template-columns: 1fr; }
+      .geometry-board { padding: 17px 13px; }
+      .geometry-board-head { align-items: start; flex-direction: column; gap: 9px; }
+      .geometry-flow { display: grid; grid-template-columns: 1fr; }
+      .geometry-arrow { transform: rotate(90deg); }
       .eval-axis, .eval-row { grid-template-columns: 58px repeat(3, 1fr); gap: 5px; }
       .eval-cell { padding: 9px 7px; }
       .eval-score { display: block; }
@@ -343,6 +418,7 @@
       <div class="nav-links">
         <a href="#architecture">Architecture</a>
         <a href="#losses">Losses</a>
+        <a href="#geometry-losses">Geometry</a>
         <a href="#training">Training</a>
         <a href="#evaluation">Evaluation</a>
         <a href="#object-pilot">Object pilot</a>
@@ -352,7 +428,7 @@
     <main id="top">
       <header class="hero">
         <div>
-          <span class="eyebrow">Frozen v2 · six-layer recurrent writer · training</span>
+          <span class="eyebrow">Frozen v2 · six-layer recurrent writer · audited</span>
           <h1>A fixed-size memory for <span>long RGB streams.</span></h1>
           <p class="hero-copy">
             SceneL3DGER compresses every observed frame into a persistent <strong>512 × 2048</strong>
@@ -362,20 +438,20 @@
           </p>
           <div class="hero-actions">
             <a class="button" href="#evaluation">See the 10k result</a>
-            <a class="button secondary" href="https://wandb.ai/ycdeng-university-of-washington/scenel3dger-e2e-memory/runs/b0s3tayx">Open live W&amp;B</a>
+            <a class="button secondary" href="https://wandb.ai/ycdeng-university-of-washington/scenel3dger-e2e-memory/runs/b0s3tayx">Open W&amp;B run</a>
           </div>
         </div>
         <aside class="hero-state" aria-label="Training status">
           <div class="state-top">
             <div class="state-label">latest validated training step</div>
-            <div class="state-step">68,000 <span>/ 183,045</span></div>
+            <div class="state-step">69,000 <span>/ 183,045</span></div>
             <div class="progress-track"><div class="progress-fill"></div></div>
           </div>
           <div class="state-row">
             <div class="state-cell"><span>LATEST AUDITED CKPT</span><strong>step 65k</strong></div>
             <div class="state-cell"><span>OFFICIAL BENCH10K</span><strong>35.16%</strong></div>
           </div>
-          <div class="state-warning">Known issue: the core/writer aggregate gradient is non-finite in the current segment; its clip scale is zero.</div>
+          <div class="state-warning">Run stopped after step 69,110: core/writer gradients were non-finite and the next object-matching cost contained invalid values.</div>
         </aside>
       </header>
 
@@ -501,6 +577,64 @@
             <article class="loss-card"><span class="weight">× 0.25</span><h3>Temporal camera pose</h3><p>A time-addressed query decodes relative translation and rotation from the final memory.</p><code>SmoothL1 translation + geodesic rotation</code></article>
             <article class="loss-card"><span class="weight">× 0.25</span><h3>When to answer</h3><p>Qwen predicts one of two tokens—continue or stop—from the memory available at the decision frame.</p><code>CE(continue / stop)</code></article>
             <article class="loss-card"><span class="weight">× 0.25</span><h3>Object set readout</h3><p>Hungarian-matched queries recover semantics, objectness, first-camera center, extent, and rotation.</p><code>CEsem + BCEobj + box center/extent/rotation</code></article>
+          </div>
+        </div>
+        <div class="geometry-board" id="geometry-losses">
+          <div class="geometry-board-head">
+            <div>
+              <div class="state-label">geometry representation supervision</div>
+              <h3>Can the fixed memory reconstruct metric 3D state?</h3>
+            </div>
+            <p>Pose and object geometry are not inputs to the memory. They are target-only sidecars: lightweight readers must recover them from the RGB-derived memory, and their gradients are intended to teach the writer what metric information to preserve.</p>
+            <span class="target-only">TARGET ONLY · NEVER WRITTEN</span>
+          </div>
+          <div class="geometry-grid">
+            <article class="geometry-path pose">
+              <h4>Temporal camera pose</h4>
+              <p>Up to eight timestamps are sampled uniformly across the retained prefix. Every target pose is expressed relative to the first observed camera.</p>
+              <div class="geometry-flow" aria-label="Temporal pose supervision flow">
+                <div class="geometry-node memory">memory<br>512 × 2048</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node">trainable pose query<br>+ 1D RoPE(t)</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node">2 × cross-attention<br>width 512</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node target">translation p̂<sub>t</sub><br>rotation R̂<sub>t</sub></div>
+              </div>
+              <div class="geometry-equation">
+                T<sub>t</sub><sup>rel</sup> = T<sub>0</sub><sup>−1</sup>T<sub>t</sub><br>
+                L<sub>pose</sub> = SmoothL1(p̂<sub>t</sub>, p<sub>t</sub>; β=.10) + acos((tr(R̂<sub>t</sub><sup>T</sup>R<sub>t</sub>) − 1) / 2)
+                <small>translation coordinates + SO(3) geodesic angle</small>
+              </div>
+              <div class="geometry-notes">
+                <div class="geometry-note"><b>Time address</b><span>The query carries only physical seconds, not XYZ.</span></div>
+                <div class="geometry-note"><b>History coverage</b><span>Uniform samples span the full answer-time prefix.</span></div>
+                <div class="geometry-note"><b>Gradient path</b><span>Pose reader → memory → recurrent writer.</span></div>
+              </div>
+            </article>
+            <article class="geometry-path object">
+              <h4>Metric 3D object set</h4>
+              <p>Three hundred CuTR-initialized queries read the same memory and recover an unordered set of objects in the first-camera coordinate frame.</p>
+              <div class="geometry-flow" aria-label="3D object supervision flow">
+                <div class="geometry-node memory">memory<br>512 × 2048</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node">300 object queries<br>CuTR initialization</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node">2 × self/cross-attn<br>iterative XYZ ref.</div><div class="geometry-arrow">→</div>
+                <div class="geometry-node target">class · objectness<br>center · extent · rotation</div>
+              </div>
+              <div class="geometry-equation">
+                π<sup>*</sup> = Hungarian(C<sub>sem</sub> + C<sub>obj</sub> + C<sub>center</sub> + C<sub>extent</sub> + C<sub>rot</sub>)<br>
+                L<sub>object</sub> = CE<sub>sem</sub> + BCE<sub>obj</sub> + SmoothL1(ĉ,c) + SmoothL1(ê,e) + (1 − cos ΔR)
+                <small>matched objects use metric first-camera boxes; unmatched queries learn no-object</small>
+              </div>
+              <div class="geometry-notes">
+                <div class="geometry-note"><b>Center c</b><span>Metric XYZ in the first-camera frame.</span></div>
+                <div class="geometry-note"><b>Extent e</b><span>Positive length, width, and height.</span></div>
+                <div class="geometry-note"><b>Orientation R</b><span>6D rotation decoded to SO(3).</span></div>
+              </div>
+            </article>
+          </div>
+          <div class="geometry-diagnostic" aria-label="Step 65k held-out geometry diagnostics">
+            <div class="diagnostic-copy"><small>step-65k interpretation</small><strong>Representation not learned</strong><span>Both readers can fit training batches, but held-out geometry remains weak. These are diagnostics of the memory—not deployed benchmark answer heads.</span></div>
+            <div><small>pose total</small><strong>1.921</strong><span>Identity baseline: 1.848 · ours is worse by 0.073.</span></div>
+            <div><small>pose components</small><strong>0.656 / 1.265</strong><span>Translation SmoothL1 / rotation radians.</span></div>
+            <div><small>object geometry</small><strong>1.250 / 0.309</strong><span>Center / extent SmoothL1; rotation error is 1.859 rad.</span></div>
           </div>
         </div>
       </section>
