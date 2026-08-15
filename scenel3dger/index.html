@@ -318,6 +318,7 @@
     .chart text { fill: #77736b; font-family: var(--mono); font-size: 9px; }
     .chart .grid-line { stroke: #dedad0; stroke-width: 1; }
     .chart .axis-line { stroke: #bdb7aa; stroke-width: 1; }
+    .chart .failure-band { fill: #efd9d3; opacity: .58; }
     .chart .resume-line { stroke: #aaa397; stroke-width: 1; stroke-dasharray: 4 4; }
     .chart .resume-label { fill: #8b857b; font-size: 8px; }
     .chart .hover-dot { cursor: crosshair; fill: transparent; stroke: transparent; }
@@ -641,14 +642,14 @@
           </div>
           <div class="geometry-curves">
             <article class="chart-card">
-              <div class="chart-head"><div><h3>Pose does not beat identity</h3><p>Raw, unweighted fixed-panel losses. The dashed identity line is directly comparable only to pose total; translation and rotation show its two terms.</p></div><span class="chart-badge">held-out · 16k–69k</span></div>
+              <div class="chart-head"><div><h3>Pose learns early, then regresses</h3><p>Raw, unweighted fixed-panel losses. The dashed identity line is directly comparable only to pose total; translation and rotation show its two terms.</p></div><span class="chart-badge">held-out · 1k–69k</span></div>
               <div class="chart" id="pose-geometry-chart" aria-label="Held-out pose total, identity baseline, translation, and rotation loss curves"></div>
-              <div class="chart-foot">At 69k: pose total 1.931 versus identity 1.848. Neither pose term shows sustained held-out improvement.</div>
+              <div class="chart-foot">Pose beats identity at 4k, 6k, 10k, 13k, and 14k; the best is 1.803 at 14k versus 1.848. It regresses to 1.931 by 69k.</div>
             </article>
             <article class="chart-card">
-              <div class="chart-head"><div><h3>Object geometry stays flat</h3><p>Raw losses after Hungarian matching. These curves isolate metric geometry from the much larger semantic classification term.</p></div><span class="chart-badge">held-out · 16k–69k</span></div>
+              <div class="chart-head"><div><h3>Object geometry is mixed</h3><p>Raw losses after Hungarian matching. These curves isolate metric geometry from the much larger semantic classification term.</p></div><span class="chart-badge">held-out · 1k–69k</span></div>
               <div class="chart" id="object-geometry-chart" aria-label="Held-out object center, extent, and orientation loss curves"></div>
-              <div class="chart-foot">Center loss ends at 1.381 and worsens after the 65k replay boundary; extent remains near 0.3 while orientation returns above 1.25.</div>
+              <div class="chart-foot">Orientation improves from 1.246 at 1k to 0.935 at 47k, then regresses to 1.255. Center never converges and ends at 1.381; extent stays near 0.3.</div>
             </article>
           </div>
         </div>
@@ -658,16 +659,16 @@
         <div class="section-kicker">03 · optimization</div>
         <div class="section-head">
           <h2>The real training trace</h2>
-          <p>Curves come from the exact recovery chain that produced the audited step‑65k checkpoint: R2 through 60k, R3 through 65k, then R4. Training values are 1,000-step means; validation uses the fixed held-out panel.</p>
+          <p>Curves cover the complete immutable lineage: original run through 5k, first continuation through 15k, R2 through 60k, R3 through 65k, then R4 through 69k. Training values are 1,000-step means; validation uses the fixed held-out panel.</p>
         </div>
         <div class="chart-grid">
           <article class="chart-card wide">
             <div class="chart-head">
-              <div><h3>Train vs. fixed-panel validation</h3><p>Low training loss does not transfer to the held-out panel; the widening gap is visible after roughly 40k.</p></div>
-              <span class="chart-badge">steps 16k–68k</span>
+              <div><h3>Train vs. fixed-panel validation</h3><p>Training falls sharply during warm-up, while held-out loss oscillates and later rises. Pink bands mark windows containing writer/core gradient overflow.</p></div>
+              <span class="chart-badge">steps 1k–69k</span>
             </div>
             <div class="chart" id="loss-chart" aria-label="Training and validation total loss chart"></div>
-            <div class="chart-foot">Dashed markers denote checkpoint recovery boundaries, not architecture changes.</div>
+            <div class="chart-foot">Dashed markers denote checkpoint recovery boundaries, not architecture changes. Pink spans cover the transient 14.35k event, the 47.07k–48.31k stall, and recurrent overflow from 57.44k onward.</div>
           </article>
           <article class="chart-card">
             <div class="chart-head"><div><h3>Validation loss composition</h3><p>Components are shown with their actual training coefficients. Object supervision dominates the total.</p></div></div>
@@ -679,9 +680,9 @@
           </article>
         </div>
         <div class="health-row">
-          <article class="health"><span class="status mixed">MIXED</span><h3>Training objective decreases</h3><p>The 1k-mean train loss falls from 1.57 near 16k to about 1.48 near 68k, but with a large mid-run rise and recovery.</p></article>
-          <article class="health"><span class="status bad">NOT YET</span><h3>QA validation is flat</h3><p>Held-out QA NLL is 0.616 at 16k and 0.649 at 68k. Correct-scene versus wrong-scene NLL remains nearly tied.</p></article>
-          <article class="health"><span class="status bad">KNOWN FAILURE</span><h3>Writer updates stall</h3><p>Since the current recovery segment, aggregate writer/core gradients are non-finite and clip to zero; object and LoRA gradients remain finite.</p></article>
+          <article class="health"><span class="status mixed">MIXED</span><h3>Early learning is real</h3><p>Pose beats identity repeatedly through 14k, and total/object validation reaches its best composite point at 6k. The gain is not sustained.</p></article>
+          <article class="health"><span class="status bad">NOT YET</span><h3>QA validation is flat</h3><p>Held-out QA NLL changes from 0.674 at 1k to 0.630 at 69k, but correct-scene versus wrong-scene NLL remains nearly tied.</p></article>
+          <article class="health"><span class="status bad">KNOWN FAILURE</span><h3>Writer updates stall</h3><p>Writer/core gradients begin overflowing intermittently at 14.35k and are effectively stalled after 61.02k; object and LoRA gradients remain finite.</p></article>
         </div>
       </section>
 
