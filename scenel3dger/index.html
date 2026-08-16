@@ -306,6 +306,45 @@
     .geometry-curves .chart-card { box-shadow: none; }
     .geometry-curves .chart { min-height: 260px; }
 
+    .novelty-flow { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin-bottom: 14px; }
+    .novelty-step { position: relative; padding: 17px; border: 1px solid var(--line); border-radius: 13px; background: var(--surface); }
+    .novelty-step small { display: block; margin-bottom: 5px; color: var(--green); font-family: var(--mono); font-size: 8px; font-weight: 800; letter-spacing: .05em; }
+    .novelty-step b { display: block; margin-bottom: 4px; font-size: 13px; }
+    .novelty-step span { display: block; color: var(--muted); font-size: 9px; }
+    .novelty-step + .novelty-step::before { position: absolute; top: 50%; left: -9px; width: 9px; color: #999287; content: "→"; font-size: 11px; transform: translateY(-50%); }
+    .oracle-boundary { display: grid; grid-template-columns: auto 1fr; gap: 13px; align-items: start; margin: 14px 0; padding: 15px 17px; color: #695a3d; font-size: 10px; border: 1px solid #d8c196; border-radius: 13px; background: var(--ochre-soft); }
+    .oracle-boundary b { color: var(--ink); }
+    .oracle-mark { display: grid; width: 31px; height: 31px; place-items: center; color: white; font-family: var(--mono); font-size: 9px; font-weight: 800; border-radius: 8px; background: var(--ochre); }
+    .novelty-metrics { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; margin: 14px 0; }
+    .novelty-metric { padding: 16px; border: 1px solid var(--line); border-radius: 12px; background: var(--surface); }
+    .novelty-metric small { display: block; color: var(--muted); font-size: 8px; letter-spacing: .05em; text-transform: uppercase; }
+    .novelty-metric strong { display: block; margin: 3px 0 2px; font-size: 25px; letter-spacing: -.04em; }
+    .novelty-metric span { display: block; color: var(--muted); font-size: 8px; }
+    .novelty-viewer { overflow: hidden; border: 1px solid var(--line); border-radius: 19px; background: #e9e5db; box-shadow: var(--shadow); }
+    .viewer-toolbar { display: flex; gap: 14px; align-items: center; justify-content: space-between; padding: 12px 14px; border-bottom: 1px solid var(--line); background: var(--surface); }
+    .viewer-toolbar-copy b { display: block; font-size: 11px; }
+    .viewer-toolbar-copy span { display: block; color: var(--muted); font-size: 8px; }
+    .viewer-buttons { display: flex; gap: 6px; }
+    .viewer-buttons button { padding: 5px 9px; color: var(--muted); font-size: 9px; border: 1px solid var(--line); border-radius: 7px; background: var(--surface-2); cursor: pointer; }
+    .viewer-buttons button:hover { color: var(--ink); border-color: var(--line-strong); }
+    .cloud-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: var(--line); }
+    .cloud-panel { min-width: 0; background: #ece8de; }
+    .cloud-panel-head { display: flex; align-items: baseline; justify-content: space-between; padding: 10px 12px 0; }
+    .cloud-panel-head b { font-size: 11px; }
+    .cloud-panel-head span { color: var(--muted); font-family: var(--mono); font-size: 7px; }
+    .cloud-panel canvas { display: block; width: 100%; height: 360px; cursor: grab; touch-action: none; }
+    .cloud-panel canvas.dragging { cursor: grabbing; }
+    .viewer-status { padding: 10px 14px; color: var(--muted); font-family: var(--mono); font-size: 8px; border-top: 1px solid var(--line); background: var(--surface); }
+    .viewer-status.ready { color: #4d6d3e; }
+    .viewer-status.failed { color: var(--red); }
+    .novelty-static { display: grid; grid-template-columns: 1.6fr .8fr; gap: 12px; margin-top: 14px; }
+    .novelty-static figure { margin: 0; overflow: hidden; padding: 9px; border: 1px solid var(--line); border-radius: 14px; background: var(--surface); }
+    .novelty-static img { width: 100%; border-radius: 8px; background: var(--surface-2); }
+    .novelty-static figcaption { padding: 8px 3px 2px; color: var(--muted); font-size: 8px; }
+    .novelty-interpretation { margin-top: 14px; padding: 18px 20px; border: 1px solid #b9c7ae; border-radius: 14px; background: var(--green-soft); }
+    .novelty-interpretation h3 { margin: 0 0 5px; font-size: 14px; }
+    .novelty-interpretation p { margin: 0; color: #59634f; font-size: 10px; }
+
     .chart-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; }
     .chart-card { padding: 21px 21px 16px; }
     .chart-card.wide { grid-column: 1 / -1; }
@@ -385,11 +424,12 @@
     footer { display: flex; gap: 24px; justify-content: space-between; padding: 30px 0 42px; color: var(--muted); font-size: 10px; border-top: 1px solid var(--line); }
 
     @media (max-width: 960px) {
-      .hero, .loss-layout, .geometry-grid, .geometry-curves, .eval-layout, .takeaway { grid-template-columns: 1fr; }
+      .hero, .loss-layout, .geometry-grid, .geometry-curves, .eval-layout, .takeaway, .novelty-static { grid-template-columns: 1fr; }
       .hero { gap: 28px; padding-top: 55px; }
       .chart-grid { grid-template-columns: 1fr; }
       .chart-card.wide { grid-column: auto; }
-      .kpis, .arch-caption { grid-template-columns: repeat(2, 1fr); }
+      .kpis, .arch-caption, .novelty-flow, .novelty-metrics { grid-template-columns: repeat(2, 1fr); }
+      .novelty-step + .novelty-step::before { display: none; }
       .section-head { align-items: start; flex-direction: column; gap: 9px; }
     }
 
@@ -397,7 +437,9 @@
       .shell { width: min(100% - 24px, 1220px); }
       .nav-links { display: none; }
       h1 { font-size: 49px; }
-      .kpis, .loss-grid, .geometry-notes, .geometry-diagnostic, .health-row, .protocol-grid, .pilot-grid, .arch-caption { grid-template-columns: 1fr; }
+      .kpis, .loss-grid, .geometry-notes, .geometry-diagnostic, .health-row, .protocol-grid, .pilot-grid, .arch-caption, .novelty-flow, .novelty-metrics, .cloud-grid { grid-template-columns: 1fr; }
+      .viewer-toolbar { align-items: start; flex-direction: column; }
+      .cloud-panel canvas { height: 315px; }
       .geometry-board { padding: 17px 13px; }
       .geometry-board-head { align-items: start; flex-direction: column; gap: 9px; }
       .geometry-flow { display: grid; grid-template-columns: 1fr; }
@@ -421,6 +463,7 @@
       <a class="brand" href="#top"><span class="brand-mark">3D</span><span>SceneL3DGER</span></a>
       <div class="nav-links">
         <a href="#architecture">Architecture</a>
+        <a href="#novelty-audit">3D gate</a>
         <a href="#losses">Losses</a>
         <a href="#geometry-losses">Geometry</a>
         <a href="#training">Training</a>
@@ -551,6 +594,50 @@
           <div class="arch-note"><b>No explicit 3D memory input</b><span>TTT3R contributes post-decoder visual tokens; XYZ boxes supervise only a transient reader.</span></div>
           <div class="arch-note"><b>Free associative slots</b><span>A slot is not assigned a fixed place or time. Observation coordinates affect Q/K RoPE only.</span></div>
           <div class="arch-note"><b>One deployed answer path</b><span>Every benchmark answer is generated by Qwen from all projected memory cells plus the text query.</span></div>
+        </div>
+      </section>
+
+      <section id="novelty-audit" data-novelty-viewer data-summary="assets/scenel3dger/p08/summary.json" data-manifest="assets/scenel3dger/p08/viewer_manifest.json">
+        <div class="section-kicker">feasibility audit · 3D autoregressive gaze</div>
+        <div class="section-head">
+          <h2>Can 3D overlap tell us what not to store?</h2>
+          <p>A first, intentionally simple oracle: stream 65 RGB frames through TTT3R, project every 16 × 16 image patch into a common 3D frame, and skip patches whose surface and appearance are already represented.</p>
+        </div>
+        <div class="novelty-flow" aria-label="3D novelty gate flow">
+          <article class="novelty-step"><small>01 · OBSERVE</small><b>RGB → TTT3R point map</b><span>No depth or pose enters from the dataset; TTT3R predicts them from RGB.</span></article>
+          <article class="novelty-step"><small>02 · ALIGN</small><b>Patch pixels → 8 cm voxels</b><span>Each image patch asks which predicted 3D surface cells it touches.</span></article>
+          <article class="novelty-step"><small>03 · COMPARE</small><b>New surface or changed RGB?</b><span>Keep when ≥20% of voxels are new, or ≥25% of covered voxels changed.</span></article>
+          <article class="novelty-step"><small>04 · WRITE</small><b>Fuse only selected patches</b><span>After metric calibration, frames are processed in order and the registry is never edited retroactively.</span></article>
+        </div>
+        <div class="oracle-boundary">
+          <div class="oracle-mark">P0.8</div>
+          <div><b>This is a feasibility oracle, not the final constant-memory writer.</b> Its voxel registry grows with the scene, the change test uses RGB rather than learned semantic features, and full-trajectory GT poses are used only to calibrate and align the reconstruction for this audit. The experiment asks only whether 3D redundancy is strong enough to justify learning a bounded summarizer.</div>
+        </div>
+        <div class="novelty-metrics" aria-label="3D novelty audit metrics">
+          <article class="novelty-metric"><small>patches kept</small><strong data-metric="kept">loading</strong><span><span data-metric="reduction">—</span> of patch writes removed</span></article>
+          <article class="novelty-metric"><small>full surface retained</small><strong data-metric="surface">loading</strong><span>all-TTT3R voxels within 10 cm of gated reconstruction</span></article>
+          <article class="novelty-metric"><small>GT F-score @ 10 cm</small><strong data-metric="gated-fscore">loading</strong><span>gated · all patches <span data-metric="full-fscore">—</span></span></article>
+          <article class="novelty-metric"><small>GT symmetric distance</small><strong data-metric="gated-chamfer">loading</strong><span>gated · all patches <span data-metric="full-chamfer">—</span></span></article>
+        </div>
+        <div class="novelty-viewer">
+          <div class="viewer-toolbar">
+            <div class="viewer-toolbar-copy"><b>Synchronized 3D comparison</b><span><span data-metric="frames">65 RGB frames</span> · TTT3R trajectory alignment median <span data-metric="trajectory">—</span></span></div>
+            <div class="viewer-buttons" aria-label="3D camera presets"><button type="button" data-view="iso">Isometric</button><button type="button" data-view="top">Top</button><button type="button" data-view="front">Front</button></div>
+          </div>
+          <div class="cloud-grid">
+            <article class="cloud-panel"><div class="cloud-panel-head"><b>Official GT scene</b><span>ScanNet mesh</span></div><canvas data-cloud="gt" aria-label="Interactive official ScanNet ground-truth point cloud"></canvas></article>
+            <article class="cloud-panel"><div class="cloud-panel-head"><b>Full reconstruction</b><span>all valid patches</span></div><canvas data-cloud="full" aria-label="Interactive complete TTT3R reconstruction"></canvas></article>
+            <article class="cloud-panel"><div class="cloud-panel-head"><b>3D-gated reconstruction</b><span>selected patches only</span></div><canvas data-cloud="gated" aria-label="Interactive 3D novelty-gated TTT3R reconstruction"></canvas></article>
+          </div>
+          <div class="viewer-status" data-viewer-status>Loading audited point clouds…</div>
+        </div>
+        <div class="novelty-static">
+          <figure><img src="assets/scenel3dger/p08/scene_comparison.png" alt="Static comparison of ScanNet ground truth, full TTT3R reconstruction, and 3D novelty-gated reconstruction"><figcaption>Static fallback with the same camera and bounds. Interactive panels above are independently RGB-coloured but rotate together.</figcaption></figure>
+          <figure><img src="assets/scenel3dger/p08/novelty_timeline.png" alt="Per-frame patch retention and reconstructed voxel count"><figcaption>The gate should write heavily when entering new space, then fall when views revisit already recorded surfaces.</figcaption></figure>
+        </div>
+        <div class="novelty-interpretation">
+          <h3>Verdict: the 3D redundancy signal is real</h3>
+          <p>The gate removes 42.05% of patch writes while retaining 99.998% of the all-patch TTT3R surface at 10 cm. Against GT, F-score@10cm moves only from 44.49% to 44.30% (−0.19 pp), and symmetric distance moves from 15.12 cm to 15.16 cm (+0.04 cm). This supports learning a 3D-aware summarizer; it does not yet show bounded memory or semantic preservation. Absolute GT scores include official-mesh regions that may not appear in the 65 sampled frames, so the defensible comparison is gated versus full TTT3R under identical filtering.</p>
         </div>
       </section>
 
@@ -767,10 +854,11 @@
     </main>
 
     <footer>
-      <span>SceneL3DGER · frozen-v2 research progress · updated August 14, 2026</span>
+      <span>SceneL3DGER · frozen-v2 research progress · updated August 16, 2026</span>
       <span>All reported evaluation numbers are from the audited step‑65k full bench10k run.</span>
     </footer>
   </div>
   <script src="assets/scenel3dger/progress.js"></script>
+  <script src="assets/scenel3dger/novelty-viewer.js"></script>
 </body>
 </html>

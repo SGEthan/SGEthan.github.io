@@ -1,0 +1,33 @@
+{
+  "bounds": {
+    "max": [
+      2.613969151983261,
+      3.394540386013988,
+      2.685155491706655
+    ],
+    "min": [
+      -2.4975819840526583,
+      -3.7438259404230116,
+      -0.13590650043331087
+    ]
+  },
+  "clouds": {
+    "full": {
+      "count": 36150,
+      "file": "full.bin",
+      "source_count": 42888
+    },
+    "gated": {
+      "count": 35810,
+      "file": "gated.bin",
+      "source_count": 42564
+    },
+    "gt": {
+      "count": 50000,
+      "file": "gt.bin",
+      "source_count": 269274
+    }
+  },
+  "encoding": "uint16_xyz_then_uint8_rgb_interleaved_9_bytes",
+  "version": "p08_3d_novelty_reconstruction_v1"
+}
